@@ -1,1 +1,2 @@
-# 基于reactnative的电商
+# pepperRN
+基于react native的电商商城
