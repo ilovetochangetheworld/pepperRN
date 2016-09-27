@@ -38,19 +38,21 @@ class Cart extends Component {
     render() {
         return (
              <View style={{flex:1,backgroundColor:'#f5f5f5'}}>
-                <View style={{height:48,backgroundColor:'black',flexDirection:'row'}}>
-                    <View style={{width:48,height:48}}></View>
-                    <View style={{flex:1,alignItems:'center',justifyContent:'center',}}>
-                       <Text style={{fontSize:18,color:'white',alignSelf:'center'}}>购物车</Text>
+                <View style={{height:48,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                    <View style={{width:48,height:48,justifyContent:'center',alignItems:'center'}}>
+                      <Image source={require('../imgs/pp_return.png')} style={{width:11,height:18}}></Image>
                     </View>
-                    <View>
-                        <TouchableOpacity onPress={()=>{this.topItemAction(0)}}
-                                          style={{width:48,height:48,justifyContent:'center',alignItems:'center'}}>
-                            <Image source={require('../imgs/cart/ic_cart_btn_delete.png')} style={{width:17,height:21}}/>
-                        </TouchableOpacity>
+                    <View style={{flex:1,alignItems:'center',justifyContent:'center',height:48,width:50}}>
+                       <Text style={{fontSize:18,color:'#000',alignSelf:'center'}}>购物车</Text>
                     </View>
+                    <TouchableOpacity onPress={()=>{this.topItemAction(0)}}
+                                      style={{width:48,height:48,justifyContent:'center',alignItems:'center'}}>
+                        <Image source={require('../imgs/cart/ic_cart_btn_delete.png')} style={{width:17,height:21}}/>
+                    </TouchableOpacity>
                 </View>
-
+                <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
+                  
+                </ScrollView>
                 <View style={{flex:1,justifyContent:'flex-end'}}>
                       <View style={{backgroundColor:'white',width:width,height:40}}>
                             <View style={{flexDirection:'row',marginLeft:15,marginTop:5}}>
