@@ -33,12 +33,16 @@ class GoodsList extends Component {
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
       const {dispatch} = this.props;
-      dispatch(performGoodsListAction(this.props.id));
+      if(this.props.id){
+      dispatch(performGoodsListAction(1,this.props.id));
+    }else if(this.props.orderType){
+      dispatch(performGoodsListAction(2,this.props.orderType));
+      }
     });
  }
 
   //返回
-  buttonBackAction(){
+  buttonBackAction() {
       const {navigator} = this.props;
       return NaviGoBack(navigator);
   }

@@ -52,7 +52,6 @@ class Classify extends Component {
 
     render() {
       const {classify} = this.props;
-      console.log(classify);
       if (!classify.data) {
          return this.renderLoadingView();
        }

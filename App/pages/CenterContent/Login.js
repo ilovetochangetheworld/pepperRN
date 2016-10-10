@@ -45,6 +45,29 @@ class Login extends Component {
 
   }
 
+  componentWillMount() {
+    if (Platform.OS === 'android') {
+      BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
+    }
+  }
+  componentWillUnmount() {
+    if (Platform.OS === 'android') {
+      BackAndroid.removeEventListener('hardwareBackPress', this.onBackAndroid);
+    }
+  }
+
+  onBackAndroid = () => {
+          const { navigator } = this.props;
+          const routers = navigator.getCurrentRoutes();
+          console.log('当前路由长度：'+routers.length);
+          // if (routers.length > 1) {
+          //     navigator.pop();
+          //     return true;//接管默认行为
+          // }
+          return true;//默认行为
+
+      };
+
   shouldComponentUpdate(nextProps, nextState) {
     const {navigator} = this.props;
     if(nextProps.login.data.status){
@@ -120,13 +143,14 @@ class Login extends Component {
       return (
              <View style={{backgroundColor:'#fff',flex:1}}>
                 <View style={styles.topbar_bg}>
-                    <TouchableOpacity onPress={() => {this.buttonBackAction()}}
+                    <View style={styles.topbar_left_item}></View>
+                    {/* <TouchableOpacity onPress={() => {this.buttonBackAction()}}
                                       style={styles.topbar_left_item}>
                        <Image
                           style={{width:13,height:20}}
                           source={require('../../imgs/pp_return.png')}
                        />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <View style={styles.topbar_center_bg}>
                        <Text style={styles.topbar_center_tv}>登录</Text>
                     </View>

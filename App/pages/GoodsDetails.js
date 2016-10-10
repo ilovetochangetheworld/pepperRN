@@ -11,7 +11,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  WebView
+  WebView,
+  AsyncStorage
 } from 'react-native';
 
 import { NaviGoBack } from '../utils/CommonUtils';
@@ -19,6 +20,7 @@ import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
 import { connect } from 'react-redux';
 import { performGoodsDetailAction } from '../actions/GoodsDetailAction';
 import { performAppMainAction } from '../actions/AppMainAction'
+import { performAddCartAction } from '../actions/AddCartAction'
 
 import Home from './Home';
 
@@ -73,27 +75,52 @@ class GoodsDetails extends React.Component {
       case 1:
         dispatch(performAppMainAction('home'))
         navigator.popToTop();
-        // navigator.push({
-        //     component: Home,
-        //     name: 'Home'
-        //     });
         break;
       case 2:
         dispatch(performAppMainAction('cart'))
         navigator.popToTop();
-        // navigator.push({
-        //     component: Home,
-        //     name: 'Home'
-        //     });
         break;
       default:
 
     }
   }
 
+  //加入购物车
+  addCart(goodsList) {
+    const {navigator,dispatch} = this.props;
+    AsyncStorage.getItem('token').then(
+      (token)=>{
+        if (token===null){
+          console.log('没有获取到token');
+          InteractionManager.runAfterInteractions(() => {
+              navigator.push({
+                component: Login,
+                name: 'Login'
+              });
+            });
+        }else {
+          console.log('token:'+token);
+          if(0<goodsList.length<2){
+            dispatch(performAddCartAction(token,goodsList));
+          }
+        }
+      }
+    ).catch((error)=>{
+      console.log(' error:' + error.message);
+    })
+  }
+
+  //购买
+  buy(goodsList) {
+    console.log(goodsList);
+    if(0<goodsList.length<2){
+
+    }
+  }
+
   render() {
     const {goodsDetail} = this.props;
-
+    console.log(goodsDetail);
     if (!goodsDetail.data) {
        return this.renderLoadingView();
      }
@@ -207,8 +234,8 @@ class GoodsDetails extends React.Component {
             <Image source={require('../imgs/star.png')} style={{width:20,height:20}} ></Image>
             <Text style={{fontSize:10,color:'#797979'}}>收藏</Text>
           </View>
-          <View style={{flex:1,height:50,backgroundColor:'#FF9402',flexDirection:'row',justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:15}}>加入购物车</Text></View>
-          <View style={{flex:1,height:50,backgroundColor:'#FF240D',flexDirection:'row',justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:15}}>立即购买</Text></View>
+          <TouchableOpacity style={{flex:1,height:50,backgroundColor:'#FF9402',flexDirection:'row',justifyContent:'center',alignItems:'center'}} onPress={()=>{this.addCart(goodsDetail.data.data)}}><Text style={{color:'#fff',fontSize:15}}>加入购物车</Text></TouchableOpacity>
+          <TouchableOpacity style={{flex:1,height:50,backgroundColor:'#FF240D',flexDirection:'row',justifyContent:'center',alignItems:'center'}} onPress={()=>{this.buy(goodsDetail.data.data)}}><Text style={{color:'#fff',fontSize:15}}>立即购买</Text></TouchableOpacity>
         </View>
       </View>
 

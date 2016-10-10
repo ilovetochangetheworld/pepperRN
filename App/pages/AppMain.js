@@ -23,22 +23,19 @@ import { performAppMainAction } from '../actions/AppMainAction'
 
 class AppMain extends Component {
     constructor(props) {
-        super(props);
-        console.log('appmain');
+        super();
         // this.state = {
 	  	  //     selectedTab:'home'
 	      // };
     }
 
     componentWillMount() {
-      console.log('componentWillMount');
       const {dispatch} = this.props;
       // dispatch(performAppMainAction('home'));
     }
 
     render() {
       const {appMain,dispatch} = this.props;
-      console.log(appMain);
         return (
           <TabNavigator>
 			  <TabNavigator.Item

@@ -1,16 +1,16 @@
 /**
- * 用户登录Reducers
+ * 购物车Reducers
  */
 'use strict';
 import * as types from '../common/ActionTypes';
 
 const initialState = {
-    data:'',
+    data:false,
 }
 
-export default function goodsDetail(state = initialState, action){
+export default function cart(state = initialState, action){
     switch (action.type) {
-        case types.RECEIVE_GOODSDETAIL_ACTION:
+        case types.RECEIVE_CART_ACTION:
                   return Object.assign({}, state, {
                        data: action.data,
                   });

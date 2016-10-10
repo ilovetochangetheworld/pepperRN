@@ -17,9 +17,11 @@ export function performCenterAction(token){
         fetch(HOST+'MemberInfo/getUserInfo?token='+token)
         .then((response) => response.json())
         .then((responseData)=>{
+           console.log(responseData);
            if(responseData.status){
                //获取数据成功
                console.log(responseData);
+               result.status=true;
                result.userInfo = responseData;
                //微信钱包数据请求
                fetch(HOST+'MemberInfo/wallet?token='+token)
@@ -36,6 +38,8 @@ export function performCenterAction(token){
                  })
            }else{
                toastShort(responseData.msg);
+               result.status=false;
+               dispatch(receiveUserResult(result));
            }
 
         });

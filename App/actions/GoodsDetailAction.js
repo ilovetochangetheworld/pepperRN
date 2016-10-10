@@ -34,7 +34,6 @@ export function performGoodsDetailAction(type,data){
 }
 
 function receiveGoodsDetailResult(result){
-        console.log(result);
         return {
             type: types.RECEIVE_GOODSDETAIL_ACTION,
             data: result

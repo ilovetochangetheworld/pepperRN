@@ -28,9 +28,30 @@ class Center extends Component {
     }
 
     componentDidMount() {
-      console.log('componentWillMount');
       this._checkLogin();
     }
+
+    componentWillUpdate() {
+      this._checkLogin();
+    }
+
+
+    // shouldComponentUpdate() {
+    //   const {navigator,center} = this.props;
+    //   if(!center.data.status){
+    //     navigator.push({
+    //       component: Login,
+    //       name: 'Login'
+    //     });
+    //     return true;
+    //   }else{
+    //     if(!center.data.userInfo){
+    //       dispatch(performCenterAction(result));
+    //     }else{
+    //       return false;
+    //     }
+    //   }
+    // }
 
     //登录检测
     _checkLogin(){
@@ -47,12 +68,12 @@ class Center extends Component {
                   });
                 });
             }else {
-              console.log('token:'+result);
               dispatch(performCenterAction(result));
             }
           }
         ).catch((error)=>{
           console.log(' error:' + error.message);
+
         })
       })
     }

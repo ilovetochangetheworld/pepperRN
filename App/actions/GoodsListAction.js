@@ -9,7 +9,7 @@ import { toastShort } from '../utils/ToastUtil';
 import ViewPager from 'react-native-viewpager';
 import {ListView} from 'react-native';
 
-export function performGoodsListAction(cate_id){
+export function performGoodsListAction(type,result){
      var result = {};
      return dispatch => {
        //广告请求
@@ -20,17 +20,35 @@ export function performGoodsListAction(cate_id){
                //获取数据成功
                result.imgDataSource = responseData;
                //商品列表数据获取
-               fetch(HOST+'product/searchProducts?cate_id='+cate_id+'&pageIndex='+ 1 +'&+pageSize=' + 10)
-               .then((response) => response.json())
-               .then((responseData)=>{
-                  if(responseData.status){
-                      //获取数据成功
-                      result.productDetail = responseData;
-                      dispatch(receiveGoodsListResult(result));
-                  }else{
-                      toastShort(responseData.msg);
-                  }
-               })
+               switch (type) {
+                 case 1:
+                   fetch(HOST+'product/searchProducts?cate_id='+result+'&pageIndex='+ 1 +'&+pageSize=' + 10)
+                   .then((response) => response.json())
+                   .then((responseData)=>{
+                      if(responseData.status){
+                          //获取数据成功
+                          result.productDetail = responseData;
+                          dispatch(receiveGoodsListResult(result));
+                      }else{
+                          toastShort(responseData.msg);
+                      }
+                   })
+                   break;
+                   case 2:
+                     fetch(HOST+'product/searchProducts?orderType='+result+'&pageIndex='+ 1 +'&+pageSize=' + 10)
+                     .then((response) => response.json())
+                     .then((responseData)=>{
+                        if(responseData.status){
+                            //获取数据成功
+                            result.productDetail = responseData;
+                            dispatch(receiveGoodsListResult(result));
+                        }else{
+                            toastShort(responseData.msg);
+                        }
+                     })
+                     break;
+               }
+
            }else{
                toastShort(responseData.msg);
            }

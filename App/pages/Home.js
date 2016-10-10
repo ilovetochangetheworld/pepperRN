@@ -15,6 +15,8 @@ import{
 } from 'react-native';
 import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
 import ShortLine from '../component/ShortLine';
+import goodsList from './GoodsList';
+import { performAppMainAction } from '../actions/AppMainAction';
 var {height, width} = Dimensions.get('window');
 var item_width = (width-1)/2;
 
@@ -48,8 +50,7 @@ const CENTER_IMGS = [
 class Home extends Component {
    constructor(props) {
       super(props);
-      this.centerItemAction=this.centerItemAction.bind(this);
-      // this.topItemAction=this.topItemAction.bind(this);
+      this.topItemAction=this.topItemAction.bind(this);
     }
 
   componentDidMount() {
@@ -59,35 +60,43 @@ class Home extends Component {
     // console.log(this.state.selectedTab);
   }
 
-  centerItemAction(position){
-      if(position === 0){
-
-      }else if(position === 1){
-
-      }else if(position === 2){
-
-      }else if(position === 3){
-
+  topItemAction(position){
+      const {navigator,dispatch} = this.props;
+      switch (position) {
+        case 0:
+         InteractionManager.runAfterInteractions(() => {
+          navigator.push({
+            component: goodsList,
+            name: 'goodsList',
+            params: {
+                 orderType: 2
+             }
+            });
+          });
+          break;
+        case 1:
+         InteractionManager.runAfterInteractions(() => {
+           InteractionManager.runAfterInteractions(() => {
+             dispatch(performAppMainAction('classify'))
+             navigator.popToTop();
+             });
+          });
+          break;
+        case 2:
+         InteractionManager.runAfterInteractions(() => {
+          navigator.push({
+            component: goodsList,
+            name: 'goodsList',
+            params: {
+                 orderType: 1
+             }
+            });
+          });
+          break;
       }
+
   }
-  // topItemAction(position){
-  //     const {navigator} = this.props;
-  //     if(position === 0){
-  //         InteractionManager.runAfterInteractions(() => {
-  //           navigator.push({
-  //             component: City,
-  //             name: 'City'
-  //             });
-  //           });
-  //     }else if(position === 1){
-  //         InteractionManager.runAfterInteractions(() => {
-  //           navigator.push({
-  //             component: Search,
-  //             name: 'Search'
-  //             });
-  //           });
-  //     }
-  // }
+
   _renderDotIndicator() {
         return <PagerDotIndicator pageCount={1} />;
   }
@@ -130,7 +139,7 @@ class Home extends Component {
              <View>
                 <View style={{flexDirection:'row',backgroundColor:'white',height:85,alignItems:'center'}}>
                  <View style={styles.menu_list}>
-                       <TouchableOpacity onPress={()=>{this.centerItemAction(0)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
+                       <TouchableOpacity onPress={()=>{this.topItemAction(0)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
                        <Image source={MENU_IMGS[0]} style={styles.menu_img}></Image>
                        <View>
                              <Text>畅销榜</Text>
@@ -138,7 +147,7 @@ class Home extends Component {
                        </TouchableOpacity>
                  </View>
                  <View style={styles.menu_list}>
-                       <TouchableOpacity onPress={()=>{this.centerItemAction(1)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
+                       <TouchableOpacity onPress={()=>{this.topItemAction(1)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
                        <Image source={MENU_IMGS[1]} style={styles.menu_img}></Image>
                        <View>
                              <Text>全部分类</Text>
@@ -146,7 +155,7 @@ class Home extends Component {
                        </TouchableOpacity>
                  </View>
                  <View style={styles.menu_list}>
-                       <TouchableOpacity onPress={()=>{this.centerItemAction(2)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
+                       <TouchableOpacity onPress={()=>{this.topItemAction(2)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
                        <Image source={MENU_IMGS[2]} style={styles.menu_img}></Image>
                        <View>
                              <Text>新品上市</Text>
@@ -154,7 +163,7 @@ class Home extends Component {
                        </TouchableOpacity>
                  </View>
                  <View style={styles.menu_list}>
-                       <TouchableOpacity onPress={()=>{this.centerItemAction(3)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
+                       <TouchableOpacity onPress={()=>{this.topItemAction(3)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
                        <Image source={MENU_IMGS[3]} style={styles.menu_img}></Image>
                        <View>
                              <Text>商城资讯</Text>
@@ -169,7 +178,7 @@ class Home extends Component {
                       <View style={styles.section_title_left_solid}></View>
                       <Text style={styles.section_title_left_name}>商品热卖</Text>
                     </View>
-                    <Text>更多商品 >></Text>
+                    <TouchableOpacity onPress={()=>{this.topItemAction(0)}}><Text>更多商品 >></Text></TouchableOpacity>
                   </View>
                   <View style={{flexDirection:'row', justifyContent:'center', paddingHorizontal:10}}>
                       <TouchableOpacity>
