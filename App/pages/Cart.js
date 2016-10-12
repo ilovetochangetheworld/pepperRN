@@ -106,7 +106,7 @@ class Cart extends Component {
                     <View style={{flex:1,alignItems:'center',justifyContent:'center',height:48,width:50}}>
                        <Text style={{fontSize:18,color:'#000',alignSelf:'center'}}>购物车</Text>
                     </View>
-                    <View>
+                    <View style={{width:48}}>
                     </View>
                 </View>
                 <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>

@@ -16,6 +16,7 @@ import {
 import { NaviGoBack } from '../utils/CommonUtils';
 var {height, width} = Dimensions.get('window');
 import OrderResult from './OrderResult';
+import CommonHeader from '../component/CommonHeader';
 
 class OrderConfirm extends React.Component {
 
@@ -45,20 +46,31 @@ class OrderConfirm extends React.Component {
     const {navigator,route} = this.props;
     return (
         <View style={{backgroundColor:'#f5f5f5',flex:1}}>
-             <View style={{height:48,backgroundColor:'black',flexDirection:'row'}}>
-                <TouchableOpacity onPress={() => {this.buttonBackAction()}}
-                   style={{width:48,height:48,justifyContent:'center',alignItems:'center'}}>
-                    <Image
-                          style={{width:13,height:20}}
-                          source={require('../imgs/ic_center_back.png')}
-                     />
-                </TouchableOpacity>
-                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                    <Text style={{fontSize:18,color:'white',alignSelf:'center'}}>订单确认</Text>
-                </View>
-                <View style={{width:48,height:48,}}></View>
+          <CommonHeader title='订单详情' />
+          <View style={{paddingHorizontal:12,height:48,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
+            <Text style={{fontSize:16,color:'#000',marginRight:10}}>配送方式</Text>
+            <View style={styles.dispatch}><Text style={styles.dispatch_text}>商家配送</Text></View>
+            <View style={styles.dispatch}><Text style={styles.dispatch_text}>商家自提</Text></View>
           </View>
-
+          <View style={{paddingVertical:16,height:76,flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:'#fff'}}>
+            <View style={{width:30,height:44,flexDirection:'column',justifyContent:'flex-end',alignItems:'center'}}>
+              <Image source={require('../imgs/address.png')} style={{width:18,height:18}}></Image>
+            </View>
+            <View style={{width:316,height:44,flexDirection:'column',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:30}}>刘大黑</Text>
+                <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:6}}>13260585618</Text>
+                <View style={{width:62,height:16,backgroundColor:'#FF240D'}}><Text style={{fontSize:12,color:'#fff',textAlign:'center'}}>默认地址</Text></View>
+              </View>
+              <View>
+                <Text style={{color:'#000',fontSize:14,fontWeight:'bold',width:316}} numberOfLines={1} >收货地址：湖南省长沙市岳麓区桐梓坡西路185号</Text>
+              </View>
+            </View>
+            <View style={{width:30,height:44,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+              <Image source={require('../imgs/pp_right.png')} style={{width:7,height:12}}></Image>
+            </View>
+          </View>
+          <Image source={require('../imgs/order_dash.png')} style={{height:2,width:width,resizeMode:'stretch',marginBottom:10}}></Image>
           <View style={{flex:1,justifyContent:'flex-end'}}>
                 <TouchableOpacity onPress={()=>{this.payItemAction()}}>
                       <Image source={require('../imgs/cart/ic_cart_btn_bg.png')}
@@ -72,6 +84,18 @@ class OrderConfirm extends React.Component {
   }
 }
 let styles = StyleSheet.create({
-
+  dispatch:{
+    height:26,
+    width:76,
+    borderWidth:1,
+    borderColor:'#797979',
+    marginRight:10,
+    borderRadius:2
+  },
+  dispatch_text:{
+    fontSize:16,
+    color:'#797979',
+    textAlign:'center'
+  }
 });
 export default OrderConfirm

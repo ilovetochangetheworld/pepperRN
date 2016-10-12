@@ -27,6 +27,7 @@ import Loading from '../../component/Loading';
 
 import { connect } from 'react-redux';
 import { performLoginAction } from '../../actions/LoginAction';
+import { performCenterAction } from '../../actions/CenterAction';
 
 var username = '';
 var password = '';
@@ -69,8 +70,9 @@ class Login extends Component {
       };
 
   shouldComponentUpdate(nextProps, nextState) {
-    const {navigator} = this.props;
+    const {dispatch,navigator} = this.props;
     if(nextProps.login.data.status){
+      dispatch(performCenterAction(nextProps.login.data.token));
       AsyncStorage.setItem('token',nextProps.login.data.token).then(
         ()=>{
           console.log('token保存成功');

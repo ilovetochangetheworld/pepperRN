@@ -5,8 +5,10 @@ import classify from './ClassifyReducers'
 import goodsList from './GoodsListReducers';
 import goodsDetail from './GoodsDetailReducers';
 import center from './CenterReducers';
-import appMain from './AppMainReducers'
-import cart from './CartReducers'
+import appMain from './AppMainReducers';
+import cart from './CartReducers';
+import index from './IndexReducers';
+import ads from './AdsReducers';
 const rootReducer = combineReducers({
       login,
       classify,
@@ -14,6 +16,8 @@ const rootReducer = combineReducers({
       goodsDetail,
       center,
       appMain,
-      cart
+      cart,
+      index,
+      ads,
 })
 export default rootReducer;

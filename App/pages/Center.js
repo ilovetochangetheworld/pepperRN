@@ -32,7 +32,11 @@ class Center extends Component {
     }
 
     componentWillUpdate() {
-      this._checkLogin();
+      const {center} = this.props;
+      if (!center.data) {
+         this._checkLogin();
+       }
+
     }
 
 
@@ -122,6 +126,9 @@ class Center extends Component {
          if (!center.data) {
             return this.renderLoadingView();
           }
+        //  if (!center.data.status){
+        //    this._loginOut();
+        //  }
         return (
              <View style={{flex:1,backgroundColor:'#f5f5f5'}}>
               <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>

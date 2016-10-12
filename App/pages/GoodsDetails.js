@@ -19,8 +19,8 @@ import { NaviGoBack } from '../utils/CommonUtils';
 import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
 import { connect } from 'react-redux';
 import { performGoodsDetailAction } from '../actions/GoodsDetailAction';
-import { performAppMainAction } from '../actions/AppMainAction'
-import { performAddCartAction } from '../actions/AddCartAction'
+import { performAppMainAction } from '../actions/AppMainAction';
+import { performAddCartAction } from '../actions/AddCartAction';
 
 import Home from './Home';
 

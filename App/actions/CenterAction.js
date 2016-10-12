@@ -34,6 +34,7 @@ export function performCenterAction(token){
                        dispatch(receiveUserResult(result));
                    }else{
                        toastShort(responseData.msg);
+                       dispatch(receiveUserResult(result));
                    }
                  })
            }else{
