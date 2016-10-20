@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 import { performGoodsDetailAction } from '../actions/GoodsDetailAction';
 import { performAppMainAction } from '../actions/AppMainAction';
 import { performAddCartAction } from '../actions/AddCartAction';
+import Loading from '../component/Loading';
 
 import Home from './Home';
 
@@ -55,11 +56,7 @@ class GoodsDetails extends React.Component {
 
   renderLoadingView() {
     return (
-      <View>
-        <Text>
-          Loading more...
-        </Text>
-      </View>
+      <Loading visible={true} />
     );
   }
 

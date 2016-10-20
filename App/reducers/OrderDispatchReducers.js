@@ -1,21 +1,19 @@
 /**
- * IndexReducers
+ * 订单配送方式Reducers
  */
 'use strict';
 import * as types from '../common/ActionTypes';
 
 const initialState = {
-    // data: '',
-    // goodsListDataSource: '',
+    data:1,
 }
 
-export default function index(state = initialState, action){
+export default function orderdispatch(state = initialState, action){
     switch (action.type) {
-        case types.RECEIVE_INDEX_ACTION:
+        case types.RECEIVE_ORDER_DISPATCH_ACTION:
                   return Object.assign({}, state, {
                        data: action.data,
-                       goodsListDataSource: action.goodsListDataSource
-                  })
+                  });
         default:
             return state;
     }

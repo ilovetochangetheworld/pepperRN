@@ -136,13 +136,13 @@ class Home extends Component {
 
   renderLoadingView() {
     return (
-        <Loading  />
+        <Loading visible={true} />
     );
   }
 
   render() {
         const {index,ads} = this.props;
-        if (!index.data) {
+        if (!index.data||!ads) {
            return this.renderLoadingView();
          }
         return (
@@ -343,7 +343,6 @@ const styles=StyleSheet.create({
 // export default Home;
 
 function mapStateToProps(state) {
-  console.log(state);
   const { index,ads } = state;
   return {
     index,

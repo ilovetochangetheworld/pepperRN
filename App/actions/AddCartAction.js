@@ -30,6 +30,7 @@ export function performAddCartAction(token,goodsList){
           if(responseData.status){
               //登录成功..
               toastShort('添加成功...');
+              dispatch(changeCartAction());
           }else{
               toastShort(responseData.msg);
           }
@@ -42,6 +43,12 @@ function receiveGoodsDetailResult(result){
         return {
             type: types.RECEIVE_GOODSDETAIL_ACTION,
             data: result
+        }
+}
+
+function changeCartAction(){
+        return {
+            type: types.CHANGE_CART_ACTION,
         }
 
 }

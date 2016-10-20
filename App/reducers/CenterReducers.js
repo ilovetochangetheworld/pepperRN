@@ -5,7 +5,6 @@
 import * as types from '../common/ActionTypes';
 
 const initialState = {
-    data:'',
 }
 
 export default function goodsList(state = initialState, action){
@@ -13,6 +12,13 @@ export default function goodsList(state = initialState, action){
         case types.RECEIVE_USER_ACTION:
                   return Object.assign({}, state, {
                        data: action.data,
+                       tokenRefresh: false,
+                  });
+        case types.TOKEN_REFRESH:
+                  return Object.assign({}, state, {
+                       data: action.data,
+                       tokenRefresh: true,
+
                   });
         default:
             return state;

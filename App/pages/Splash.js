@@ -26,7 +26,7 @@ class Splash extends React.Component {
           name: 'AppMain'
         });
       });
-    }, 2500);
+    }, 3500);
   }
   componentWillUnmount() {
     this.timer && clearTimeout(this.timer);
@@ -36,7 +36,7 @@ class Splash extends React.Component {
     return (
       <View style={{flex:1}}>
       <Image
-        style={{flex:1,width:width,height:height}}
+        style={{flex:1,width:width,height:height,resizeMode:'cover'}}
         source={require('../imgs/ic_welcome.jpg')}
         />
       </View>

@@ -14,6 +14,7 @@ import{
 } from 'react-native';
 import { HOST } from '../common/request';
 import GoodsList from './GoodsList';
+import Loading from '../component/Loading';
 var {height,width} = Dimensions.get('window');
 import { connect } from 'react-redux';
 import { performClassifyAction } from '../actions/ClassifyAction'
@@ -96,11 +97,7 @@ class Classify extends Component {
 
     renderLoadingView() {
       return (
-        <View>
-          <Text>
-            Loading movies...
-          </Text>
-        </View>
+        <Loading visible={true} />
       );
     }
 

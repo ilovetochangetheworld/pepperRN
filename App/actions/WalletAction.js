@@ -1,5 +1,5 @@
 /**
- * 个人中心Action
+ * 用户钱包Action
  */
 'use strict';
 
@@ -14,7 +14,7 @@ export function performCenterAction(token){
      return dispatch => {
        //用户信息请求
         var result = {};
-        fetch(HOST+'MemberInfo/getUserInfo?token='+token)
+        fetch(HOST+'MemberInfo/wallet?token='+token)
         .then((response) => response.json())
         .then((responseData)=>{
            if(responseData.status){
@@ -23,20 +23,6 @@ export function performCenterAction(token){
                result.status=true;
                result.userInfo = responseData;
                dispatch(receiveUserResult(result));
-              //  微信钱包数据请求
-              //  fetch(HOST+'MemberInfo/wallet?token='+token)
-              //  .then((response) => response.json())
-              //  .then((responseData)=>{
-              //      if(responseData.status){
-              //          //获取数据成功
-              //          console.log(responseData);
-              //          result.wallet = responseData;
-              //          dispatch(receiveUserResult(result));
-              //      }else{
-              //          toastShort(responseData.msg);
-              //          dispatch(receiveUserResult(result));
-              //      }
-              //    })
            }else{
                toastShort(responseData.msg);
                result.status=false;
@@ -59,6 +45,5 @@ function receiveUserResult(result){
 function tokenRefresh(result){
         return {
           type: types.TOKEN_REFRESH,
-          data: result,
         }
 }

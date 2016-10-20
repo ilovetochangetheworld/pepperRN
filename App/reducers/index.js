@@ -9,6 +9,8 @@ import appMain from './AppMainReducers';
 import cart from './CartReducers';
 import index from './IndexReducers';
 import ads from './AdsReducers';
+import orderdispatch from './OrderDispatchReducers';
+import address from './AddressReducers';
 const rootReducer = combineReducers({
       login,
       classify,
@@ -19,5 +21,7 @@ const rootReducer = combineReducers({
       cart,
       index,
       ads,
+      orderdispatch,
+      address
 })
 export default rootReducer;

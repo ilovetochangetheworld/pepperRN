@@ -13,6 +13,7 @@ import {
 
 import Splash from './pages/Splash';
 import { NaviGoBack } from './utils/CommonUtils';
+import Orientation from 'react-native-orientation';
 // import { registerApp } from 'react-native-wechat';
 export const STATUS_BAR_HEIGHT = (Platform.OS === 'ios' ? 20 : 25)
 export const ABOVE_LOLIPOP = Platform.Version && Platform.Version > 19
@@ -25,6 +26,10 @@ class App extends React.Component {
        BackAndroid.addEventListener('hardwareBackPress', this.goBack);
       //  registerApp('wx331c28ad7ffd35b0');
    }
+
+  componentWillMount(){
+    // Orientation.lockToPortrait();
+  }
 
   goBack() {
     return NaviGoBack(_navigator);

@@ -1,20 +1,20 @@
 /**
- * IndexReducers
+ * 获取收货地址Reducers
  */
 'use strict';
 import * as types from '../common/ActionTypes';
 
 const initialState = {
-    // data: '',
-    // goodsListDataSource: '',
+  data:''
 }
 
-export default function index(state = initialState, action){
+export default function address(state = initialState, action){
     switch (action.type) {
-        case types.RECEIVE_INDEX_ACTION:
+        case types.RECEIVE_ADDRESS_ACTION:
+                  console.log(action);
                   return Object.assign({}, state, {
                        data: action.data,
-                       goodsListDataSource: action.goodsListDataSource
+                       addressList: action.addressList
                   })
         default:
             return state;

@@ -14,10 +14,8 @@ export function performIndexGoodsAction(page){
        fetch(HOST+'product/searchProducts?is_recommend=1'+'&pageIndex='+ page +'&+pageSize=' + 6)
        .then((response) => response.json())
        .then((responseData)=>{
-          console.log(responseData);
           if(responseData.status){
               //获取数据成功
-              console.log(responseData);
               // result.productLis = responseData;
               dispatch(receiveIndexGoodsResult(responseData));
           }else{

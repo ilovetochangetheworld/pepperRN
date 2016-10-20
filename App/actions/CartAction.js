@@ -13,22 +13,26 @@ export function performCartAction(token){
         fetch(HOST+'MemberMall/getShoppingCart?token='+token)
         .then((response) => response.json())
         .then((responseData)=>{
-           console.log(responseData);
            if(responseData.status){
                //获取数据成功
                responseData.totalNum=0;
                responseData.totalPrice=0;
                responseData.token=token;
-               responseData.data.map((data,index) => {
-                 data.select=true;
-                 data.products.map((product,index) => {
-                   product.select=true;
+               if(responseData.data){
+                 responseData.data.map((data,index) => {
+                   data.select=true;
+                   data.products.map((product,index) => {
+                     product.select=true;
+                   })
                  })
-               })
+               }
                dispatch(receiveCartResult(responseData));
            }else{
-               toastShort(responseData.msg);
-               dispatch()
+              if(Number(responseData.code)==400){ 
+                dispatch(receiveNullCartResult());
+              }else{
+                toastShort(responseData.msg);
+              }
            }
         });
 
@@ -40,5 +44,10 @@ function receiveCartResult(result){
             type: types.RECEIVE_CART_ACTION,
             data: result,
         }
+}
 
+function receiveNullCartResult(){
+        return {
+            type: types.RECEIVE_NLL_CART_ACTION,
+        }
 }

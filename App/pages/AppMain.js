@@ -19,7 +19,8 @@ import Center from './Center';
 var PixelRatio = require('PixelRatio');
 
 import { connect } from 'react-redux';
-import { performAppMainAction } from '../actions/AppMainAction'
+import { performAppMainAction } from '../actions/AppMainAction';
+
 
 class AppMain extends Component {
     constructor(props) {

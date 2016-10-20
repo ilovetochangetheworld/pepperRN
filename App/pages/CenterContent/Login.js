@@ -10,7 +10,6 @@ import{
     InteractionManager,
     TextInput,
     Platform,
-    ToastAndroid,
     AsyncStorage
 } from 'react-native';
 //(Platform.OS === 'ios') ? '' : '';
@@ -24,7 +23,6 @@ import Center from '../Center';
 var EncryptionModule = NativeModules.EncryptionModule;
 
 import Loading from '../../component/Loading';
-
 import { connect } from 'react-redux';
 import { performLoginAction } from '../../actions/LoginAction';
 import { performCenterAction } from '../../actions/CenterAction';
