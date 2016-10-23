@@ -11,7 +11,6 @@ const initialState = {
 export default function address(state = initialState, action){
     switch (action.type) {
         case types.RECEIVE_ADDRESS_ACTION:
-                  console.log(action);
                   return Object.assign({}, state, {
                        data: action.data,
                        addressList: action.addressList

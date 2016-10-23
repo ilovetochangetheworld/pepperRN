@@ -11,6 +11,7 @@ import index from './IndexReducers';
 import ads from './AdsReducers';
 import orderdispatch from './OrderDispatchReducers';
 import address from './AddressReducers';
+import getArea from './GetAreaReducers';
 const rootReducer = combineReducers({
       login,
       classify,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
       index,
       ads,
       orderdispatch,
-      address
+      address,
+      getArea
 })
 export default rootReducer;

@@ -48,7 +48,8 @@ function performLogin() {
 function receiveLoginResult(result){
         return {
             type: types.RECEIVE_LOGIN_ACTION,
-            data: result
+            data: result,
+
         }
 
 }

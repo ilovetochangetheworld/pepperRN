@@ -17,9 +17,9 @@ export function performCenterAction(token){
         fetch(HOST+'MemberInfo/getUserInfo?token='+token)
         .then((response) => response.json())
         .then((responseData)=>{
+          console.log(responseData);
            if(responseData.status){
                //获取数据成功
-               console.log(responseData);
                result.status=true;
                result.userInfo = responseData;
                dispatch(receiveUserResult(result));

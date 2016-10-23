@@ -18,6 +18,7 @@ import Address from './CenterContent/Address';
 import { connect } from 'react-redux';
 import { performCenterAction } from '../actions/CenterAction';
 import Loading from '../component/Loading';
+import AboutUs from './CenterContent/AboutUs';
 
 var {height,width} =  Dimensions.get('window');
 
@@ -79,6 +80,15 @@ class Center extends Component {
             navigator.push({
               component: Address,
               name: 'Address'
+            });
+          });
+          break;
+        //关于我们
+        case 5:
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+              component: AboutUs,
+              name: 'AboutUs'
             });
           });
           break;
@@ -218,6 +228,11 @@ class Center extends Component {
                         title='收货地址'
                         icon={require('../imgs/center/pp_center_shdz.png')}
                         onPress={()=>this.itemActionIndex(4)}/>
+                     <View style={[styles.top_line,styles.center_line]}></View>
+                     <CenterItem
+                        title='关于我们'
+                        icon={require('../imgs/center/aboutus.png')}
+                        onPress={()=>this.itemActionIndex(5)}/>
                      <View style={[styles.top_line,styles.center_line]}></View>
                      <View style={styles.top_line}></View>
 

@@ -12,12 +12,15 @@ import {
   TouchableOpacity,
   ListView,
   InteractionManager,
+  AsyncStorage
 } from 'react-native';
 import { NaviGoBack } from '../utils/CommonUtils';
 import { connect } from 'react-redux';
 import {performOrderDispatchAction} from '../actions/OrderDispatchAction';
+import { performGetAddressAction } from '../actions/GetAddressAction';
 var {height, width} = Dimensions.get('window');
 import OrderResult from './OrderResult';
+import Payment from './Payment';
 import CommonHeader from '../component/CommonHeader';
 
 class OrderConfirm extends React.Component {
@@ -27,6 +30,37 @@ class OrderConfirm extends React.Component {
     this.buttonBackAction=this.buttonBackAction.bind(this);
     this.payItemAction=this.payItemAction.bind(this);
   }
+
+  //返回
+  buttonBackAction(){
+      const {navigator} = this.props;
+      return NaviGoBack(navigator);
+  }
+  
+  componentDidMount(){
+    const {dispatch} = this.props;
+    InteractionManager.runAfterInteractions(() => {
+      AsyncStorage.getItem('token').then(
+        (result)=>{
+          if (result===null){
+            InteractionManager.runAfterInteractions(() => {
+                navigator.push({
+                  component: Login,
+                  name: 'Login'
+                });
+              });
+          }else {
+            console.log(result);
+            dispatch(performGetAddressAction(result));
+          }
+        }
+      )
+      .catch((error)=>{
+        console.log(' error:' + error.message);
+      })
+    })
+  }
+
     //返回
   buttonBackAction(){
       const {navigator} = this.props;
@@ -38,22 +72,33 @@ class OrderConfirm extends React.Component {
       const {navigator} = this.props;
       InteractionManager.runAfterInteractions(() => {
         navigator.push({
-          component: OrderResult,
-          name: 'OrderResult'
+          component: Payment,
+          name: 'Payment'
            });
         });
   }
 
   render() {
-    const {route,dispatch,orderdispatch} = this.props;
-    console.log(orderdispatch);
+    const {route,dispatch,orderdispatch,address} = this.props;
+
+    var defaultAddress;
     if(!route.orderProduct){
       return (<Loading  />)
     }
+    console.log(address);
+    if(address.data){
+      address.data.data.map((data,index)=>{
+        if(data.is_default==1){
+          defaultAddress = data;
+          console.log(address);
+        }
+      })
+    }
+
     let datalength=route.orderProduct.length;
     return (
       <View style={{backgroundColor:'#f5f5f5',flex:1}}>
-          <CommonHeader title='订单详情' />
+          <CommonHeader title='订单详情' onPress={()=>{this.buttonBackAction()}} />
           <View style={{paddingHorizontal:12,height:48,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
             <Text style={{fontSize:16,color:'#000',marginRight:10}}>配送方式</Text>
             <TouchableOpacity onPress={()=>{dispatch(performOrderDispatchAction(1))}}><View style={[styles.dispatch,(orderdispatch.data==1) ? styles.dispatch_active : styles.dispatch_default]}><Text style={styles.dispatch_text}>商家配送</Text></View></TouchableOpacity>
@@ -63,16 +108,15 @@ class OrderConfirm extends React.Component {
             <View style={{width:30,height:44,flexDirection:'column',justifyContent:'flex-end',alignItems:'center'}}>
               <Image source={require('../imgs/addresssmall.png')} style={{width:18,height:18}}></Image>
             </View>
+            {defaultAddress?
             <View style={{width:316,height:44,flexDirection:'column',justifyContent:'space-between',alignItems:'flex-start'}}>
               <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:30}}>刘大黑</Text>
-                <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:6}}>13260585618</Text>
-                <View style={{width:62,height:16,backgroundColor:'#FF240D'}}><Text style={{fontSize:12,color:'#fff',textAlign:'center'}}>默认地址</Text></View>
-              </View>
-              <View>
-                <Text style={{color:'#000',fontSize:14,fontWeight:'bold',width:316}} numberOfLines={1} >收货地址：湖南省长沙市岳麓区桐梓坡西路185号</Text>
-              </View>
+                <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:30}}>{defaultAddress.consignee}</Text>
+                <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:6}}>{defaultAddress.phone}</Text>
+                <View style={{width:62,height:16,backgroundColor:'#FF240D'}}><Text style={{fontSize:12,color:'#fff',textAlign:'center'}}>默认地址</Text></View></View>
+              <View><Text style={{color:'#000',fontSize:14,fontWeight:'bold',width:316}} numberOfLines={1} >收货地址：{defaultAddress.provice_name}{defaultAddress.city_name}{defaultAddress.county_name}{defaultAddress.address}</Text></View>
             </View>
+            :<View><Text>没有默认地址</Text></View>}
             <View style={{width:30,height:44,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
               <Image source={require('../imgs/pp_right.png')} style={{width:7,height:12}}></Image>
             </View>
@@ -105,7 +149,7 @@ class OrderConfirm extends React.Component {
           </View>
           <View style={{flex:1,justifyContent:'flex-end'}}>
                 {/* <TouchableOpacity onPress={()=>{this.payItemAction()}}> */}
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.payItemAction()}}>
                       <View style={{width:width,height:50,flexDirection:'row',justifyContent:'center',alignItems:'center',borderTopWidth:1,borderTopColor:'#e3e5e9'}}>
                              <View style={{flex:1,height:50,flexDirection:'row',justifyContent:'flex-end',alignItems:'center'}}>
                                <Text style={{color:'#FF240D',fontSize:17,marginRight:16}}>支付金额：¥{route.totalPrice}</Text>
@@ -143,9 +187,10 @@ let styles = StyleSheet.create({
 });
 // export default OrderConfirm
 function mapStateToProps(state){
-  const {orderdispatch} = state;
+  const {orderdispatch,address} = state;
   return {
-    orderdispatch
+    orderdispatch,
+    address
   }
 }
 
