@@ -1,4 +1,4 @@
-'use strict';
+  'use strict';
 import React, {Component} from 'react';
 import{
     View,
@@ -21,6 +21,7 @@ import { performDefaultAddressAction } from '../../actions/DefaultAddressAction'
 import { performGetAreaAction } from '../../actions/GetAreaAction';
 import { performAddAddressAction } from '../../actions/AddAddressAction';
 var {height, width} = Dimensions.get('window');
+import { NaviGoBack } from '../../utils/CommonUtils';
 
 class Address extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class Address extends Component {
     this._default = this._default.bind(this);
   }
 
-  componentDidMount(){
+  componentWillReceiveProps(){
     const {navigator,dispatch} = this.props;
     this._checkLogin();
     dispatch(performGetAreaAction(1,1));
@@ -74,7 +75,7 @@ class Address extends Component {
 
   //保存收货地址
   _save(){
-    const {getArea,dispatch} = this.props;
+    const {getArea,dispatch,navigator} = this.props;
     InteractionManager.runAfterInteractions(() => {
       AsyncStorage.getItem('token').then(
         (result)=>{
@@ -86,7 +87,8 @@ class Address extends Component {
                 });
               });
           }else {
-            dispatch(performAddAddressAction(result,this.state.name,this.state.phone,'',getArea.selectProvice,getArea.selectCity,getArea.selectArea,this.state.address,this.state.default));
+            dispatch(performAddAddressAction(result,this.state.name,this.state.phone,'',getArea.selectProvince.area_id,getArea.selectCity.area_id,getArea.selectArea.area_id,this.state.address,this.state.default));
+            navigator.pop();
           }
         }
       )

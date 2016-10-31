@@ -9,7 +9,6 @@ import { toastShort } from '../utils/ToastUtil';
 
 export function performGetAreaAction(level,area_id){
      return dispatch => {
-       console.log(level+':'+area_id);
        if(level==4){
          dispatch(receiveAreaAction(area_id));
        }else{

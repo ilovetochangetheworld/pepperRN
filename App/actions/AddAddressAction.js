@@ -35,7 +35,13 @@ export function performAddAddressAction(token,consignee,phone,zip_code,provice,c
           }else{
               toastShort(responseData.msg);
           }
-      //  dispatch(receiveGoodsDetailResult(responseData));
+       dispatch(receiveAddressRefresh());
     })
      }
+}
+
+function receiveAddressRefresh(){
+  return {
+      type: types.RECEIVE_ADDRESS_REFRESH_ACTION
+  }
 }

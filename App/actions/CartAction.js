@@ -28,8 +28,12 @@ export function performCartAction(token){
                }
                dispatch(receiveCartResult(responseData));
            }else{
-              if(Number(responseData.code)==400){ 
-                dispatch(receiveNullCartResult());
+              if(Number(responseData.code)==400){
+                if(responseData.msg==='登录超时，请重新登录'){
+                  dispatch(tokenRefresh());
+                }else{
+                  dispatch(receiveNullCartResult());
+                }
               }else{
                 toastShort(responseData.msg);
               }
@@ -50,4 +54,10 @@ function receiveNullCartResult(){
         return {
             type: types.RECEIVE_NLL_CART_ACTION,
         }
+}
+
+function tokenRefresh(){
+    return {
+      type: types.TOKEN_REFRESH,
+    }
 }

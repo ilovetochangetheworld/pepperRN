@@ -38,7 +38,6 @@ function receiveClassifyResult(result){
 }
 
 function receiveMenuActive(active,index){
-        console.log(active);
         return {
             type: types.RECEIVE_ACTIVE_ACTION,
             active: active,

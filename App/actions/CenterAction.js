@@ -17,30 +17,14 @@ export function performCenterAction(token){
         fetch(HOST+'MemberInfo/getUserInfo?token='+token)
         .then((response) => response.json())
         .then((responseData)=>{
-          console.log(responseData);
            if(responseData.status){
                //获取数据成功
                result.status=true;
                result.userInfo = responseData;
                dispatch(receiveUserResult(result));
-              //  微信钱包数据请求
-              //  fetch(HOST+'MemberInfo/wallet?token='+token)
-              //  .then((response) => response.json())
-              //  .then((responseData)=>{
-              //      if(responseData.status){
-              //          //获取数据成功
-              //          console.log(responseData);
-              //          result.wallet = responseData;
-              //          dispatch(receiveUserResult(result));
-              //      }else{
-              //          toastShort(responseData.msg);
-              //          dispatch(receiveUserResult(result));
-              //      }
-              //    })
            }else{
                toastShort(responseData.msg);
-               result.status=false;
-               dispatch(tokenRefresh(result));
+               dispatch(tokenRefresh());
            }
 
         });
@@ -56,9 +40,8 @@ function receiveUserResult(result){
 
 }
 
-function tokenRefresh(result){
-        return {
-          type: types.TOKEN_REFRESH,
-          data: result,
-        }
+function tokenRefresh(){
+    return {
+      type: types.TOKEN_REFRESH,
+    }
 }

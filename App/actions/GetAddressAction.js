@@ -16,7 +16,11 @@ export function performGetAddressAction(token){
       if(Number(responseData.code)==200){
         dispatch(receiveAddressResult(responseData));
       }else{
-        toastShort(responseData.msg);
+        if(Number(responseData.code)==400){
+          dispatch(receiveNullCartResult());
+        }else{
+          toastShort(responseData.msg);
+        }
       }
     })
   }
@@ -30,5 +34,10 @@ function receiveAddressResult(result){
             addressList: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
             .cloneWithRows(result.data),
         }
+}
 
+function receiveNullCartResult(){
+        return {
+            type: types.RECEIVE_NLL_ADDRESS_ACTION,
+        }
 }

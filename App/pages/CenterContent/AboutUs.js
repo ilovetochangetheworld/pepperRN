@@ -37,7 +37,7 @@ class AboutUs extends React.Component {
               copyright ©2016
             </Text>
             <Text>
-              长沙微动信息技术有限公司. All Rights Reserved
+              湖南新品农网络科技有限公司. All Rights Reserved
             </Text>
           </View>
 

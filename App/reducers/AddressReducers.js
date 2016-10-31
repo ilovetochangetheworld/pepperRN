@@ -13,8 +13,18 @@ export default function address(state = initialState, action){
         case types.RECEIVE_ADDRESS_ACTION:
                   return Object.assign({}, state, {
                        data: action.data,
-                       addressList: action.addressList
-                  })
+                       addressList: action.addressList,
+                       refresh: false
+                  });
+        case types.RECEIVE_NLL_ADDRESS_ACTION:
+                  return Object.assign({}, state, {
+                       data:{status:false},
+                       refresh: false
+                  });
+        case types.RECEIVE_ADDRESS_REFRESH_ACTION:
+                  return Object.assign({}, state, {
+                       refresh: true
+                  });
         default:
             return state;
     }

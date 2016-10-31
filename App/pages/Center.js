@@ -19,6 +19,8 @@ import { connect } from 'react-redux';
 import { performCenterAction } from '../actions/CenterAction';
 import Loading from '../component/Loading';
 import AboutUs from './CenterContent/AboutUs';
+import User from './CenterContent/User';
+import { toastShort } from '../utils/ToastUtil';
 
 var {height,width} =  Dimensions.get('window');
 
@@ -30,19 +32,25 @@ class Center extends Component {
     }
 
     componentDidMount() {
-      this._checkLogin();
+      InteractionManager.runAfterInteractions(() => {
+       this._checkLogin();
+      });
+
     }
 
-    componentWillUpdate() {
-      const {center,navigator} = this.props;
-      console.log(center);
-      if(center.tokenRefresh){
-        InteractionManager.runAfterInteractions(() => {
+    componentWillReceiveProps(nextProps){
+      const {token,navigator} = nextProps;
+      if(token.tokenRefresh){
+        AsyncStorage.clear().then(
+          ()=>{
             navigator.push({
               component: Login,
               name: 'Login'
             });
-          });
+          }
+        ).catch((error)=>{
+          toastShort(' error:' + error.message);
+        })
       }
     }
 
@@ -60,13 +68,12 @@ class Center extends Component {
                   });
                 });
             }else {
-              console.log(result);
               dispatch(performCenterAction(result));
             }
           }
         )
         .catch((error)=>{
-          console.log(' error:' + error.message);
+          toastShort(' error:' + error.message);
         })
       })
     }
@@ -74,6 +81,15 @@ class Center extends Component {
     itemActionIndex(type){
       const {navigator} = this.props;
       switch (type) {
+        //个人信息
+        case 2:
+        InteractionManager.runAfterInteractions(() => {
+            navigator.push({
+              component: User,
+              name: 'User'
+            });
+          });
+          break;
         //收货地址
         case 4:
         InteractionManager.runAfterInteractions(() => {
@@ -117,14 +133,8 @@ class Center extends Component {
           });
         }
       ).catch((error)=>{
-        console.log(' error:' + error.message);
+        toastShort(' error:' + error.message);
       })
-    }
-
-    //token过期
-    tokenRefresh(){
-      console.log('没有获取到token');
-
     }
 
     renderLoadingView(){
@@ -137,7 +147,6 @@ class Center extends Component {
 
     render() {
          const {center,navigator} = this.props;
-         console.log(center);
          if (center.data) {
            if(center.tokenRefresh){
              navigator.push({
@@ -155,8 +164,8 @@ class Center extends Component {
                             <TouchableOpacity onPress={() => {this.loginButtonActiom()}} >
                                 <Image  style={{width:70,height:70,marginLeft:10,marginTop:15,borderRadius:35}} source={{uri:center.data.userInfo.data.header_img}}/>
                             </TouchableOpacity>
-                            <View style={{flexDirection:'column',justifyContent:'center',marginLeft:10}}>
-                               <Text style={{fontSize:16,marginBottom:10}}>{center.data.userInfo.data.nick_name}</Text>
+                            <View style={{flexDirection:'column',justifyContent:'center',marginLeft:10,}}>
+                               <Text style={{fontSize:16,marginBottom:10}}>{center.data.userInfo.data.real_name}</Text>
                                <View style={{flexDirection:'row'}}>
                                   <View style={{width:60,height:18,backgroundColor:'#000',opacity:0.6,borderRadius:9}}>
                                     <Text style={{color:'#fff',fontSize:12,textAlign:'center',}}>
@@ -217,7 +226,7 @@ class Center extends Component {
                      <CenterItem
                         title='个人信息'
                         icon={require('../imgs/center/pp_center_grxx.png')}
-                        onPress={()=>this.itemActionIndex(1)}/>
+                        onPress={()=>this.itemActionIndex(2)}/>
                      <View style={[styles.top_line,styles.center_line]}></View>
                      <CenterItem
                         title='账户安全'
@@ -267,9 +276,10 @@ const styles=StyleSheet.create({
 });
 // export default Center;
 function mapStateToProps(state) {
-  const { center } = state;
+  const { center,token } = state;
   return {
-    center
+    center,
+    token
   }
 }
 

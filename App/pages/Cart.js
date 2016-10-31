@@ -33,15 +33,29 @@ class Cart extends Component {
         this.payItemAction=this.payItemAction.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
          this.checkAuth();
        }
 
-    componentWillReceiveProps() {
-        const {cart} = this.props;
-        if(cart.cartloading){
-          console.log('refresh');
+    componentWillReceiveProps(nextProps) {
+        const {cart,token} = nextProps;
+        if(cart.refresh){
+          console.log(cart.refresh);
           this.checkAuth();
+        }
+        if(token.tokenRefresh){
+          console.log(token.tokenRefresh);
+          const {navigator} = this.props;
+          AsyncStorage.clear().then(
+            ()=>{
+              navigator.push({
+                component: Login,
+                name: 'Login'
+              });
+            }
+          ).catch((error)=>{
+            console.log(' error:' + error.message);
+          })
         }
       // if(cart.data){
       //   this.checkAuth();
@@ -52,7 +66,6 @@ class Cart extends Component {
       const {dispatch,navigator} = this.props;
       AsyncStorage.getItem('token').then(
         (result)=>{
-          console.log(result);
           if (result===null){
             toastShort('没有获取到token');
             InteractionManager.runAfterInteractions(() => {
@@ -135,7 +148,7 @@ class Cart extends Component {
         if (!cart.data) {
            return this.renderLoadingView();
          }
-        if (!cart.data.status){
+        if (cart.data.nullCart){
           return this.nullCart();
         }
         if(cart.data.status){
@@ -155,10 +168,9 @@ class Cart extends Component {
                   </View>
                   <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
                   {cart.data.data.map((data,index) => {
-                      console.log(data);
                       //默认店铺选中
                       return (
-                        <View key={index} style={{backgroundColor:'#fff'}}>
+                        <View key={index} style={{backgroundColor:'#fff',marginBottom:18,}}>
                           <TouchableOpacity onPress={()=>{dispatch(performShopSelectAction(cart,index))}}>
                             <View style={{width:width,height:45,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingHorizontal:12,borderBottomWidth:1,borderBottomColor:'#E6E6E6'}}>
                               <View style={{height:16,width:16,marginRight:10}}>
@@ -181,8 +193,8 @@ class Cart extends Component {
                               <View style={{width:width-38,height:126,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
                                 <Image style={{height:96,width:96,resizeMode:'cover'}} source={{uri:product.list_img}}/>
                                 <View style={{width:216,height:96,flexDirection:'column',justifyContent:'space-between',alignItems:'flex-start'}}>
-                                  <Text style={{width:216,lineHeight:20,fontSize:14}}>{product.prod_name}</Text>
-                                  <View style={{width:216,height:96,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                                  <Text style={{width:216,lineHeight:20,fontSize:14}} numberOfLines={2}>{product.prod_name}</Text>
+                                  <View style={{width:216,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                                     <View>
                                       <Text style={{fontSize:16,color:'#FF240D'}}>¥ {product.maket_price}</Text>
                                       <Text style={{fontSize:12,color:'#797979',textDecorationLine:'line-through'}}>¥ {product.mall_price}</Text>
@@ -246,9 +258,10 @@ class Cart extends Component {
 // export default Cart;
 
 function mapStateToProps(state) {
-  const { cart } = state;
+  const { cart,token } = state;
   return {
-    cart
+    cart,
+    token
   }
 }
 export default connect(mapStateToProps)(Cart);

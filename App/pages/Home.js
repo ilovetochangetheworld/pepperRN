@@ -126,7 +126,7 @@ class Home extends Component {
 
  //加载更多
   loadMore(){
-    console.log('loadMore');
+    // console.log('loadMore');
   }
 
   _renderDotIndicator() {
@@ -211,7 +211,8 @@ class Home extends Component {
                     <TouchableOpacity onPress={()=>{this.topItemAction(0)}}><Text>更多商品 >></Text></TouchableOpacity>
                   </View>
                   <View style={{flexDirection:'row', justifyContent:'center', paddingHorizontal:10}}>
-                      <TouchableOpacity onPress={()=>{this.goodsDetailAction(74)}}>
+                      <TouchableOpacity onPress={()=>{this.goodsDetailAction(129)}}>
+                      {/* 74 */}
                         <Image source={HOT_IMGS[0]} style={{width:item_width-10,height:114,backgroundColor:'white',resizeMode:'cover'}} />
                       </TouchableOpacity>
                         <Image source={require('../imgs/home/ic_home_shu.png')} style={{height:114}}/>

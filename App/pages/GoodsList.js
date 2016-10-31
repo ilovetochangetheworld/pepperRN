@@ -73,9 +73,9 @@ class GoodsList extends Component {
 
   _renderGoods(data){
     return (
-      <TouchableOpacity style={{width:176,height:281,justifyContent:'center',alignItems:'center',marginBottom:8,backgroundColor:'#fff'}}
+      <TouchableOpacity style={{width:176,height:281,justifyContent:'center',alignItems:'center',marginBottom:8,backgroundColor:'#fff',}}
                         onPress={()=>{this.goodsDetailAction(data.prod_id)}} >
-          <Image source={{uri:data.list_img}} style={{width:175,height:175,resizeMode:'cover'}}/>
+          <Image source={{uri:data.list_img}} style={{width:175,height:175,resizeMode:'stretch'}}/>
           <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
                 <Text style={{width:152, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>{data.prod_name}</Text>
           </View>

@@ -14,15 +14,15 @@ import{
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { performGetAddressAction } from '../../actions/GetAddressAction';
-import CommonHeader from '../../component/CommonHeader';
-import Loading from '../../component/Loading.js';
-import { performDefaultAddressAction } from '../../actions/DefaultAddressAction';
-import AddAddress from './AddAddress';
+import { performGetAddressAction } from '../actions/GetAddressAction';
+import CommonHeader from '../component/CommonHeader';
+import Loading from '../component/Loading.js';
+import { performDefaultAddressAction } from '../actions/DefaultAddressAction';
+import AddAddress from './CenterContent/AddAddress';
+import { performChooseAddressAction } from '../actions/ChooseAddressAction';
 var {height, width} = Dimensions.get('window');
-import { NaviGoBack } from '../../utils/CommonUtils';
 
-class Address extends Component {
+class ChooseAddress extends Component {
   constructor(props) {
     super(props);
     this._renderRow = this._renderRow.bind(this);
@@ -33,42 +33,11 @@ class Address extends Component {
     this._checkLogin();
   }
 
-  //返回
-  buttonBackAction(){
-      const {navigator} = this.props;
-      return NaviGoBack(navigator);
-  }
-
   componentWillReceiveProps(nextProps){
-    const {dispatch} = this.props;
-    if(nextProps.address!==this.props.address){
-      if(nextProps.address.refresh){
-        InteractionManager.runAfterInteractions(() => {
-          AsyncStorage.getItem('token').then(
-            (result)=>{
-              if (result===null){
-                InteractionManager.runAfterInteractions(() => {
-                    navigator.push({
-                      component: Login,
-                      name: 'Login'
-                    });
-                  });
-              }else {
-                dispatch(performGetAddressAction(result));
-              }
-            }
-          )
-          .catch((error)=>{
-            console.log(' error:' + error.message);
-          })
-        })
-      }
+    console.log('componentWillReceiveProps');
+    if(nextProps.chooseAddress !== this.props.chooseAddress){
+      console.log(nextProps.chooseAddress);
     }
-  }
-    //返回
-  buttonBackAction(){
-      const {navigator} = this.props;
-      return NaviGoBack(navigator);
   }
 
   //登录检测
@@ -85,6 +54,7 @@ class Address extends Component {
                 });
               });
           }else {
+            console.log(result);
             dispatch(performGetAddressAction(result));
           }
         }
@@ -120,46 +90,52 @@ class Address extends Component {
     })
   }
 
+  _choose(data){
+    const {dispatch,navigator} = this.props;
+    dispatch(performChooseAddressAction(data));
+    navigator.pop();
+  }
+
   _renderRow(data,sectionID,rowID){
     return(
-    <View style={{flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
+    <TouchableOpacity onPress={()=>{this._choose(data)}}  style={{flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
       <View style={{width:width-24,height:76,flexDirection:'column',justifyContent:'space-around',alignItems:'flex-start',borderBottomWidth:1,borderBottomColor:'#e3e5e9'}}>
         <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
           <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:30,marginLeft:20}}>{data.consignee}</Text>
-          <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:6}}>13260585618</Text>
+          <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:6}}>{data.phone}</Text>
         </View>
         <View style={{flexDirection:'row'}}>
-          <Image source={require('../../imgs/addresssmall.png')} style={{width:14,height:17,resizeMode:'cover',marginRight:6}}></Image>
+          <Image source={require('../imgs/addresssmall.png')} style={{width:14,height:17,resizeMode:'cover',marginRight:6}}></Image>
           <Text style={{color:'#000',fontSize:14}} numberOfLines={1} >收货地址：{data.provice_name}{data.city_name}{data.county_name}{data.address}</Text>
         </View>
       </View>
       <View style={{width:width-24,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
         <TouchableOpacity style={{flexDirection:'row'}} onPress={() => {this._editAddress(1,rowID)}}>
-          {(data.is_default==1) ? <Image source={require('../../imgs/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('../../imgs/checkbox.png')} style={{height:16,width:16}}/>}
+          {(data.is_default==1) ? <Image source={require('../imgs/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('../imgs/checkbox.png')} style={{height:16,width:16}}/>}
           <Text style={{fontSize:14,color:'#FF240D',marginLeft:8}}>默认地址</Text>
         </TouchableOpacity>
         <View style={{flexDirection:'row'}}>
           <TouchableOpacity style={{flexDirection:'row',alignItems:'center',marginRight:20}} >
-            <Image source={require('../../imgs/edit.png')} style={{width:17,height:20,marginRight:6}}></Image>
+            <Image source={require('../imgs/edit.png')} style={{width:17,height:20,marginRight:6}}></Image>
             <Text style={{fontSize:14,color:'#797979'}}>编辑</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={() => {this._editAddress(2,rowID)}}>
-            <Image source={require('../../imgs/del.png')} style={{width:17,height:20,marginRight:6}}></Image>
+            <Image source={require('../imgs/del.png')} style={{width:17,height:20,marginRight:6}}></Image>
             <Text style={{fontSize:14,color:'#797979'}}>删除</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
     )
   }
 
   _nullAddress() {
     return (
       <View style={{flex:1,backgroundColor:'#F2F2F2'}}>
-        <CommonHeader title='收货地址管理' onPress={()=>{this.buttonBackAction()}} />
+        <CommonHeader title='收货地址管理' />
         <View style={{flexDirection:'row',justifyContent:'center',marginTop:100}}>
           <TouchableOpacity onPress={()=>{this._addAddress()}}>
-            <Image style={{width:185,height:108,resizeMode:'stretch'}} source={require('../../imgs/nullAddress.png')}></Image>
+            <Image style={{width:185,height:108,resizeMode:'stretch'}} source={require('../imgs/nullAddress.png')}></Image>
           </TouchableOpacity>
         </View>
       </View>
@@ -177,7 +153,7 @@ class Address extends Component {
     }
 
   render(){
-    const {address} = this.props;
+    const {address,chooseAddress} = this.props;
     if(!address.data){
       return (
         <Loading visible={true} />
@@ -186,7 +162,7 @@ class Address extends Component {
     if(address.data.status){
       return (
         <View style={{backgroundColor:'#f5f5f5',flex:1}}>
-            <CommonHeader title='收货地址管理' onPress={()=>{this.buttonBackAction()}} />
+            <CommonHeader title='选择收货地址' />
             <ListView
              dataSource={address.addressList}
              renderRow={this._renderRow}
@@ -194,7 +170,7 @@ class Address extends Component {
              enableEmptySections={true}
             />
             <TouchableOpacity onPress={()=>{this._addAddress()}} style={{width:width,alignSelf:'flex-end',height:50,borderTopWidth:1,borderTopColor:'#e3e5e9',flexDirection:'row',justifyContent:'center',alignItems:'center',backgroundColor:'#fff'}}>
-              <Image source={require('../../imgs/addAddress.png')} style={{height:24,width:24,resizeMode:'cover',marginRight:8}}></Image>
+              <Image source={require('../imgs/addAddress.png')} style={{height:24,width:24,resizeMode:'cover',marginRight:8}}></Image>
               <Text style={{color:'#FF240D',fontSize:18}}>新增收货地址</Text>
             </TouchableOpacity>
         </View>
@@ -209,10 +185,11 @@ class Address extends Component {
 // export default Address;
 
 function mapStateToProps(state) {
-  const { address } = state;
+  const { address,chooseAddress } = state;
   return {
-    address
+    address,
+    chooseAddress
   }
 }
 
-export default connect(mapStateToProps)(Address);
+export default connect(mapStateToProps)(ChooseAddress);

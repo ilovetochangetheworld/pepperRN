@@ -25,9 +25,11 @@ export function performLoginAction(username,password){
         .then((response) => response.json())
         .then((responseData)=>{
           // console.log(responseData);
-           dispatch(receiveLoginResult(responseData));
+
            if(responseData.status){
                //登录成功..
+               dispatch(receiveLoginResult(responseData));
+                dispatch(receiveLoginResult());
                toastShort('登录成功...');
            }else{
                toastShort(responseData.msg);
@@ -45,11 +47,15 @@ function performLogin() {
         }
 }
 
+function isLogin() {
+        return {
+            type: types.IS_LOGIN,
+        }
+}
+
 function receiveLoginResult(result){
         return {
             type: types.RECEIVE_LOGIN_ACTION,
             data: result,
-
         }
-
 }

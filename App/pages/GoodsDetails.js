@@ -12,7 +12,8 @@ import {
   TouchableOpacity,
   ScrollView,
   WebView,
-  AsyncStorage
+  AsyncStorage,
+  Modal
 } from 'react-native';
 
 import { NaviGoBack } from '../utils/CommonUtils';
@@ -22,6 +23,7 @@ import { performGoodsDetailAction } from '../actions/GoodsDetailAction';
 import { performAppMainAction } from '../actions/AppMainAction';
 import { performAddCartAction } from '../actions/AddCartAction';
 import Loading from '../component/Loading';
+import HtmlRender from 'react-native-html-render';
 
 import Home from './Home';
 
@@ -30,7 +32,11 @@ var {height, width} = Dimensions.get('window');
 class GoodsDetails extends React.Component {
   constructor(props) {
     super(props);
+    this.state={
+      visible:true
+    }
     this.buttonBackAction=this.buttonBackAction.bind(this);
+    this._setModalVisible = this._setModalVisible.bind(this);
   }
 
   componentDidMount() {
@@ -88,7 +94,6 @@ class GoodsDetails extends React.Component {
     AsyncStorage.getItem('token').then(
       (token)=>{
         if (token===null){
-          console.log('没有获取到token');
           InteractionManager.runAfterInteractions(() => {
               navigator.push({
                 component: Login,
@@ -96,7 +101,6 @@ class GoodsDetails extends React.Component {
               });
             });
         }else {
-          console.log('token:'+token);
           if(0<goodsList.length<2){
             dispatch(performAddCartAction(token,goodsList));
           }
@@ -115,14 +119,77 @@ class GoodsDetails extends React.Component {
     }
   }
 
+  _onLinkPress(url) {
+        if (/^\/user\/\w*/.test(url)) {
+            let authorName = url.replace(/^\/user\//, '')
+            routes.toUser(this, {
+                userName: authorName
+            })
+        }
+
+        if (/^https?:\/\/.*/.test(url)) {
+            window.link(url)
+        }
+    }
+
+
+    _renderNode(node, index, parent, type) {
+        var name = node.name
+        if (node.type == 'block' && type == 'block') {
+            if (name == 'img') {
+                var uri = node.attribs.src;
+                if (/^\/\/dn-cnode\.qbox\.me\/.*/.test(uri)) {
+                    uri = 'https:' + uri
+                }
+                Image.getSize(uri, (imgWidth, imgHeight) => {
+                  let height=imgHeight/(imgWidth/width);
+                  console.log(width+':'+imgHeight/(imgWidth/width));
+                  return (
+                      <View
+                          key={index}>
+                          {/* <Image source={{uri:uri}}
+                                 style={{width:width,height:imgHeight/(imgWidth/width),resizeMode:'stretch'}}>
+                          </Image> */}
+                          <Text>1111</Text>
+                      </View>
+                  )
+                });
+            }
+        }
+    }
+  //modal
+
+  _setModalVisible(visible) {
+    this.setState({visible: visible});
+  }
+
   render() {
     const {goodsDetail} = this.props;
     console.log(goodsDetail);
     if (!goodsDetail.data) {
        return this.renderLoadingView();
      }
+    var htmlContent = goodsDetail.data.data.product.description.replace(/<img/g,"<img style='width:100%,height:100%,display:block'").replace(/<p/g,"<p style='margin:0,padding:0,backgroundColor:red'");
     return (
        <View style={{backgroundColor:'#f5f5f5',flex:1}}>
+        <Modal
+         visible={this.state.visible}
+         transparent
+         onRequestClose={() => {this._setModalVisible(false)}}
+        >
+         {this.state.visible ?
+           <View
+             key={'spinner'}
+             style={{flex: 1,backgroundColor: 'transparent',position: 'absolute',top: 0,bottom: 0,left: 0,right: 0}}
+           >
+             <View  style={{position: 'absolute',top: 0,bottom: 0,left: 0,right: 0,justifyContent: 'center',alignItems: 'center'}}>
+               <View style={{alignItems: 'center',justifyContent: 'center',width: width-20,height: Dimensions.get('window').width / 2.5,borderRadius: 10,backgroundColor: 'rgba(0, 0, 0, 0.25)'}}>
+                 <Text onPress={() => {this._setModalVisible(false)}} style={styles.loadingText}>数据加载中...</Text>
+               </View>
+             </View>
+           </View> :
+           <View key={'spinner'} />}
+        </Modal>
         <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
           <View style={{height:48,backgroundColor:'#fff',flexDirection:'row',borderBottomWidth:1,borderColor:'#cbcbcb'}}>
                 <TouchableOpacity onPress={() => {this.buttonBackAction()}}
@@ -154,7 +221,7 @@ class GoodsDetails extends React.Component {
               {goodsDetail.data.data.img_list.map((img,index) => {
                   return (
                     <View key={index}>
-                      <Image source={{uri: img.pic_path}} style={{width:width,height:184,resizeMode:'cover'}}/>
+                      <Image source={{uri: img.pic_path}} style={{width:width,height:184,resizeMode:'stretch'}}/>
                     </View>
                   )
                 })}
@@ -175,10 +242,13 @@ class GoodsDetails extends React.Component {
               <Text style={{fontSize:14,color:'#797979',textDecorationLine:'line-through',marginLeft:14}}>¥ {goodsDetail.data.data.product.origin_price}</Text>
             </View>
           </View>
+          {goodsDetail.data.data.goods_list.length!==1&&
           <View style={{width:width,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingHorizontal:12,backgroundColor:'#fff',marginBottom:10}}>
             <Text style={{fontSize:15,}}>选择 颜色分类</Text>
             <View><Image style={{width:7,height:12}} source={require('../imgs/pp_right.png')}></Image></View>
           </View>
+
+          }
           <View style={{width:width,height:110,padding:12,flexDirection:'column',justifyContent:'space-between',backgroundColor:'#fff',marginBottom:10}}>
             <View style={{height:41,flexDirection:'row',justifyContent:'flex-start'}}>
               <Image source={{uri: goodsDetail.data.data.shop.logo}} style={{height:41,width:41,resizeMode:'stretch',marginRight:17}} />
@@ -215,11 +285,15 @@ class GoodsDetails extends React.Component {
             </View>
           </View>
           <View>
-            <WebView
-            source={{html:goodsDetail.data.data.product.description.replace("<img","<img style='width:100%'")}}
-            style={{backgroundColor:'#fff',width:width,flex:1,height:400}}
-            scalesPageToFit={true}>
-            </WebView>
+            {/* <WebView
+            source={{html:htmlContent}}
+            style={{backgroundColor:'#fff',flex:1,height:500}}>
+            </WebView> */}
+            <HtmlRender
+               value={htmlContent}
+               stylesheet={{flex:1}}
+              //  renderNode={this._renderNode}
+               />
           </View>
         </ScrollView>
         <View style={{width:width,height:50,flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
@@ -228,7 +302,10 @@ class GoodsDetails extends React.Component {
             <Text style={{fontSize:10,color:'#797979'}}>分享</Text>
           </View>
           <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+          {goodsDetail.data.data.isFav?
+            <Image source={require('../imgs/star_active.png')} style={{width:20,height:20}} ></Image>:
             <Image source={require('../imgs/star.png')} style={{width:20,height:20}} ></Image>
+          }
             <Text style={{fontSize:10,color:'#797979'}}>收藏</Text>
           </View>
           <TouchableOpacity style={{flex:1,height:50,backgroundColor:'#FF9402',flexDirection:'row',justifyContent:'center',alignItems:'center'}} onPress={()=>{this.addCart(goodsDetail.data.data)}}><Text style={{color:'#fff',fontSize:15}}>加入购物车</Text></TouchableOpacity>

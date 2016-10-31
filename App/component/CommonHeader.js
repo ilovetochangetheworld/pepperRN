@@ -13,7 +13,7 @@ import{
 import { NaviGoBack } from '../utils/CommonUtils';
 
 const CommonHeader = ({title,onPress}) => (
-  <View style={{height:48,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#e6e6e6'}}>
+  <View style={{height:48,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#e6e6e6',marginBottom:10}}>
       <TouchableOpacity onPress={onPress} style={{width:48,height:48,justifyContent:'center',alignItems:'center'}}>
         <Image source={require('../imgs/pp_return.png')} style={{width:11,height:18}}></Image>
       </TouchableOpacity>

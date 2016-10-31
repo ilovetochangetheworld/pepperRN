@@ -49,6 +49,7 @@ class Login extends Component {
       BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
     }
   }
+
   componentWillUnmount() {
     if (Platform.OS === 'android') {
       BackAndroid.removeEventListener('hardwareBackPress', this.onBackAndroid);
@@ -69,17 +70,12 @@ class Login extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const {dispatch,navigator} = this.props;
+    console.log(nextProps.login);
     if(nextProps.login.data.status){
       dispatch(performCenterAction(nextProps.login.data.token));
       AsyncStorage.setItem('token',nextProps.login.data.token).then(
         ()=>{
-          console.log('token保存成功');
-          // this.props._checkLogin();
           navigator.pop();
-          // navigator.replace({
-          //     component: Center,
-          //     name: 'Center'
-          //  });
         }
       ).catch((error)=>{
         console.log(' error:' + error.message);
