@@ -125,6 +125,7 @@ class Center extends Component {
     //退出登录
     _loginOut(){
       const {navigator} = this.props;
+      console.log('退出登录');
       AsyncStorage.clear().then(
         ()=>{
           navigator.push({
@@ -246,7 +247,7 @@ class Center extends Component {
                      <View style={styles.top_line}></View>
 
                      <TouchableOpacity style={{height:45,width:width,backgroundColor:'white',marginTop:10,justifyContent:'center',}}>
-                         <Text style={{alignSelf:'center',color:'#FF240D',fontSize:17}} onPress={this._loginOut}>退出登录</Text>
+                         <Text style={{alignSelf:'center',color:'#FF240D',fontSize:17}} onPress={()=>{this._loginOut()}}>退出登录</Text>
                      </TouchableOpacity>
                    </ScrollView>
                   </View>

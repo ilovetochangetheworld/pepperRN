@@ -29,7 +29,7 @@ export function performLoginAction(username,password){
            if(responseData.status){
                //登录成功..
                dispatch(receiveLoginResult(responseData));
-                dispatch(receiveLoginResult());
+               dispatch(changeCartAction());
                toastShort('登录成功...');
            }else{
                toastShort(responseData.msg);
@@ -58,4 +58,11 @@ function receiveLoginResult(result){
             type: types.RECEIVE_LOGIN_ACTION,
             data: result,
         }
+}
+
+function changeCartAction(){
+        return {
+            type: types.CHANGE_CART_ACTION,
+        }
+
 }

@@ -57,9 +57,6 @@ class Cart extends Component {
             console.log(' error:' + error.message);
           })
         }
-      // if(cart.data){
-      //   this.checkAuth();
-      // }
     }
 
     checkAuth(){
