@@ -19,6 +19,7 @@ import { performCenterAction } from '../../actions/CenterAction';
 import { performUserInformAction } from '../../actions/UserInformAction'
 var {height, width} = Dimensions.get('window');
 import { NaviGoBack } from '../../utils/CommonUtils';
+import { toastShort } from '../../utils/ToastUtil';
 
 class User extends Component {
   constructor(props) {
@@ -62,7 +63,7 @@ class User extends Component {
           });
         }
       ).catch((error)=>{
-        console.log(' error:' + error.message);
+        toastShort(' error:' + error.message);
       })
     }
     if(nextProps.userinform!==this.props.userinform){
@@ -83,7 +84,7 @@ class User extends Component {
           }
         )
         .catch((error)=>{
-          console.log(' error:' + error.message);
+          toastShort(' error:' + error.message);
         })
       }
     }
@@ -114,7 +115,7 @@ class User extends Component {
         }
       )
       .catch((error)=>{
-        console.log(' error:' + error.message);
+        toastShort(' error:' + error.message);
       })
     })
   }
@@ -137,7 +138,7 @@ class User extends Component {
         }
       )
       .catch((error)=>{
-        console.log(' error:' + error.message);
+        toastShort(' error:' + error.message);
       })
     })
   }
@@ -152,7 +153,7 @@ class User extends Component {
     if(center.data){
       return (
         <View style={{backgroundColor:'#f5f5f5',flex:1}}>
-          {/* <View style={{flex:1}}>
+          <View style={{flex:1}}>
             <CommonHeader title='个人信息' onPress={()=>{this.buttonBackAction()}} />
             <View style={{height:72,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingHorizontal:12,backgroundColor:'#fff',borderBottomWidth:1,borderBottomColor:'#e3e5e9'}}>
               <Text style={styles.text}>头像</Text>
@@ -208,7 +209,7 @@ class User extends Component {
                 placeholderTextColor={'#A3A3A3'}
               />
             </View>
-          </View> */}
+          </View>
           <View style={{height:50,alignSelf:'flex-end',paddingVertical:4,paddingHorizontal:12,backgroundColor:'#fff'}}>
             <TouchableOpacity onPress={()=>{this._save(this.state.real_name,this.state.sex,this.state.mobile,this.state.email)}} style={{flex:1,width:width-24,backgroundColor:'#FF240D',flexDirection:'row',justifyContent:'center',alignItems:'center',borderRadius:5}}>
               <Text style={{fontSize:18,color:'#fff',}}>确认修改</Text>
