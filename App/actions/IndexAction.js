@@ -11,7 +11,7 @@ import {ListView} from 'react-native';
 export function performIndexGoodsAction(page){
      return dispatch => {
        //广告请求
-       fetch(HOST+'product/searchProducts?is_recommend=1'+'&pageIndex='+ page +'&+pageSize=' + 6)
+       fetch(HOST+'product/searchProducts?is_recommend=1'+'&pageIndex='+ page +'&+pageSize=' + 40)
        .then((response) => response.json())
        .then((responseData)=>{
           if(responseData.status){

@@ -40,11 +40,9 @@ class Cart extends Component {
     componentWillReceiveProps(nextProps) {
         const {cart,token} = nextProps;
         if(cart.refresh){
-          console.log(cart.refresh);
           this.checkAuth();
         }
         if(token.tokenRefresh){
-          console.log(token.tokenRefresh);
           const {navigator} = this.props;
           AsyncStorage.clear().then(
             ()=>{
@@ -123,7 +121,7 @@ class Cart extends Component {
         <View style={{flex:1,backgroundColor:'#F2F2F2'}}>
           <View style={{height:48,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#e6e6e6'}}>
               <View style={{width:48,height:48,justifyContent:'center',alignItems:'center'}}>
-                <Image source={require('../imgs/pp_return.png')} style={{width:11,height:18}}></Image>
+                <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image>
               </View>
               <View style={{flex:1,alignItems:'center',justifyContent:'center',height:48,width:50}}>
                  <Text style={{fontSize:18,color:'#000',alignSelf:'center'}}>购物车</Text>
@@ -133,7 +131,7 @@ class Cart extends Component {
           </View>
           <View style={{flexDirection:'row',justifyContent:'center',marginTop:100}}>
             <TouchableOpacity onPress={()=>{this.toIndex()}}>
-              <Image style={{width:131,height:155,resizeMode:'cover'}} source={require('../imgs/nullCart.png')}></Image>
+              <Image style={{width:131,height:155,resizeMode:'cover'}} source={require('./img/nullCart.png')}></Image>
             </TouchableOpacity>
           </View>
         </View>
@@ -155,7 +153,7 @@ class Cart extends Component {
                <View style={{flex:1,backgroundColor:'#f5f5f5',height:48}}>
                   <View style={{height:48,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#e6e6e6'}}>
                       <View style={{width:48,height:48,justifyContent:'center',alignItems:'center'}}>
-                        <Image source={require('../imgs/pp_return.png')} style={{width:11,height:18}}></Image>
+                        <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image>
                       </View>
                       <View style={{flex:1,alignItems:'center',justifyContent:'center',height:48,width:50}}>
                          <Text style={{fontSize:18,color:'#000',alignSelf:'center'}}>购物车</Text>
@@ -171,9 +169,9 @@ class Cart extends Component {
                           <TouchableOpacity onPress={()=>{dispatch(performShopSelectAction(cart,index))}}>
                             <View style={{width:width,height:45,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingHorizontal:12,borderBottomWidth:1,borderBottomColor:'#E6E6E6'}}>
                               <View style={{height:16,width:16,marginRight:10}}>
-                                {data.select ? <Image source={require('../imgs/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('../imgs/checkbox.png')} style={{height:16,width:16}}/>}
+                                {data.select ? <Image source={require('./img/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('./img/checkbox.png')} style={{height:16,width:16}}/>}
                               </View>
-                              <Image source={require('../imgs/shop.png')} style={{height:16,width:16,marginRight:10}}/>
+                              <Image source={require('./img/shop.png')} style={{height:16,width:16,marginRight:10}}/>
                               <Text>{data.shop_name}</Text>
                             </View>
                           </TouchableOpacity>
@@ -185,7 +183,7 @@ class Cart extends Component {
                             return(
                             <TouchableOpacity onPress={()=>{dispatch(performProductSelectAction(cart,index,proIndex))}} key={proIndex} style={{height:126,width:width,flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:1,borderBottomColor:'#f6f6f6'}}>
                               <View style={{height:126,width:38,justifyContent:'center',alignItems:'center'}}>
-                                {product.select ? <Image source={require('../imgs/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('../imgs/checkbox.png')} style={{height:16,width:16}}/>}
+                                {product.select ? <Image source={require('./img/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('./img/checkbox.png')} style={{height:16,width:16}}/>}
                               </View>
                               <View style={{width:width-38,height:126,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
                                 <Image style={{height:96,width:96,resizeMode:'cover'}} source={{uri:product.list_img}}/>
@@ -210,7 +208,7 @@ class Cart extends Component {
                                           <Text style={{fontSize:14}}>+</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={()=>{dispatch(performDelCartAction(cart,index,proIndex))}}>
-                                          <Image style={{height:20,width:20,marginLeft:14}} source={require('../imgs/del.png')}></Image>
+                                          <Image style={{height:20,width:20,marginLeft:14}} source={require('./img/del.png')}></Image>
                                         </TouchableOpacity>
                                       </View>
                                     </View>
@@ -221,7 +219,7 @@ class Cart extends Component {
                           )
                           })}
                           <View style={{height:45,flexDirection:'row',justifyContent:'flex-end',alignItems:'center',paddingHorizontal:12}}>
-                            <Text style={{fontSize:12}}>总共<Text style={{color:'#000'}}>{cart.data.totalNum}</Text>个商品，合计金额<Text style={{color:'#000'}}>{cart.data.totalPrice}</Text>元</Text>
+                            <Text style={{fontSize:12}}>总共 <Text style={{color:'#000'}}>{cart.data.totalNum}</Text> 个商品，合计金额 <Text style={{color:'#000'}}>{cart.data.totalPrice}</Text> 元</Text>
                           </View>
                         </View>
                       )
@@ -240,7 +238,7 @@ class Cart extends Component {
                               </View>
                         </View> */}
                         <TouchableOpacity onPress={()=>{this.payItemAction()}}>
-                                <Image source={require('../imgs/cart/ic_cart_btn_bg.png')}
+                                <Image source={require('./img/cart/ic_cart_btn_bg.png')}
                                        style={{width:width,height:40,justifyContent:'center',alignItems:'center'}}>
                                        <Text style={{color:'white',fontSize:14,backgroundColor:'#00000000'}}>结算</Text>
                                 </Image>

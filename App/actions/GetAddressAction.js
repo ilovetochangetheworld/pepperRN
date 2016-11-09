@@ -27,7 +27,6 @@ export function performGetAddressAction(token){
 }
 
 function receiveAddressResult(result){
-        console.log(result);
         return {
             type: types.RECEIVE_ADDRESS_ACTION,
             data: result,

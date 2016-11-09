@@ -63,10 +63,11 @@ class Classify extends Component {
       return (
            <View style={{backgroundColor:'#fff',flex:1}}>
               <View style={{width:width,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingHorizontal:15,borderBottomWidth:1,borderColor:'#cbcbcb'}}>
-                  <Image source={require('../imgs/pp_return.png')} style={{width:11,height:18}}></Image>
+                  <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image>
                   <TextInput style={{width:313,height:31,backgroundColor:'#F2F2F2',paddingVertical:0,paddingHorizontal:6}}
                               placeholder={'搜索商品 分类'}
-                              keyboardType='web-search'></TextInput>
+                              keyboardType='web-search'
+                              underlineColorAndroid={'transparent'}></TextInput>
               </View>
               <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'flex-start'}}>
                 <View style={{width:100}}>

@@ -30,6 +30,7 @@ export function performLoginAction(username,password){
                //登录成功..
                dispatch(receiveLoginResult(responseData));
                dispatch(changeCartAction());
+               dispatch(isLogin());
                toastShort('登录成功...');
            }else{
                toastShort(responseData.msg);

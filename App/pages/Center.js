@@ -21,6 +21,7 @@ import Loading from '../component/Loading';
 import AboutUs from './CenterContent/AboutUs';
 import User from './CenterContent/User';
 import { toastShort } from '../utils/ToastUtil';
+import Order from './CenterContent/Order'
 
 var {height,width} =  Dimensions.get('window');
 
@@ -79,36 +80,47 @@ class Center extends Component {
     }
 
     itemActionIndex(type){
-      const {navigator} = this.props;
-      switch (type) {
-        //个人信息
-        case 2:
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-              component: User,
-              name: 'User'
+      InteractionManager.runAfterInteractions(() => {
+        const {navigator} = this.props;
+        switch (type) {
+          //全部订单
+          case 0:
+          InteractionManager.runAfterInteractions(() => {
+              navigator.push({
+                component: Order,
+                name: 'Order'
+              });
             });
-          });
-          break;
-        //收货地址
-        case 4:
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-              component: Address,
-              name: 'Address'
+            break;
+          //个人信息
+          case 2:
+          InteractionManager.runAfterInteractions(() => {
+              navigator.push({
+                component: User,
+                name: 'User'
+              });
             });
-          });
-          break;
-        //关于我们
-        case 5:
-        InteractionManager.runAfterInteractions(() => {
-            navigator.push({
-              component: AboutUs,
-              name: 'AboutUs'
+            break;
+          //收货地址
+          case 4:
+          InteractionManager.runAfterInteractions(() => {
+              navigator.push({
+                component: Address,
+                name: 'Address'
+              });
             });
-          });
-          break;
-      }
+            break;
+          //关于我们
+          case 5:
+          InteractionManager.runAfterInteractions(() => {
+              navigator.push({
+                component: AboutUs,
+                name: 'AboutUs'
+              });
+            });
+            break;
+        }
+      })
     }
 
     //登录
@@ -160,7 +172,7 @@ class Center extends Component {
                   <View style={{flex:1,backgroundColor:'#f5f5f5'}}>
                    <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
                      <View>
-                       <Image style={{width:width,height:100,resizeMode:'stretch',justifyContent:'center'}} source={require('../imgs/center/pp_center_bg.png')}>
+                       <Image style={{width:width,height:100,resizeMode:'stretch',justifyContent:'center'}} source={require('./img/center/pp_center_bg.png')}>
                          <View style={{flexDirection:'row',height:100,}}>
                             <TouchableOpacity onPress={() => {this.loginButtonActiom()}} >
                                 <Image  style={{width:70,height:70,marginLeft:10,marginTop:15,borderRadius:35}} source={{uri:center.data.userInfo.data.header_img}}/>
@@ -185,63 +197,63 @@ class Center extends Component {
                        </View>
                        <View style={{height:48,width:112,flexDirection:'row',justifyContent:'flex-end',alignItems:'center'}}>
                          <Text style={{fontSize:16,color:'#797979',marginRight:10}}>充值</Text>
-                         <View><Image style={{width:7,height:12}} source={require('../imgs/pp_right.png')}></Image></View>
+                         <View><Image style={{width:7,height:12}} source={require('img/pp_right.png')}></Image></View>
                        </View>
                      </TouchableOpacity> */}
-                     <TouchableOpacity style={{height:48,flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:'#fff',paddingHorizontal:16,marginBottom:1}}>
+                     <TouchableOpacity onPress={()=>this.itemActionIndex(0)} style={{height:48,flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:'#fff',paddingHorizontal:16,marginBottom:1}}>
                        <View>
                          <View style={{flexDirection:'row'}}><Text style={{fontSize:16}}>我的订单</Text></View>
                        </View>
                        <View style={{height:48,width:112,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                          <Text style={{fontSize:16,color:'#797979'}}>查看全部订单</Text>
-                         <View><Image style={{width:7,height:12}} source={require('../imgs/pp_right.png')}></Image></View>
+                         <View><Image style={{width:7,height:12}} source={require('./img/pp_right.png')}></Image></View>
                        </View>
                      </TouchableOpacity>
                      <View style={{flex:1,height:60,flexDirection:'row',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
                        <TouchableOpacity style={{flex:1,height:60,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                         <Image style={{width:21,height:17,resizeMode:'stretch',marginBottom:6}} source={require('../imgs/center/pp_center_dzf.png')}></Image>
+                         <Image style={{width:21,height:17,resizeMode:'stretch',marginBottom:6}} source={require('./img/center/pp_center_dzf.png')}></Image>
                          <Text stlye={{fontSize:12}}>待支付</Text>
                        </TouchableOpacity>
                        <TouchableOpacity style={{flex:1,height:60,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                         <Image style={{width:20,height:20,resizeMode:'stretch',marginBottom:6}} source={require('../imgs/center/pp_center_dfh.png')}></Image>
+                         <Image style={{width:20,height:20,resizeMode:'stretch',marginBottom:6}} source={require('./img/center/pp_center_dfh.png')}></Image>
                          <Text stlye={{fontSize:12}}>待发货</Text>
                        </TouchableOpacity>
                        <TouchableOpacity style={{flex:1,height:60,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                         <Image style={{width:19,height:19,resizeMode:'stretch',marginBottom:6}} source={require('../imgs/center/pp_center_dsh.png')}></Image>
+                         <Image style={{width:19,height:19,resizeMode:'stretch',marginBottom:6}} source={require('./img/center/pp_center_dsh.png')}></Image>
                          <Text stlye={{fontSize:12}}>待收货</Text>
                        </TouchableOpacity>
                        <TouchableOpacity style={{flex:1,height:60,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                         <Image style={{width:20,height:18,resizeMode:'stretch',marginBottom:6}} source={require('../imgs/center/pp_center_dpj.png')}></Image>
+                         <Image style={{width:20,height:18,resizeMode:'stretch',marginBottom:6}} source={require('./img/center/pp_center_dpj.png')}></Image>
                          <Text stlye={{fontSize:12}}>待评价</Text>
                        </TouchableOpacity>
                        <TouchableOpacity style={{flex:1,height:60,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
-                         <Image style={{width:15,height:21,resizeMode:'stretch',marginBottom:6}} source={require('../imgs/center/pp_center_thh.png')}></Image>
+                         <Image style={{width:15,height:21,resizeMode:'stretch',marginBottom:6}} source={require('./img/center/pp_center_thh.png')}></Image>
                          <Text stlye={{fontSize:12}}>退换货</Text>
                        </TouchableOpacity>
                      </View>
                      <CenterItem
                         title='合伙人'
-                        icon={require('../imgs/center/pp_center_hhr.png')}
+                        icon={require('./img/center/pp_center_hhr.png')}
                         onPress={()=>this.itemActionIndex(1)}/>
                      <View style={[{backgroundColor:'#f2f2f2',height:10},styles.center_line]}></View>
                      <CenterItem
                         title='个人信息'
-                        icon={require('../imgs/center/pp_center_grxx.png')}
+                        icon={require('./img/center/pp_center_grxx.png')}
                         onPress={()=>this.itemActionIndex(2)}/>
                      <View style={[styles.top_line,styles.center_line]}></View>
                      <CenterItem
                         title='账户安全'
-                        icon={require('../imgs/center/pp_center_zhaq.png')}
+                        icon={require('./img/center/pp_center_zhaq.png')}
                         onPress={()=>this.itemActionIndex(1)}/>
                      <View style={[styles.top_line,styles.center_line]}></View>
                      <CenterItem
                         title='收货地址'
-                        icon={require('../imgs/center/pp_center_shdz.png')}
+                        icon={require('./img/center/pp_center_shdz.png')}
                         onPress={()=>this.itemActionIndex(4)}/>
                      <View style={[styles.top_line,styles.center_line]}></View>
                      <CenterItem
                         title='关于我们'
-                        icon={require('../imgs/center/aboutus.png')}
+                        icon={require('./img/center/aboutus.png')}
                         onPress={()=>this.itemActionIndex(5)}/>
                      <View style={[styles.top_line,styles.center_line]}></View>
                      <View style={styles.top_line}></View>

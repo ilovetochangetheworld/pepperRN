@@ -16,7 +16,7 @@ const CenterItem = ({ onPress, title, icon}) => (
      <View style={{flexDirection:'row'}}>
         <View style={styles.item_view}><Image style={styles.item_img} source={icon}/></View>
         <View style={styles.item_view}><Text style={{marginLeft:8}}>{title}</Text></View>
-        <View style={styles.item_arrow_view}><Image source={require('../imgs/ic_center_right_arrow.png')} style={{width:7,height:12}}/></View>
+        <View style={styles.item_arrow_view}><Image source={require('../pages/img/ic_center_right_arrow.png')} style={{width:7,height:12}}/></View>
      </View>
   </TouchableOpacity>
 );

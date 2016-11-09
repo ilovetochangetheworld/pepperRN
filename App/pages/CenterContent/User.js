@@ -177,15 +177,15 @@ class User extends Component {
               <Text style={[styles.text,{marginRight:18}]}>性别</Text>
               {
                 Number(this.state.sex)===1?
-                <Image source={require('../../imgs/center/check_active.png')} style={{height:16,width:16,resizeMode:'stretch',marginRight:8}} />:
-                <TouchableOpacity onPress={() => this.setState({sex:1})}><Image source={require('../../imgs/center/check.png')} style={{height:16,width:16,resizeMode:'stretch',marginRight:8}} /></TouchableOpacity>
+                <Image source={require('../img/center/check_active.png')} style={{height:16,width:16,resizeMode:'stretch',marginRight:8}} />:
+                <TouchableOpacity onPress={() => this.setState({sex:1})}><Image source={require('../img/center/check.png')} style={{height:16,width:16,resizeMode:'stretch',marginRight:8}} /></TouchableOpacity>
               }
               <Text style={[styles.inputText,{marginRight:94}]}>男</Text>
               <Text style={[styles.text,{marginRight:18}]}>性别</Text>
               {
                 Number(this.state.sex)===2?
-                <Image source={require('../../imgs/center/check_active.png')} style={{height:16,width:16,resizeMode:'stretch',marginRight:8}} />:
-                <TouchableOpacity onPress={() => this.setState({sex:2})}><Image source={require('../../imgs/center/check.png')} style={{height:16,width:16,resizeMode:'stretch',marginRight:8}} /></TouchableOpacity>
+                <Image source={require('../img/center/check_active.png')} style={{height:16,width:16,resizeMode:'stretch',marginRight:8}} />:
+                <TouchableOpacity onPress={() => this.setState({sex:2})}><Image source={require('../img/center/check.png')} style={{height:16,width:16,resizeMode:'stretch',marginRight:8}} /></TouchableOpacity>
               }
               <Text style={[styles.inputText]}>女</Text>
             </View>

@@ -18,6 +18,10 @@ import { connect } from 'react-redux';
 var {height, width} = Dimensions.get('window');
 import CommonHeader from '../component/CommonHeader';
 import CenterItem from '../component/CenterItem';
+import {HOST} from  '../common/request';
+import { toastShort } from '../utils/ToastUtil';
+import * as Wechat from 'react-native-wechat';
+
 
 class Payment extends React.Component {
 
@@ -30,22 +34,77 @@ class Payment extends React.Component {
       return NaviGoBack(navigator);
   }
 
+  componentDidMount(){
+
+  }
+
+  _wxPay(){
+    fetch(HOST+'wx/appPay?order_id='+this.props.order_id)
+    .then((response) => response.json())
+    .then((responseData)=>{
+    Wechat.isWXAppInstalled()
+      .then((isInstalled) => {
+        console.log(responseData);
+        if (isInstalled) {
+          Wechat.pay({
+            partnerId: responseData.partnerid, // 商家向财付通申请的商家id
+            prepayId: responseData.prepayid, // 预支付订单
+            nonceStr: responseData.noncestr, // 随机串，防重发
+            timeStamp: String(responseData.timestamp), // 时间戳，防重发
+            package: responseData.package, // 商家根据财付通文档填写的数据和签名
+            sign: responseData.sign // 商家根据微信开放平台文档对数据做的签名
+          }
+          
+        )
+          .catch((error) => {
+            console.log(error);
+            toastShort(error.message);
+          });
+        } else {
+          toastShort('没有安装微信软件，请您安装微信之后再试');
+        }
+      })
+    })
+  }
+
+  shareToSession() {
+    Wechat.isWXAppInstalled()
+      .then((isInstalled) => {
+        if (isInstalled) {
+          Wechat.shareToSession({
+            title: 'React Native开发的嘎嘎商城哦~赶紧来体验吧...',
+            description: '分享自:嘎嘎商城-微信订阅号:codedev123',
+            thumbImage: 'http://lookcode-wordpress.stor.sinaapp.com/uploads/2016/01/react_native1.jpg',
+            type: 'news',
+            webpageUrl: 'http://wwww.lcode.org'
+          })
+            .catch((error) => {
+              Toast.show(error.message);
+            });
+        } else {
+          Toast.show('没有安装微信软件，请您安装微信之后再试');
+        }
+      });
+  }
+
   render() {
     return (
       <View style={{backgroundColor:'#f5f5f5',flex:1}}>
           <CommonHeader title='支付方式' onPress={()=>{this.buttonBackAction()}} />
-          <CenterItem
+          {/* <CenterItem
              title='支付宝'
-             icon={require('../imgs/alipay.png')}/>
-          <View style={{backgroundColor:'#f2f2f2',height:10,marginLeft:8,marginRight:8,}}></View>
+             icon={require('img/alipay.png')}
+             onPress={()=>{this.shareToSession()}}/>
+          <View style={{backgroundColor:'#f2f2f2',height:10,marginLeft:8,marginRight:8,}}></View> */}
           <CenterItem
              title='微信'
-             icon={require('../imgs/wxpay.png')}/>
+             icon={require('img/wxpay.png')}
+             onPress={()=>{this._wxPay()}}/>
           <View style={{backgroundColor:'#f2f2f2',height:10,marginLeft:8,marginRight:8,}}></View>
-          <CenterItem
+          {/* <CenterItem
              title='钱包支付'
-             icon={require('../imgs/balance.png')}/>
-          <View style={{backgroundColor:'#f2f2f2',height:10,marginLeft:8,marginRight:8,}}></View>
+             icon={require('img/balance.png')}/>
+          <View style={{backgroundColor:'#f2f2f2',height:10,marginLeft:8,marginRight:8,}}></View> */}
        </View>
     );
   }

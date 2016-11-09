@@ -1,5 +1,5 @@
 /**
- * 加入购物车Action
+ * 删除购物车商品Action
  */
 'use strict';
 
@@ -9,7 +9,6 @@ import { toastShort } from '../utils/ToastUtil';
 
 export function performDelCartAction(cart,index,proIndex){
      return dispatch => {
-       console.log(cart);
        fetch(HOST+'MemberMall/delCartItem?token='+cart.data.token, {
          method: 'POST',
          headers: {

@@ -187,7 +187,7 @@ class Address extends Component {
               <View style={{width:width-24,height:50,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                 <Text style={{fontSize:15,color:'#38383B'}}>设为默认地址</Text>
                 <TouchableOpacity onPress={()=>{this._default()}}>
-                  {this.state.default ? <Image source={require('../../imgs/checkbox_active.png')} style={{height:16,width:16}}/>:<Image source={require('../../imgs/checkbox.png')} style={{height:16,width:16}}/>}
+                  {this.state.default ? <Image source={require('../img/checkbox_active.png')} style={{height:16,width:16}}/>:<Image source={require('../img/checkbox.png')} style={{height:16,width:16}}/>}
                 </TouchableOpacity>
               </View>
               <View style={{width:width,height:20,backgroundColor:'#f5f5f5'}}></View>

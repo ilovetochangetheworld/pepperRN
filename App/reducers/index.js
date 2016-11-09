@@ -15,6 +15,9 @@ import getArea from './GetAreaReducers';
 import chooseAddress from './ChooseAddressReducers';
 import token from './TokenReducers';
 import userinform from './UserInformReducers';
+import orderconfirm from './OrderConfirmReducers';
+import orderList from './OrderListReducers';
+import orderCancel from './OrderCancelReducers';
 const rootReducer = combineReducers({
       login,
       classify,
@@ -30,6 +33,9 @@ const rootReducer = combineReducers({
       getArea,
       chooseAddress,
       token,
-      userinform
+      userinform,
+      orderconfirm,
+      orderList,
+      orderCancel
 })
 export default rootReducer;

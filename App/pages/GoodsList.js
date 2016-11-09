@@ -17,7 +17,7 @@ import{
 import { NaviGoBack } from '../utils/CommonUtils';
 import goodsDetail from './GoodsDetails';
 import {HOST} from  '../common/request';
-import ViewPager from 'react-native-viewpager';
+import Swiper from 'react-native-swiper';
 var {height,width} = Dimensions.get('window');
 
 import { connect } from 'react-redux';
@@ -84,7 +84,7 @@ class GoodsList extends Component {
                   <Text style={{fontSize:15,color:'#FF240D'}}>¥{data.mall_price}</Text>
                   <Text style={{textDecorationLine:'line-through',fontSize:12,color:'#797979',paddingVertical:10}}>¥{data.maket_price}</Text>
                 </View>
-                <Image source={require('../imgs/pp_cart.png')} style={{width:27,height:27}}/>
+                <Image source={require('./img/pp_cart.png')} style={{width:27,height:27}}/>
           </View>
       </TouchableOpacity>
     )
@@ -102,7 +102,6 @@ class GoodsList extends Component {
 
   render() {
         const {goodsList} = this.props;
-        console.log(goodsList);
         if (!goodsList.data) {
            return this.renderLoadingView();
          }
@@ -112,21 +111,23 @@ class GoodsList extends Component {
                   <View>
                     <View style={{width:width,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingHorizontal:15,borderBottomWidth:1,borderColor:'#cbcbcb'}}>
                         <TouchableOpacity onPress={() => {this.buttonBackAction()}}>
-                          <Image source={require('../imgs/pp_return.png')} style={{width:11,height:18}}></Image>
+                          <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image>
                         </TouchableOpacity>
                         <TextInput style={{width:313,height:31,backgroundColor:'#F2F2F2',paddingVertical:0,paddingHorizontal:6}}
                                     placeholder={'搜索商品 分类'}
-                                    keyboardType='web-search'></TextInput>
+                                    keyboardType='web-search'
+                                    underlineColorAndroid={'transparent'}></TextInput>
                     </View>
                   </View>
-                  <View  style={{height:184}}>
-                    <ViewPager
-                      dataSource={goodsList.imgDataSource}
-                      renderPage={this._renderPage}
-                      isLoop={true}
-                      autoPlay={true}
-                      />
-                  </View>
+                  <Swiper height={184} showsButtons={false} autoplay={true} autoplayTimeout={3} loop>
+                    {goodsList.data.imgDataSource.data.map((img,index)=>{
+                      return(
+                        <View key={index} style={{width:width,height:184}}>
+                          <Image source={{uri:img.ad_img}} style={{width:width,height:184,resizeMode:'stretch'}}/>
+                        </View>
+                      )
+                    })}
+                  </Swiper>
                   <View style={styles.filter}>
                     <View style={styles.filter_list}>
                       <Text>综合</Text>

@@ -144,7 +144,7 @@ class Login extends Component {
                                       style={styles.topbar_left_item}>
                        <Image
                           style={{width:13,height:20}}
-                          source={require('../../imgs/pp_return.png')}
+                          source={require('../img/pp_return.png')}
                        />
                     </TouchableOpacity> */}
                     <View style={styles.topbar_center_bg}>
@@ -190,7 +190,7 @@ class Login extends Component {
                             }}
                            />
                           <TouchableOpacity onPress={() => {this.buttonChangeState()}} style={{width:45,height:45,alignItems:'center',justifyContent:'center'}}>
-                                <Image source={require('../../imgs/logre/ic_pwd_off.png')}
+                                <Image source={require('../img/logre/ic_pwd_off.png')}
                                         style={{width:17,height:14,marginLeft:13}}/>
                           </TouchableOpacity>
                     </View>

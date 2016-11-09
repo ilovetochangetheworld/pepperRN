@@ -15,7 +15,6 @@ export default function goodsList(state = initialState, action){
         case types.RECEIVE_GOODSLIST_ACTION:
                   return Object.assign({}, state, {
                        data: action.data,
-                       imgDataSource: action.imgDataSource,
                        goodsListDataSource: action.goodsListDataSource
                   });
         default:

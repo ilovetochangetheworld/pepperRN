@@ -41,12 +41,11 @@ class AppMain extends Component {
           <TabNavigator>
 			  <TabNavigator.Item
 			  	title="首页"
-			    // selected={this.state.selectedTab === 'home'}
           selected={appMain.data === 'home'}
 			    selectedTitleStyle={styles.selectedTextStyle}
 			    titleStyle={styles.textStyle}
-			    renderIcon={() => <Image source={require("../imgs/pp_tab_home.png")} style={{height:22,width:24}}/>}
-			    renderSelectedIcon={() => <Image source={require("../imgs/pp_tab_home_press.png")} style={{height:22,width:24}}/>}
+			    renderIcon={() => <Image source={require("./img/pp_tab_home.png")} style={{height:22,width:24}}/>}
+			    renderSelectedIcon={() => <Image source={require('./tab-home-press.png')} style={{height:22,width:24}}/>}
 			    onPress={() => dispatch(performAppMainAction('home'))}>
 			    <Home {...this.props}/>
 			  </TabNavigator.Item>
@@ -55,8 +54,8 @@ class AppMain extends Component {
 			    selected={appMain.data === 'classify'}
 			    selectedTitleStyle={styles.selectedTextStyle}
 			    titleStyle={styles.textStyle}
-			    renderIcon={() => <Image source={require("../imgs/pp_tab_fl.png")} style={{height:22,width:18}}/>}
-			    renderSelectedIcon={() => <Image source={require("../imgs/pp_tab_fl_press.png")} style={{height:22,width:18}}/>}
+			    renderIcon={() => <Image source={require("./img/pp_tab_fl.png")} style={{height:22,width:18}}/>}
+			    renderSelectedIcon={() => <Image source={require("./img/pp_tab_fl_press.png")} style={{height:22,width:18}}/>}
 			    onPress={() => dispatch(performAppMainAction('classify'))}>
 			    <Classify {...this.props}/>
 			  </TabNavigator.Item>
@@ -65,8 +64,8 @@ class AppMain extends Component {
 			    selected={appMain.data === 'cart'}
 			    selectedTitleStyle={styles.selectedTextStyle}
 			    titleStyle={styles.textStyle}
-			    renderIcon={() => <Image source={require("../imgs/pp_tab_cart.png")} style={{height:22,width:25}}/>}
-			    renderSelectedIcon={() => <Image source={require("../imgs/pp_tab_cart_press.png")} style={{height:22,width:25}}/>}
+			    renderIcon={() => <Image source={require("./img/pp_tab_cart.png")} style={{height:22,width:25}}/>}
+			    renderSelectedIcon={() => <Image source={require("./img/pp_tab_cart_press.png")} style={{height:22,width:25}}/>}
 			    onPress={() => dispatch(performAppMainAction('cart'))}>
 			    <Cart {...this.props}/>
 			  </TabNavigator.Item>
@@ -75,8 +74,8 @@ class AppMain extends Component {
 			    selected={appMain.data === 'center'}
 			    selectedTitleStyle={styles.selectedTextStyle}
 			    titleStyle={styles.textStyle}
-			    renderIcon={() => <Image source={require("../imgs/pp_tab_sc.png")} style={{height:22,width:23}}/>}
-			    renderSelectedIcon={() => <Image source={require("../imgs/pp_tab_sc_press.png")} style={{height:22,width:23}}/>}
+			    renderIcon={() => <Image source={require("./img/pp_tab_sc.png")} style={{height:22,width:23}}/>}
+			    renderSelectedIcon={() => <Image source={require("./img/pp_tab_sc_press.png")} style={{height:22,width:23}}/>}
 			    onPress={() => dispatch(performAppMainAction('center'))}>
 			    <Center {...this.props}/>
 			  </TabNavigator.Item> */}
@@ -85,8 +84,8 @@ class AppMain extends Component {
 			    selected={appMain.data === 'center'}
 			    selectedTitleStyle={styles.selectedTextStyle}
 			    titleStyle={styles.textStyle}
-			    renderIcon={() => <Image source={require("../imgs/pp_tab_center.png")} style={{height:22,width:23}}/>}
-			    renderSelectedIcon={() => <Image source={require("../imgs/pp_tab_center_press.png")} style={{height:22,width:23}}/>}
+			    renderIcon={() => <Image source={require("./img/pp_tab_center.png")} style={{height:22,width:23}}/>}
+			    renderSelectedIcon={() => <Image source={require("./img/pp_tab_center_press.png")} style={{height:22,width:23}}/>}
 			    onPress={() => dispatch(performAppMainAction('center'))}>
 			    <Center {...this.props}/>
 			  </TabNavigator.Item>

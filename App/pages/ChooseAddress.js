@@ -105,22 +105,22 @@ class ChooseAddress extends Component {
           <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:6}}>{data.phone}</Text>
         </View>
         <View style={{flexDirection:'row'}}>
-          <Image source={require('../imgs/addresssmall.png')} style={{width:14,height:17,resizeMode:'cover',marginRight:6}}></Image>
+          <Image source={require('./img/addresssmall.png')} style={{width:14,height:17,resizeMode:'cover',marginRight:6}}></Image>
           <Text style={{color:'#000',fontSize:14}} numberOfLines={1} >收货地址：{data.provice_name}{data.city_name}{data.county_name}{data.address}</Text>
         </View>
       </View>
       <View style={{width:width-24,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
         <TouchableOpacity style={{flexDirection:'row'}} onPress={() => {this._editAddress(1,rowID)}}>
-          {(data.is_default==1) ? <Image source={require('../imgs/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('../imgs/checkbox.png')} style={{height:16,width:16}}/>}
+          {(data.is_default==1) ? <Image source={require('./img/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('./img/checkbox.png')} style={{height:16,width:16}}/>}
           <Text style={{fontSize:14,color:'#FF240D',marginLeft:8}}>默认地址</Text>
         </TouchableOpacity>
         <View style={{flexDirection:'row'}}>
           <TouchableOpacity style={{flexDirection:'row',alignItems:'center',marginRight:20}} >
-            <Image source={require('../imgs/edit.png')} style={{width:17,height:20,marginRight:6}}></Image>
+            <Image source={require('./img/edit.png')} style={{width:17,height:20,marginRight:6}}></Image>
             <Text style={{fontSize:14,color:'#797979'}}>编辑</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={() => {this._editAddress(2,rowID)}}>
-            <Image source={require('../imgs/del.png')} style={{width:17,height:20,marginRight:6}}></Image>
+            <Image source={require('./img/del.png')} style={{width:17,height:20,marginRight:6}}></Image>
             <Text style={{fontSize:14,color:'#797979'}}>删除</Text>
           </TouchableOpacity>
         </View>
@@ -135,7 +135,7 @@ class ChooseAddress extends Component {
         <CommonHeader title='收货地址管理' />
         <View style={{flexDirection:'row',justifyContent:'center',marginTop:100}}>
           <TouchableOpacity onPress={()=>{this._addAddress()}}>
-            <Image style={{width:185,height:108,resizeMode:'stretch'}} source={require('../imgs/nullAddress.png')}></Image>
+            <Image style={{width:185,height:108,resizeMode:'stretch'}} source={require('./img/nullAddress.png')}></Image>
           </TouchableOpacity>
         </View>
       </View>
@@ -170,7 +170,7 @@ class ChooseAddress extends Component {
              enableEmptySections={true}
             />
             <TouchableOpacity onPress={()=>{this._addAddress()}} style={{width:width,alignSelf:'flex-end',height:50,borderTopWidth:1,borderTopColor:'#e3e5e9',flexDirection:'row',justifyContent:'center',alignItems:'center',backgroundColor:'#fff'}}>
-              <Image source={require('../imgs/addAddress.png')} style={{height:24,width:24,resizeMode:'cover',marginRight:8}}></Image>
+              <Image source={require('./img/addAddress.png')} style={{height:24,width:24,resizeMode:'cover',marginRight:8}}></Image>
               <Text style={{color:'#FF240D',fontSize:18}}>新增收货地址</Text>
             </TouchableOpacity>
         </View>

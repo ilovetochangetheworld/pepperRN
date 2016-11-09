@@ -63,9 +63,6 @@ function receiveGoodsListResult(result){
             data: result,
             goodsListDataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
             .cloneWithRows(result.productDetail.data.rows),
-            imgDataSource: new ViewPager.DataSource({
-              pageHasChanged: (p1, p2) => p1 !== p2,
-            }).cloneWithPages(result.imgDataSource.data),
         }
 
 }

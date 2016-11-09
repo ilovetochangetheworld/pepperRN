@@ -14,7 +14,7 @@ import{
     InteractionManager,
     ListView,
 } from 'react-native';
-import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
+import Swiper from 'react-native-swiper';
 import ShortLine from '../component/ShortLine';
 import goodsList from './GoodsList';
 import goodsDetail from './GoodsDetails';
@@ -27,18 +27,19 @@ var {height, width} = Dimensions.get('window');
 var item_width = (width-1)/2;
 
 const MENU_IMGS = [
-  require('../imgs/home/menu_cxb.png'),
-  require('../imgs/home/menu_qbfl.png'),
-  require('../imgs/home/menu_xpss.png'),
-  require('../imgs/home/menu_sczx.png'),
+  require('./img/home/menu_cxb.png'),
+  require('./img/home/menu_qbfl.png'),
+  require('./img/home/menu_xpss.png'),
+  require('./img/home/menu_sczx.png'),
 ];
+
 const HOT_IMGS = [
-  require('../imgs/home/hot_01.png'),
-  require('../imgs/home/hot_02.png'),
-  require('../imgs/home/hot_03.png'),
-  require('../imgs/home/hot_04.png'),
-  require('../imgs/home/hot_05.png'),
-  require('../imgs/home/hot_06.png'),
+  require('./img/home/hot_01.png'),
+  require('./img/home/hot_02.png'),
+  require('./img/home/hot_03.png'),
+  require('./img/home/hot_04.png'),
+  require('./img/home/hot_05.png'),
+  require('./img/home/hot_06.png'),
 ];
 
 class Home extends Component {
@@ -106,9 +107,9 @@ class Home extends Component {
 
  //推荐商品列表
  renderGoods(data) {
-   return(<View style={{flex:1,justifyContent:'center',alignItems:'flex-start',width:175,marginBottom:10}}>
+   return(<View style={{flex:1,height:280,justifyContent:'center',alignItems:'center',width:(width-30)/2,marginBottom:10,}}>
        <TouchableOpacity onPress={()=>{this.goodsDetailAction(data.prod_id)}}>
-          <Image source={{uri:data.list_img}} style={{width:175,height:175}}/>
+          <Image source={{uri:data.list_img}} style={{width:(width-30)/2,height:175}}/>
           <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
                 <Text style={{width:152, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>{data.prod_name}</Text>
           </View>
@@ -117,11 +118,10 @@ class Home extends Component {
                   <Text style={{fontSize:15,color:'#FF240D'}}>¥{data.mall_price}</Text>
                   <Text style={{textDecorationLine:'line-through',fontSize:12,color:'#797979',paddingVertical:10}}>¥{data.maket_price}</Text>
                 </View>
-                <Image source={require('../imgs/pp_cart.png')} style={{width:27,height:27}}/>
+                <Image source={require('./img/pp_cart.png')} style={{width:27,height:27}}/>
           </View>
        </TouchableOpacity>
    </View>)
-
  }
 
  //加载更多
@@ -154,23 +154,20 @@ class Home extends Component {
                    <Text style={{fontSize:18,color:'white',alignSelf:'center'}}>我的</Text>
                 </View>
               </View>
-              <IndicatorViewPager
-                    style={{height:184}}
-                    indicator={this._renderDotIndicator()}>
-                    <View>
-                      {ads.imgDataSource.map((img,index)=>{
-                        return(
-                          <Image key={index} source={{uri:img.ad_img}} style={{width:width,height:184,resizeMode:'cover'}}/>
-                        )
-                      })}
-                    </View>
-             </IndicatorViewPager>
-
+             <Swiper height={184} showsButtons={false} autoplay={true} autoplayTimeout={3} loop>
+               {ads.imgDataSource.map((img,index)=>{
+                 return(
+                   <View key={index} style={{width:width,height:184}}>
+                     <Image source={{uri:img.ad_img}} style={{width:width,height:184,resizeMode:'stretch'}}/>
+                   </View>
+                 )
+               })}
+             </Swiper>
              <View>
                 <View style={{flexDirection:'row',backgroundColor:'white',height:85,alignItems:'center'}}>
                  <View style={styles.menu_list}>
                        <TouchableOpacity onPress={()=>{this.topItemAction(0)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
-                       <Image source={MENU_IMGS[0]} style={styles.menu_img}></Image>
+                       <Image source={MENU_IMGS[1]} style={styles.menu_img}></Image>
                        <View>
                              <Text>畅销榜</Text>
                        </View>
@@ -215,27 +212,27 @@ class Home extends Component {
                       {/* 74 */}
                         <Image source={HOT_IMGS[0]} style={{width:item_width-10,height:114,backgroundColor:'white',resizeMode:'cover'}} />
                       </TouchableOpacity>
-                        <Image source={require('../imgs/home/ic_home_shu.png')} style={{height:114}}/>
+                        <Image source={require('./img/home/ic_home_shu.png')} style={{height:114}}/>
                       <TouchableOpacity onPress={()=>{this.goodsDetailAction(81)}}>
                         <Image source={HOT_IMGS[1]} style={{width:item_width-10,height:114,backgroundColor:'white',resizeMode:'cover'}}/>
                       </TouchableOpacity>
                   </View>
                   <View style={{paddingHorizontal:10,}}>
-                    <Image source={require('../imgs/ic_short_bar.png')} style={{width:width-20}}  />
+                    <Image source={require('./img/ic_short_bar.png')} style={{width:width-20}}  />
                   </View>
                   <View style={{flexDirection:'row', justifyContent:'center', paddingHorizontal:10}}>
                       <TouchableOpacity onPress={()=>{this.goodsDetailAction(80)}}>
                         <Image source={HOT_IMGS[2]} style={{width:(item_width-10)/2-1,height:114,backgroundColor:'white',resizeMode:'cover'}} />
                       </TouchableOpacity>
-                        <Image source={require('../imgs/home/ic_home_shu.png')} style={{height:114}}/>
+                        <Image source={require('./img/home/ic_home_shu.png')} style={{height:114}}/>
                       <TouchableOpacity onPress={()=>{this.goodsDetailAction(62)}}>
                         <Image source={HOT_IMGS[3]} style={{width:(item_width-10)/2-1,height:114,backgroundColor:'white',resizeMode:'cover'}}/>
                       </TouchableOpacity>
-                        <Image source={require('../imgs/home/ic_home_shu.png')} style={{height:114}}/>
+                        <Image source={require('./img/home/ic_home_shu.png')} style={{height:114}}/>
                       <TouchableOpacity onPress={()=>{this.goodsDetailAction(57)}}>
                         <Image source={HOT_IMGS[4]} style={{width:(item_width-10)/2-1,height:114,backgroundColor:'white',resizeMode:'cover'}}/>
                       </TouchableOpacity>
-                        <Image source={require('../imgs/home/ic_home_shu.png')} style={{height:114}}/>
+                        <Image source={require('./img/home/ic_home_shu.png')} style={{height:114}}/>
                       <TouchableOpacity onPress={()=>{this.goodsDetailAction(64)}}>
                         <Image source={HOT_IMGS[5]} style={{width:(item_width-10)/2-1,height:114,backgroundColor:'white',resizeMode:'cover'}}/>
                       </TouchableOpacity>
@@ -250,49 +247,16 @@ class Home extends Component {
                   </View>
                   <Text>更多商品 >></Text>
                 </View>
-                  <ListView
-                    stlye={{flex:1}}
-                    initialListSize={12}
-                    dataSource={index.goodsListDataSource}
-                    renderRow={this.renderGoods}
-                    onEndReachedThreshold={10}
-                    enableEmptySections={true}
-                    contentContainerStyle={styles.list}
-                    onEndReached={this.loadMore()}
-                  />
-                 {/* <View style={{flexDirection:'row', alignItems:'flex-start', paddingHorizontal:10}}> */}
-
-                       {/* <View style={{flex:1,justifyContent:'center',alignItems:'flex-start'}}>
-                           <TouchableOpacity>
-                              <Image source={require('../imgs/home/goods.png')} style={{width:175,height:175}}/>
-                              <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
-                                    <Text style={{width:152, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>临安山核桃仁坚果零食特产特价坚果零食特产特价临安山核桃仁坚果零食特产特价坚果零食特产特价</Text>
-                              </View>
-                              <View style={{flex:1, flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start', backgroundColor:'#fff', paddingHorizontal:10}}>
-                                    <View>
-                                      <Text style={{fontSize:15,color:'#FF240D'}}>¥39</Text>
-                                      <Text style={{textDecorationLine:'line-through',fontSize:12,color:'#797979',paddingVertical:10}}>¥69</Text>
-                                    </View>
-                                    <Image source={require('../imgs/pp_cart.png')} style={{width:27,height:27}}/>
-                              </View>
-                           </TouchableOpacity>
-                       </View>
-                       <View style={{flex:1,justifyContent:'center',alignItems:'flex-start'}}>
-                           <TouchableOpacity>
-                              <Image source={require('../imgs/home/goods.png')} style={{width:175,height:175}}/>
-                              <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
-                                    <Text style={{width:152, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>微餐咖啡</Text>
-                              </View>
-                              <View style={{flex:1, flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start', backgroundColor:'#fff', paddingHorizontal:10}}>
-                                    <View>
-                                      <Text style={{fontSize:15,color:'#FF240D'}}>¥39</Text>
-                                      <Text style={{textDecorationLine:'line-through',fontSize:12,color:'#797979',paddingVertical:10}}>¥69</Text>
-                                    </View>
-                                    <Image source={require('../imgs/pp_cart.png')} style={{width:27,height:27}}/>
-                              </View>
-                           </TouchableOpacity>
-                       </View> */}
-                 {/* </View> */}
+                <ListView
+                  stlye={{flex:1}}
+                  initialListSize={12}
+                  dataSource={index.goodsListDataSource}
+                  renderRow={this.renderGoods}
+                  onEndReachedThreshold={10}
+                  enableEmptySections={true}
+                  contentContainerStyle={styles.list}
+                  onEndReached={this.loadMore()}
+                />
             </View>
           </ScrollView>
        </View>
@@ -336,8 +300,8 @@ const styles=StyleSheet.create({
     list:{
       flexDirection:'row',
       flexWrap:'wrap',
-      paddingHorizontal:10,
-      justifyContent:'flex-start',
+      // paddingHorizontal:10,
+      justifyContent:'space-around',
       alignItems:'center',
     }
 });

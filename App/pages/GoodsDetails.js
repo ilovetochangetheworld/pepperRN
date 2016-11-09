@@ -13,11 +13,12 @@ import {
   ScrollView,
   WebView,
   AsyncStorage,
-  Modal
+  Modal,
+  InteractionManager
 } from 'react-native';
 
 import { NaviGoBack } from '../utils/CommonUtils';
-import {IndicatorViewPager, PagerDotIndicator} from 'rn-viewpager';
+import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 import { performGoodsDetailAction } from '../actions/GoodsDetailAction';
 import { performAppMainAction } from '../actions/AppMainAction';
@@ -40,8 +41,11 @@ class GoodsDetails extends React.Component {
   }
 
   componentDidMount() {
-    const {navigator,dispatch} = this.props;
-    dispatch(performGoodsDetailAction(1,this.props.id));
+    InteractionManager.runAfterInteractions(() => {
+      const {navigator,dispatch} = this.props;
+      dispatch(performGoodsDetailAction(1,this.props.id));
+    });
+
   }
 
     //返回
@@ -64,11 +68,6 @@ class GoodsDetails extends React.Component {
     return (
       <Loading visible={true} />
     );
-  }
-
-  _renderDotIndicator() {
-        const {goodsDetail} = this.props;
-        return <PagerDotIndicator pageCount={goodsDetail.data.data.img_list.length} />;
   }
 
   //页面跳转 1:首页 2:购物车
@@ -165,68 +164,40 @@ class GoodsDetails extends React.Component {
 
   render() {
     const {goodsDetail} = this.props;
-    console.log(goodsDetail);
     if (!goodsDetail.data) {
        return this.renderLoadingView();
      }
-    var htmlContent = goodsDetail.data.data.product.description.replace(/<img/g,"<img style='width:100%,height:100%,display:block'").replace(/<p/g,"<p style='margin:0,padding:0,backgroundColor:red'");
+    // var htmlContent = goodsDetail.data.data.product.description.replace(/<img/g,"<img style='width:100%,height:100%,display:block'").replace(/<p/g,"<p style='margin:0,padding:0,backgroundColor:red'");
+    var htmlContent = goodsDetail.data.data.product.description.replace(/<img/g,"<img style='width:100%,height:100%,display:block'").replace(/<p>/g,"").replace(/<\/p>/g,"");
     return (
        <View style={{backgroundColor:'#f5f5f5',flex:1}}>
-        <Modal
-         visible={this.state.visible}
-         transparent
-         onRequestClose={() => {this._setModalVisible(false)}}
-        >
-         {this.state.visible ?
-           <View
-             key={'spinner'}
-             style={{flex: 1,backgroundColor: 'transparent',position: 'absolute',top: 0,bottom: 0,left: 0,right: 0}}
-           >
-             <View  style={{position: 'absolute',top: 0,bottom: 0,left: 0,right: 0,justifyContent: 'center',alignItems: 'center'}}>
-               <View style={{alignItems: 'center',justifyContent: 'center',width: width-20,height: Dimensions.get('window').width / 2.5,borderRadius: 10,backgroundColor: 'rgba(0, 0, 0, 0.25)'}}>
-                 <Text onPress={() => {this._setModalVisible(false)}} style={styles.loadingText}>数据加载中...</Text>
-               </View>
-             </View>
-           </View> :
-           <View key={'spinner'} />}
-        </Modal>
         <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
           <View style={{height:48,backgroundColor:'#fff',flexDirection:'row',borderBottomWidth:1,borderColor:'#cbcbcb'}}>
                 <TouchableOpacity onPress={() => {this.buttonBackAction()}}
                                   style={{width:100,height:48,alignItems:'flex-start',justifyContent:'center'}}>
-                   <Image source={require('../imgs/pp_return.png')} style={{width:11,height:18,marginLeft:17}}></Image>
+                   <Image source={require('./img/pp_return.png')} style={{width:11,height:18,marginLeft:17}}></Image>
                 </TouchableOpacity>
                 <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                     <Text style={{fontSize:18,color:'#000',alignSelf:'center'}}>商品详情</Text>
                 </View>
                 <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',height:48,width:100}}>
                   <TouchableOpacity onPress={() => {this.skip(1)}}>
-                    <Image source={require('../imgs/pp_tab_home.png')} style={{width:24,height:24,marginRight:23}}></Image>
+                    <Image source={require('./img/pp_tab_home.png')} style={{width:24,height:24,marginRight:23}}></Image>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => {this.skip(2)}}>
-                    <Image source={require('../imgs/pp_tab_cart.png')} style={{width:24,height:24,marginRight:17}}></Image>
+                    <Image source={require('./img/pp_tab_cart.png')} style={{width:24,height:24,marginRight:17}}></Image>
                   </TouchableOpacity>
                 </View>
           </View>
-          <View  style={{height:184,backgroundColor:'#fff'}}>
-            {/* <ViewPager
-              dataSource={imgList}
-              renderPage={this._renderPage}
-              isLoop={true}
-              autoPlay={true}
-              /> */}
-              <IndicatorViewPager
-              style={{height:184}}
-              indicator={this._renderDotIndicator()}>
-              {goodsDetail.data.data.img_list.map((img,index) => {
-                  return (
-                    <View key={index}>
-                      <Image source={{uri: img.pic_path}} style={{width:width,height:184,resizeMode:'stretch'}}/>
-                    </View>
-                  )
-                })}
-              </IndicatorViewPager>
-          </View>
+          <Swiper height={184} showsButtons={false} autoplay={true} autoplayTimeout={3} loop>
+            {goodsDetail.data.data.img_list.map((img,index)=>{
+              return(
+                <View key={index} style={{width:width,height:184}}>
+                  <Image source={{uri:img.pic_path}} style={{width:width,height:184,resizeMode:'stretch'}}/>
+                </View>
+              )
+            })}
+          </Swiper>
           <View style={{width:width,paddingHorizontal:12,paddingVertical:12,marginBottom:10,backgroundColor:'#fff'}}>
             <View style={{height:36,width:(width-24),flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
               <View stlye={{height:36,width:256}}>
@@ -245,7 +216,7 @@ class GoodsDetails extends React.Component {
           {goodsDetail.data.data.goods_list.length!==1&&
           <View style={{width:width,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingHorizontal:12,backgroundColor:'#fff',marginBottom:10}}>
             <Text style={{fontSize:15,}}>选择 颜色分类</Text>
-            <View><Image style={{width:7,height:12}} source={require('../imgs/pp_right.png')}></Image></View>
+            <View><Image style={{width:7,height:12}} source={require('./img/pp_right.png')}></Image></View>
           </View>
 
           }
@@ -255,18 +226,18 @@ class GoodsDetails extends React.Component {
               <View style={{flexDirection:'column',height:41,justifyContent:'space-between'}}>
                 <Text>{goodsDetail.data.data.shop.shop_name}</Text>
                 <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                  <View style={{marginRight:12,flexDirection:'row'}}><Image source={require('../imgs/check.png')} style={{width:12,height:12,marginRight:2}}></Image><Text style={{fontSize:10,color:'#47C221'}}>微信认证</Text></View>
-                  <View style={{flexDirection:'row'}}><Image source={require('../imgs/check.png')} style={{width:12,height:12,marginRight:2}}></Image><Text style={{fontSize:10,color:'#47C221'}}>支持自提</Text></View>
+                  <View style={{marginRight:12,flexDirection:'row'}}><Image source={require('./img/check.png')} style={{width:12,height:12,marginRight:2}}></Image><Text style={{fontSize:10,color:'#47C221'}}>微信认证</Text></View>
+                  <View style={{flexDirection:'row'}}><Image source={require('./img/check.png')} style={{width:12,height:12,marginRight:2}}></Image><Text style={{fontSize:10,color:'#47C221'}}>支持自提</Text></View>
                 </View>
               </View>
             </View>
             <View style={{flex:1,height:31,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
               <View style={{width:171,height:31,borderWidth:1,borderRadius:3,borderColor:'#797979',flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
-                <Image source={require('../imgs/address.png')} style={{height:16,width:16}} ></Image>
+                <Image source={require('./img/address.png')} style={{height:16,width:16}} ></Image>
                 <Text style={{fontSize:12,color:'#797979'}}>自提点</Text>
               </View>
               <View style={{width:171,height:31,borderWidth:1,borderRadius:3,borderColor:'#797979',flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-              <Image source={require('../imgs/shop.png')} style={{height:16,width:16}} ></Image>
+              <Image source={require('./img/shop.png')} style={{height:16,width:16}} ></Image>
                 <Text style={{fontSize:12,color:'#797979'}}>进入店铺</Text>
               </View>
             </View>
@@ -285,26 +256,26 @@ class GoodsDetails extends React.Component {
             </View>
           </View>
           <View>
-            {/* <WebView
+            <WebView
             source={{html:htmlContent}}
-            style={{backgroundColor:'#fff',flex:1,height:500}}>
-            </WebView> */}
-            <HtmlRender
+            style={{backgroundColor:'#fff',flex:1,height:500,paddingBottom:20,width:width}}>
+            </WebView>
+            {/* <HtmlRender
                value={htmlContent}
                stylesheet={{flex:1}}
               //  renderNode={this._renderNode}
-               />
+               /> */}
           </View>
         </ScrollView>
         <View style={{width:width,height:50,flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
           <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center',borderRightWidth:1,borderRightColor:'#CBCBCB'}}>
-            <Image source={require('../imgs/share.png')} style={{width:20,height:20}} ></Image>
+            <Image source={require('./img/share.png')} style={{width:20,height:20}} ></Image>
             <Text style={{fontSize:10,color:'#797979'}}>分享</Text>
           </View>
           <View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
           {goodsDetail.data.data.isFav?
-            <Image source={require('../imgs/star_active.png')} style={{width:20,height:20}} ></Image>:
-            <Image source={require('../imgs/star.png')} style={{width:20,height:20}} ></Image>
+            <Image source={require('./img/star_active.png')} style={{width:20,height:20}} ></Image>:
+            <Image source={require('./img/star.png')} style={{width:20,height:20}} ></Image>
           }
             <Text style={{fontSize:10,color:'#797979'}}>收藏</Text>
           </View>

@@ -13,7 +13,7 @@ import{
 
 const ShortLine = () => (
     <View style={{backgroundColor:'white'}}>
-        <Image source={require('../imgs/ic_short_bar.png')}
+        <Image source={require('../pages/img/ic_short_bar.png')}
                style={styles.short_line}/>
     </View>
 );
