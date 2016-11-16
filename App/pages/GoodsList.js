@@ -26,6 +26,9 @@ import { performGoodsListAction } from '../actions/GoodsListAction'
 class GoodsList extends Component {
   constructor(props) {
       super(props);
+      this.state={
+        search:null
+      }
       this.buttonBackAction = this.buttonBackAction.bind(this);
       this._renderGoods = this._renderGoods.bind(this);
   }
@@ -37,7 +40,9 @@ class GoodsList extends Component {
       dispatch(performGoodsListAction(1,this.props.id));
     }else if(this.props.orderType){
       dispatch(performGoodsListAction(2,this.props.orderType));
-      }
+    }else if(this.props.search){
+      dispatch(performGoodsListAction(3,this.props.search));
+    }
     });
  }
 
@@ -71,13 +76,18 @@ class GoodsList extends Component {
    );
  }
 
+ _search(search){
+   const {dispatch} = this.props;
+   dispatch(performGoodsListAction(3,search));
+ }
+
   _renderGoods(data){
     return (
-      <TouchableOpacity style={{width:176,height:281,justifyContent:'center',alignItems:'center',marginBottom:8,backgroundColor:'#fff',}}
+      <TouchableOpacity style={{flex:1,height:280,width:(width-30)/2,justifyContent:'center',alignItems:'center',marginBottom:8,backgroundColor:'#fff',}}
                         onPress={()=>{this.goodsDetailAction(data.prod_id)}} >
-          <Image source={{uri:data.list_img}} style={{width:175,height:175,resizeMode:'stretch'}}/>
+          <Image source={{uri:data.list_img}} style={{width:(width-30)/2,height:175,resizeMode:'stretch'}}/>
           <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
-                <Text style={{width:152, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>{data.prod_name}</Text>
+                <Text style={{width:(width-30)/2-20, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>{data.prod_name}</Text>
           </View>
           <View style={{width:176, flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start', backgroundColor:'#fff', paddingHorizontal:10}}>
                 <View>
@@ -113,10 +123,15 @@ class GoodsList extends Component {
                         <TouchableOpacity onPress={() => {this.buttonBackAction()}}>
                           <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image>
                         </TouchableOpacity>
-                        <TextInput style={{width:313,height:31,backgroundColor:'#F2F2F2',paddingVertical:0,paddingHorizontal:6}}
+                        <TextInput style={{width:width-100,height:31,backgroundColor:'#F2F2F2',paddingVertical:0,paddingHorizontal:6}}
                                     placeholder={'搜索商品 分类'}
+                                    onChangeText={(search) => this.setState({search})}
+                                    value={this.state.search}
                                     keyboardType='web-search'
                                     underlineColorAndroid={'transparent'}></TextInput>
+                        <TouchableOpacity onPress={()=>{this._search(this.state.search)}} style={{width:30,height:45,justifyContent:'center',alignItems:'flex-end'}}>
+                          <Text style={{fontSize:14,color:'#999'}}>搜索</Text>
+                        </TouchableOpacity>
                     </View>
                   </View>
                   <Swiper height={184} showsButtons={false} autoplay={true} autoplayTimeout={3} loop>
@@ -128,7 +143,7 @@ class GoodsList extends Component {
                       )
                     })}
                   </Swiper>
-                  <View style={styles.filter}>
+                  {/* <View style={styles.filter}>
                     <View style={styles.filter_list}>
                       <Text>综合</Text>
                     </View>
@@ -141,7 +156,7 @@ class GoodsList extends Component {
                     <View style={styles.filter_list}>
                       <Text>筛选</Text>
                     </View>
-                  </View>
+                  </View> */}
                   <View style={{flex:1, padding:10, backgroundColor:'#F2F2F2'}}>
                       <ListView
                         initialListSize={12}
@@ -176,8 +191,8 @@ const styles=StyleSheet.create({
     // padding:12,
     flexDirection:'row',
     flexWrap:'wrap',
-    justifyContent:'space-between',
-    alignItems:'center',
+    // justifyContent:'flex-start',
+    // alignItems:'flex-start',
   },
   imgList: {
     flex: 1,

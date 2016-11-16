@@ -13,7 +13,7 @@ import TabNavigator from 'react-native-tab-navigator';
 
 import Home from './Home';
 import Classify from './Classify';
-// import Order from './Order';
+import Fav from './Fav';
 import Cart from './Cart';
 import Center from './Center';
 var PixelRatio = require('PixelRatio');
@@ -69,16 +69,16 @@ class AppMain extends Component {
 			    onPress={() => dispatch(performAppMainAction('cart'))}>
 			    <Cart {...this.props}/>
 			  </TabNavigator.Item>
-        {/* <TabNavigator.Item
+        <TabNavigator.Item
 			  	title="收藏"
-			    selected={appMain.data === 'center'}
+			    selected={appMain.data === 'fav'}
 			    selectedTitleStyle={styles.selectedTextStyle}
 			    titleStyle={styles.textStyle}
 			    renderIcon={() => <Image source={require("./img/pp_tab_sc.png")} style={{height:22,width:23}}/>}
 			    renderSelectedIcon={() => <Image source={require("./img/pp_tab_sc_press.png")} style={{height:22,width:23}}/>}
-			    onPress={() => dispatch(performAppMainAction('center'))}>
-			    <Center {...this.props}/>
-			  </TabNavigator.Item> */}
+			    onPress={() => dispatch(performAppMainAction('fav'))}>
+			    <Fav {...this.props}/>
+			  </TabNavigator.Item>
 			  <TabNavigator.Item
 			  	title="我的"
 			    selected={appMain.data === 'center'}

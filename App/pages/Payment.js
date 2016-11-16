@@ -20,6 +20,7 @@ import CommonHeader from '../component/CommonHeader';
 import CenterItem from '../component/CenterItem';
 import {HOST} from  '../common/request';
 import { toastShort } from '../utils/ToastUtil';
+import Order from './CenterContent/Order'
 import * as Wechat from 'react-native-wechat';
 
 
@@ -39,12 +40,12 @@ class Payment extends React.Component {
   }
 
   _wxPay(){
+    const {navigator} = this.props;
     fetch(HOST+'wx/appPay?order_id='+this.props.order_id)
     .then((response) => response.json())
     .then((responseData)=>{
     Wechat.isWXAppInstalled()
       .then((isInstalled) => {
-        console.log(responseData);
         if (isInstalled) {
           Wechat.pay({
             partnerId: responseData.partnerid, // 商家向财付通申请的商家id
@@ -54,12 +55,22 @@ class Payment extends React.Component {
             package: responseData.package, // 商家根据财付通文档填写的数据和签名
             sign: responseData.sign // 商家根据微信开放平台文档对数据做的签名
           }
-          
         )
+        // .then(()=>{
+        //   navigator.push({
+        //     component: Order,
+        //     name: 'Order'
+        //   });
+        // }
+        // )
           .catch((error) => {
             console.log(error);
             toastShort(error.message);
           });
+          navigator.push({
+              component: Order,
+              name: 'Order'
+            });
         } else {
           toastShort('没有安装微信软件，请您安装微信之后再试');
         }
@@ -98,7 +109,7 @@ class Payment extends React.Component {
           <View style={{backgroundColor:'#f2f2f2',height:10,marginLeft:8,marginRight:8,}}></View> */}
           <CenterItem
              title='微信'
-             icon={require('img/wxpay.png')}
+             icon={require('./img/wxpay.png')}
              onPress={()=>{this._wxPay()}}/>
           <View style={{backgroundColor:'#f2f2f2',height:10,marginLeft:8,marginRight:8,}}></View>
           {/* <CenterItem

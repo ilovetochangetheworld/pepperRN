@@ -22,6 +22,9 @@ import { performClassifyAction } from '../actions/ClassifyAction'
 class Classify extends Component {
     constructor(props) {
         super(props);
+        this.state={
+          search:null
+        }
         this.componentDidMount = this.componentDidMount.bind(this);
         this.renderItem = this.renderItem.bind(this);
         this.renderGoods = this.renderGoods.bind(this);
@@ -49,7 +52,18 @@ class Classify extends Component {
       });
     }
 
-
+    _search(search){
+      const {navigator} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+          navigator.push({
+            component: GoodsList,
+            name: 'GoodsList',
+            params: {
+                 search: search
+             }
+          });
+        })
+    }
 
     render() {
       const {classify} = this.props;
@@ -63,16 +77,21 @@ class Classify extends Component {
       return (
            <View style={{backgroundColor:'#fff',flex:1}}>
               <View style={{width:width,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingHorizontal:15,borderBottomWidth:1,borderColor:'#cbcbcb'}}>
-                  <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image>
-                  <TextInput style={{width:313,height:31,backgroundColor:'#F2F2F2',paddingVertical:0,paddingHorizontal:6}}
+                  <Image source={require('./img/pp_return.png')} style={{width:11,height:18,marginRight:10}}></Image>
+                  <TextInput style={{width:width-100,height:31,backgroundColor:'#F2F2F2',paddingVertical:0,paddingHorizontal:6}}
                               placeholder={'搜索商品 分类'}
+                              onChangeText={(search) => this.setState({search})}
+                              value={this.state.search}
                               keyboardType='web-search'
                               underlineColorAndroid={'transparent'}></TextInput>
+                  <TouchableOpacity onPress={()=>{this._search(this.state.search)}} style={{width:30,height:45,justifyContent:'center',alignItems:'flex-end'}}>
+                    <Text style={{fontSize:14,color:'#999'}}>搜索</Text>
+                  </TouchableOpacity>
               </View>
               <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'flex-start'}}>
                 <View style={{width:100}}>
                   <ListView
-                    initialListSize={1}
+                    initialListSize={6}
                     dataSource={classifyData}
                     renderRow={this.renderItem}
                     style={{width:100,height:height-45-60,backgroundColor:'#F2F2F2',flexDirection:'column'}}

@@ -19,6 +19,7 @@ import CommonHeader from '../../component/CommonHeader';
 import Loading from '../../component/Loading.js';
 import { performDefaultAddressAction } from '../../actions/DefaultAddressAction';
 import AddAddress from './AddAddress';
+import EditAddress from './EditAddress';
 var {height, width} = Dimensions.get('window');
 import { NaviGoBack } from '../../utils/CommonUtils';
 import { toastShort } from '../../utils/ToastUtil';
@@ -95,8 +96,9 @@ class Address extends Component {
       })
     })
   }
+
   //修改默认地址
-  _editAddress(type,rowID){
+  _defaultAddress(type,rowID){
     //type:1 修改默认地址 type:2 删除地址
     const {dispatch,address} = this.props;
     InteractionManager.runAfterInteractions(() => {
@@ -121,13 +123,27 @@ class Address extends Component {
     })
   }
 
+  //编辑地址
+  _editAddress(data){
+    const {navigator} = this.props;
+    InteractionManager.runAfterInteractions(() => {
+        navigator.push({
+          component: EditAddress,
+          name: 'EditAddress',
+          params: {
+               editData: data
+           }
+        });
+      });
+  }
+
   _renderRow(data,sectionID,rowID){
     return(
     <View style={{flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
       <View style={{width:width-24,height:76,flexDirection:'column',justifyContent:'space-around',alignItems:'flex-start',borderBottomWidth:1,borderBottomColor:'#e3e5e9'}}>
         <View style={{flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
           <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:30,marginLeft:20}}>{data.consignee}</Text>
-          <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:6}}>13260585618</Text>
+          <Text style={{color:'#000',fontSize:16,fontWeight:'bold',marginRight:6}}>{data.phone}</Text>
         </View>
         <View style={{flexDirection:'row'}}>
           <Image source={require('../img/addresssmall.png')} style={{width:14,height:17,resizeMode:'cover',marginRight:6}}></Image>
@@ -135,16 +151,16 @@ class Address extends Component {
         </View>
       </View>
       <View style={{width:width-24,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-        <TouchableOpacity style={{flexDirection:'row'}} onPress={() => {this._editAddress(1,rowID)}}>
+        <TouchableOpacity style={{flexDirection:'row'}} onPress={() => {this._defaultAddress(1,rowID)}}>
           {(data.is_default==1) ? <Image source={require('../img/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('../img/checkbox.png')} style={{height:16,width:16}}/>}
           <Text style={{fontSize:14,color:'#FF240D',marginLeft:8}}>默认地址</Text>
         </TouchableOpacity>
         <View style={{flexDirection:'row'}}>
-          <TouchableOpacity style={{flexDirection:'row',alignItems:'center',marginRight:20}} >
+          <TouchableOpacity style={{flexDirection:'row',alignItems:'center',marginRight:20}} onPress={() => {this._editAddress(data)}}>
             <Image source={require('../img/edit.png')} style={{width:17,height:20,marginRight:6}}></Image>
             <Text style={{fontSize:14,color:'#797979'}}>编辑</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={() => {this._editAddress(2,rowID)}}>
+          <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}} onPress={() => {this._defaultAddress(2,rowID)}}>
             <Image source={require('../img/del.png')} style={{width:17,height:20,marginRight:6}}></Image>
             <Text style={{fontSize:14,color:'#797979'}}>删除</Text>
           </TouchableOpacity>

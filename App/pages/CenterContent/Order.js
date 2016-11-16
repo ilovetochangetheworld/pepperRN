@@ -23,7 +23,10 @@ import { NaviGoBack } from '../../utils/CommonUtils';
 import { performOrderListAction } from '../../actions/OrderListAction';
 import Payment from '../Payment';
 import OrderDetail from './OrderDetail';
+import Evaluation from './Evaluation';
+import {orderConfirm} from '../../api/order';
 import { performOrderCancelAction } from '../../actions/OrderCancelAction';
+import { toastShort,toastLong } from '../../utils/ToastUtil';
 
 class Order extends Component {
   constructor(props) {
@@ -34,7 +37,8 @@ class Order extends Component {
       renderPlaceholderOnly:true,
       orderListData
     }
-    this._renderList=this._renderList.bind(this);
+    this._renderList = this._renderList.bind(this);
+    this._changeOrderStatus = this._changeOrderStatus.bind(this);
   }
 
   componentDidMount(){
@@ -55,7 +59,7 @@ class Order extends Component {
     if(nextProps.orderList!==this.props.orderList){
       if(nextProps.orderList.data.status){
         this.setState({
-          orderListData:this.state.orderListData.cloneWithRows(nextProps.orderList.data.data.rows),
+          // orderListData:this.state.orderListData.cloneWithRows(nextProps.orderList.data.data.rows),
           renderPlaceholderOnly: false
         })
       }
@@ -116,8 +120,8 @@ class Order extends Component {
     //2、取消订单
       case 2:
       AsyncStorage.getItem('token').then(
-        (result)=>{
-          if (result===null){
+        (token)=>{
+          if (token===null){
             InteractionManager.runAfterInteractions(() => {
                 navigator.push({
                   component: Login,
@@ -125,7 +129,7 @@ class Order extends Component {
                 });
               });
           }else {
-            dispatch(performOrderCancelAction(result,order_id));
+            dispatch(performOrderCancelAction(token,order_id));
           }
         }
       )
@@ -133,7 +137,38 @@ class Order extends Component {
         console.log(' error:' + error.message);
       })
           break;
-      default:
+      //确认收货
+      case 3:
+      AsyncStorage.getItem('token').then(
+        (token)=>{
+          if (token===null){
+            InteractionManager.runAfterInteractions(() => {
+                navigator.push({
+                  component: Login,
+                  name: 'Login'
+                });
+              });
+          }else {
+            if(order_id){
+              orderConfirm(token,order_id)
+              .then((orderStatus) => {
+                if(orderStatus.status){
+                  toastShort('确认收货成功！');
+                  this._checkLogin();
+                }else{
+                  toastShort(orderStatus.msg);
+                }
+              })
+            }else{
+              toastShort('没有获取到订单id');
+            }
+          }
+        }
+      )
+      .catch((error)=>{
+        console.log(' error:' + error.message);
+      })
+          break;
 
     }
   }
@@ -153,6 +188,88 @@ class Order extends Component {
         break;
       default:
 
+    }
+  }
+
+  //订单状态改变
+  _changeOrderStatus(status){
+    this.setState({
+      order_active:status
+    })
+  }
+
+  //评价
+  _evaluation(order_id){
+    const {navigator} = this.props;
+    navigator.push({
+      component: Evaluation,
+      name: 'Evaluation',
+      params: {
+           order_id: order_id
+       }
+    });
+  }
+
+
+
+  render(){
+    const {orderCancel,orderList} = this.props;
+    if(!orderList.data.status||orderCancel.loading){
+      return (
+        <Loading visible={true} />
+      )
+    }else{
+      let orderListData=new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+      .cloneWithRows(orderList.data.data.rows);
+      return (
+        <View style={{backgroundColor:'#f5f5f5',flex:1}}>
+            <CommonHeader title='我的订单' onPress={()=>{this.buttonBackAction()}} />
+            <View style={{height:46,width:width,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
+              <TouchableOpacity onPress={() => {this._changeOrderStatus(-1)}} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
+                <View style={[styles.orderItem,this.state.order_active===-1&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
+                  <Text style={[{fontSize:16},this.state.order_active===-1&&{color:'#FF240D'}]}>
+                    全部
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {this._changeOrderStatus(0)}} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
+                <View style={[styles.orderItem,this.state.order_active===0&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
+                  <Text style={[{fontSize:16},this.state.order_active===0&&{color:'#FF240D'}]}>
+                    待付款
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {this._changeOrderStatus(2)}} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
+                <View style={[styles.orderItem,this.state.order_active===2&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
+                  <Text style={[{fontSize:16},this.state.order_active===2&&{color:'#FF240D'}]}>
+                    待发货
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {this._changeOrderStatus(3)}} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
+                <View style={[styles.orderItem,this.state.order_active===3&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
+                  <Text style={[{fontSize:16},this.state.order_active===3&&{color:'#FF240D'}]}>
+                    待收货
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {this._changeOrderStatus(4)}} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
+                <View style={[styles.orderItem,this.state.order_active===4&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
+                  <Text style={[{fontSize:16},this.state.order_active===4&&{color:'#FF240D'}]}>
+                    待评价
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <ListView
+              initialListSize={6}
+              dataSource={orderListData}
+              renderRow={this._renderList}
+              // onEndReachedThreshold={10}
+              enableEmptySections={true}
+            />
+        </View>
+      )
     }
   }
 
@@ -198,15 +315,15 @@ class Order extends Component {
                 <Text style={{fontSize:16,color:'#FF240D'}}>去支付</Text>
               </TouchableOpacity>
             }
-            {((data.status==4||data.status==5)&&data.comment_status>0)&&
-              <View style={[styles.orderBtn,{borderColor:'#FF240D'}]}>
+            {(data.status==4||data.status==5)&&
+              <TouchableOpacity onPress={()=>{this._evaluation(data.order_id)}} style={[styles.orderBtn,{borderColor:'#FF240D'}]}>
                 <Text style={{fontSize:16,color:'#FF240D'}}>去评价</Text>
-              </View>
+              </TouchableOpacity>
             }
             {(data.status==3&&data.is_return_goods==0)&&
               <TouchableOpacity style={[styles.orderBtn,{borderColor:'#FF240D'}]}  onPress={() => Alert.alert(
-                  '取消订单',
-                  '确定要取消订单吗？',
+                  '确认收货',
+                  '收到货物了吗？',
                   [
                     {text: '稍后再说'},
                     {text: '确定', onPress: () => {this._orderItem(3,data.order_id)}},
@@ -248,66 +365,6 @@ class Order extends Component {
       )
     }else{
       return (<View></View>)
-    }
-
-  }
-
-  render(){
-    const {orderCancel} = this.props;
-    if(this.state.renderPlaceholderOnly||orderCancel.loading){
-      return (
-        <Loading visible={true} />
-      )
-    }else{
-      return (
-        <View style={{backgroundColor:'#f5f5f5',flex:1}}>
-            <CommonHeader title='我的订单' onPress={()=>{this.buttonBackAction()}} />
-            <View style={{height:46,width:width,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
-              <TouchableOpacity onPress={() => this.setState({order_active:-1})} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
-                <View style={[styles.orderItem,this.state.order_active===-1&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
-                  <Text style={[{fontSize:16},this.state.order_active===-1&&{color:'#FF240D'}]}>
-                    全部
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>this.setState({order_active:0})} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
-                <View style={[styles.orderItem,this.state.order_active===0&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
-                  <Text style={[{fontSize:16},this.state.order_active===0&&{color:'#FF240D'}]}>
-                    待付款
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>this.setState({order_active:2})} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
-                <View style={[styles.orderItem,this.state.order_active===2&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
-                  <Text style={[{fontSize:16},this.state.order_active===2&&{color:'#FF240D'}]}>
-                    待发货
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>this.setState({order_active:3})} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
-                <View style={[styles.orderItem,this.state.order_active===3&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
-                  <Text style={[{fontSize:16},this.state.order_active===3&&{color:'#FF240D'}]}>
-                    待收货
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>this.setState({order_active:4})} style={{flex:1,alignItems:'center',justifyContent:'center',paddingHorizontal:16}}>
-                <View style={[styles.orderItem,this.state.order_active===4&&{borderBottomWidth:4,borderBottomColor:'#FF240D'}]}>
-                  <Text style={[{fontSize:16},this.state.order_active===4&&{color:'#FF240D'}]}>
-                    待评价
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <ListView
-              initialListSize={12}
-              dataSource={this.state.orderListData}
-              renderRow={this._renderList}
-              onEndReachedThreshold={10}
-              enableEmptySections={true}
-            />
-        </View>
-      )
     }
 
   }

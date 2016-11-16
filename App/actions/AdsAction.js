@@ -15,19 +15,26 @@ export function performAdsAction(){
         .then((responseData)=>{
            if(responseData.status){
                //获取数据成功
-               responseData;
+               var imgData=[];
+               responseData.data.map((data,index) => {
+                 if(data.position_name=='首页轮播图'){
+                   imgData.push(data)
+                 }
+               })
+              dispatch(receiveAdsResult(responseData,imgData));
+              //  responseData;
            }else{
                toastShort(responseData.msg);
            }
-          dispatch(receiveAdsResult(responseData));
+
         });
      }
 }
 
-function receiveAdsResult(result){
+function receiveAdsResult(result,imgData){
         return {
             type: types.RECEIVE_ADS_ACTION,
-            imgDataSource: result.data
+            imgDataSource: imgData
         }
 
 }

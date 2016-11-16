@@ -12,33 +12,27 @@ import{
     Platform,
     AsyncStorage
 } from 'react-native';
-//(Platform.OS === 'ios') ? '' : '';
 import { NaviGoBack } from '../../utils/CommonUtils';
-import Register from './Register';
 import ShortLineTwo from '../../component/ShortLineTwo';
-// import ResetPwd from  './ResetPwd';
 import { toastShort } from '../../utils/ToastUtil';
 import {NativeModules} from 'react-native';
 import Center from '../Center';
 var EncryptionModule = NativeModules.EncryptionModule;
-
+import CommonHeader from '../../component/CommonHeader';
 import Loading from '../../component/Loading';
+import { register } from '../../api/register';
 import { connect } from 'react-redux';
-import { performLoginAction } from '../../actions/LoginAction';
 import { performCenterAction } from '../../actions/CenterAction';
-import { performGetAddressAction } from '../../actions/GetAddressAction';
 
 var username = '';
 var password = '';
+var repassword = '';
 
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
       super(props);
       this.buttonBackAction=this.buttonBackAction.bind(this);
       this.buttonRegisterOrLoginAction=this.buttonRegisterOrLoginAction.bind(this);
-      this.buttonChangeState=this.buttonChangeState.bind(this);
-      this.findPwdAction=this.findPwdAction.bind(this);
-      this.thirdPartLoginAction=this.thirdPartLoginAction.bind(this);
 }
   componentDidMount() {
     // const {navigator} = this.props;
@@ -69,23 +63,6 @@ class Login extends Component {
 
       };
 
-  componentWillReceiveProps(nextProps, nextState) {
-    const {dispatch,navigator} = this.props;
-    console.log(nextProps.login);
-    if(nextProps.login.data.status){
-      AsyncStorage.setItem('token',nextProps.login.data.token).then(
-        ()=>{
-          navigator.pop();
-        }
-      ).catch((error)=>{
-        console.log(' error:' + error.message);
-      });
-      dispatch(performCenterAction(nextProps.login.data.token));
-      dispatch(performGetAddressAction(nextProps.login.data.token));
-    }
-    // return true;
-  }
-
   //返回
   buttonBackAction(){
       const {navigator} = this.props;
@@ -104,58 +81,36 @@ class Login extends Component {
                toastShort('密码不能为空...');
                return;
            }
-           dispatch(performLoginAction(username,password));
-      }else if(position === 1){
-           //用户注册
-           InteractionManager.runAfterInteractions(() => {
-               navigator.push({
-                   component: Register,
-                   name: 'Register'
-                });
-            });
-        }
+           if(password !== repassword){
+               toastShort('两次输入密码不一致...');
+               return;
+           }
+           register(username,password).then(registerStatus=>{
+             console.log(registerStatus);
+             if(registerStatus.status){
+               AsyncStorage.setItem('token',registerStatus.token).then(
+                 ()=>{
+                  dispatch(performCenterAction(registerStatus.token));
+                  navigator.popToTop();
+                 }
+               ).catch((error)=>{
+                 toastShort(' error:' + error.message);
+               });
+             }else{
+               toastShort(registerStatus.msg);
+             }
+           }).catch((error) => {
+           toastShort('注册失败！');
+           });
+      }
   }
 
-  buttonChangeState(){
-
-  }
-
-  findPwdAction(){
-     const {navigator} = this.props;
-     InteractionManager.runAfterInteractions(() => {
-               navigator.push({
-                   component: ResetPwd,
-                   name: 'ResetPwd'
-                });
-            });
-  }
-
-  thirdPartLoginAction(position){
-
-  }
 
   render() {
       const {login} = this.props;
       return (
              <View style={{backgroundColor:'#fff',flex:1}}>
-                <View style={styles.topbar_bg}>
-                    <View style={styles.topbar_left_item}></View>
-                    {/* <TouchableOpacity onPress={() => {this.buttonBackAction()}}
-                                      style={styles.topbar_left_item}>
-                       <Image
-                          style={{width:13,height:20}}
-                          source={require('../img/pp_return.png')}
-                       />
-                    </TouchableOpacity> */}
-                    <View style={styles.topbar_center_bg}>
-                       <Text style={styles.topbar_center_tv}>登录</Text>
-                    </View>
-                    {/* <TouchableOpacity onPress={() => {this.buttonRegisterOrLoginAction(1)}}
-                                      style={styles.topbar_right_item}>
-                       <Text style={styles.topbar_right_tv}>注册</Text>
-                    </TouchableOpacity> */}
-                    <View style={{width:48}}></View>
-                </View>
+                <CommonHeader title='注册' onPress={()=>{this.buttonBackAction()}} />
                 <View style={{backgroundColor:'#fff',marginTop:48,paddingHorizontal:20}}>
                     <View style={{flexDirection:'row',height:45,alignItems:'center'}}>
                           <Text>用户名</Text>
@@ -195,23 +150,34 @@ class Login extends Component {
                           </TouchableOpacity>
                     </View>
                     <ShortLineTwo/>
+                    <View style={{flexDirection:'row',height:45,alignItems:'center'}}>
+                          <Text>确认密码</Text>
+                          <TextInput
+                            style={{height:40,fontSize: 15,textAlign: 'left',textAlignVertical:'center',flex:1}}
+                            placeholder="请输入密码"
+                            placeholderTextColor="#CBCBCB"
+                            underlineColorAndroid="transparent"
+                            numberOfLines={1}
+                            ref={'repassword'}
+                            multiline={true}
+                            secureTextEntry={true}
+                            onChangeText={(text) => {
+                               repassword = text;
+                            }}
+                           />
+                          <TouchableOpacity onPress={() => {this.buttonChangeState()}} style={{width:45,height:45,alignItems:'center',justifyContent:'center'}}>
+                                <Image source={require('../img/logre/ic_pwd_off.png')}
+                                        style={{width:17,height:14,marginLeft:13}}/>
+                          </TouchableOpacity>
+                    </View>
+                    <ShortLineTwo/>
                 </View>
                 <TouchableOpacity onPress={() => {this.buttonRegisterOrLoginAction(0)}}
                                   style={{justifyContent:'center',marginTop:13,alignItems:'center'}}>
                     <View style={{width:300,height:40,justifyContent:'center',alignItems:'center',backgroundColor:'#F2F2F2'}}>
-                          <Text>登录</Text>
+                          <Text>注册</Text>
                     </View>
                 </TouchableOpacity>
-                <View style={{justifyContent:'center',alignItems:'center'}}>
-                  <View style={{width:300,flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:13}}>
-                      <TouchableOpacity onPress={() => {this.buttonRegisterOrLoginAction(1)}} style={{marginLeft:10}}>
-                         <Text style={{fontSize:13,color:'#777'}}>注册</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={()=>{this.findPwdAction()}} style={{marginRight:10}}>
-                          <Text style={{fontSize:13,color:'#777'}}>忘记密码</Text>
-                      </TouchableOpacity>
-                  </View>
-                </View>
                 <Loading visible={login.loading} />
 
              </View>
@@ -265,4 +231,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(Register);

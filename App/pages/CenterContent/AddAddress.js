@@ -36,10 +36,13 @@ class Address extends Component {
     this._default = this._default.bind(this);
   }
 
-  componentWillReceiveProps(){
-    const {navigator,dispatch} = this.props;
-    this._checkLogin();
-    dispatch(performGetAreaAction(1,1));
+  componentDidMount(){
+    const {navigator,dispatch,getArea} = this.props;
+    if(getArea.Province.status){
+      return
+    }else{
+      this._checkLogin();
+    }
 
   }
 
@@ -63,7 +66,7 @@ class Address extends Component {
                 });
               });
           }else {
-            console.log(result);
+            dispatch(performGetAreaAction(1,1));
           }
         }
       )
@@ -104,6 +107,7 @@ class Address extends Component {
     //area_id=1 地区为1省级，其余根据当前区域获取子级
     dispatch(performGetAreaAction(level,area_id));
   }
+
   //设置默认定制
   _default(){
     let value = this.state.default
@@ -199,7 +203,10 @@ class Address extends Component {
       )
     }else{
       return (
-        <Loading visible={true} />
+        // <Loading visible={true} />
+        <View style={{backgroundColor:'#f5f5f5',flex:1}}>
+            <CommonHeader title='新增收货地址' onPress={()=>{this.buttonBackAction()}} />
+        </View>
       )
     }
 

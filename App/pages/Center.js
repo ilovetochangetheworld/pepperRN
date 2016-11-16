@@ -231,21 +231,21 @@ class Center extends Component {
                          <Text stlye={{fontSize:12}}>退换货</Text>
                        </TouchableOpacity>
                      </View>
-                     <CenterItem
+                     {/* <CenterItem
                         title='合伙人'
                         icon={require('./img/center/pp_center_hhr.png')}
                         onPress={()=>this.itemActionIndex(1)}/>
-                     <View style={[{backgroundColor:'#f2f2f2',height:10},styles.center_line]}></View>
+                     <View style={[{backgroundColor:'#f2f2f2',height:10},styles.center_line]}></View> */}
                      <CenterItem
                         title='个人信息'
                         icon={require('./img/center/pp_center_grxx.png')}
                         onPress={()=>this.itemActionIndex(2)}/>
                      <View style={[styles.top_line,styles.center_line]}></View>
-                     <CenterItem
+                     {/* <CenterItem
                         title='账户安全'
                         icon={require('./img/center/pp_center_zhaq.png')}
                         onPress={()=>this.itemActionIndex(1)}/>
-                     <View style={[styles.top_line,styles.center_line]}></View>
+                     <View style={[styles.top_line,styles.center_line]}></View> */}
                      <CenterItem
                         title='收货地址'
                         icon={require('./img/center/pp_center_shdz.png')}

@@ -7,9 +7,8 @@ import * as types from '../common/ActionTypes';
 import {HOST} from  '../common/request';
 import { toastShort } from '../utils/ToastUtil';
 
-export function performAddCartAction(token,goodsList){
+export function performAddCartAction(token,goodsList,index,num){
      return dispatch => {
-       console.log(goodsList);
        fetch(HOST+'MemberMall/addToCart?token='+token, {
          method: 'POST',
          headers: {
@@ -19,9 +18,9 @@ export function performAddCartAction(token,goodsList){
          body: JSON.stringify({
            type: 1,
            "shop_id":goodsList.shop.shop_id, //店铺ID
-           "prod_id":goodsList.goods_list[0].prod_id, //产品ID
-           "goods_id":goodsList.goods_list[0].goods_id,//货品ID
-           "num":1  //数量
+           "prod_id":goodsList.goods_list[index].prod_id, //产品ID
+           "goods_id":goodsList.goods_list[index].goods_id,//货品ID
+           "num":num  //数量
          })
        })
        .then((response) => response.json())

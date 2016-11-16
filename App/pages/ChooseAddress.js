@@ -19,6 +19,7 @@ import CommonHeader from '../component/CommonHeader';
 import Loading from '../component/Loading.js';
 import { performDefaultAddressAction } from '../actions/DefaultAddressAction';
 import AddAddress from './CenterContent/AddAddress';
+import EditAddress from './CenterContent/EditAddress';
 import { performChooseAddressAction } from '../actions/ChooseAddressAction';
 var {height, width} = Dimensions.get('window');
 
@@ -34,9 +35,33 @@ class ChooseAddress extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('componentWillReceiveProps');
-    if(nextProps.chooseAddress !== this.props.chooseAddress){
-      console.log(nextProps.chooseAddress);
+    // console.log('componentWillReceiveProps');
+    // if(nextProps.chooseAddress !== this.props.chooseAddress){
+    //   console.log(nextProps.chooseAddress);
+    // }
+    const {dispatch} = this.props;
+    if(nextProps.address!==this.props.address){
+      if(nextProps.address.refresh){
+        InteractionManager.runAfterInteractions(() => {
+          AsyncStorage.getItem('token').then(
+            (result)=>{
+              if (result===null){
+                InteractionManager.runAfterInteractions(() => {
+                    navigator.push({
+                      component: Login,
+                      name: 'Login'
+                    });
+                  });
+              }else {
+                dispatch(performGetAddressAction(result));
+              }
+            }
+          )
+          .catch((error)=>{
+            console.log(' error:' + error.message);
+          })
+        })
+      }
     }
   }
 
@@ -54,7 +79,6 @@ class ChooseAddress extends Component {
                 });
               });
           }else {
-            console.log(result);
             dispatch(performGetAddressAction(result));
           }
         }
@@ -65,7 +89,7 @@ class ChooseAddress extends Component {
     })
   }
   //修改默认地址
-  _editAddress(type,rowID){
+  _defaultAddress(type,rowID){
     //type:1 修改默认地址 type:2 删除地址
     const {dispatch,address} = this.props;
     InteractionManager.runAfterInteractions(() => {
@@ -96,6 +120,20 @@ class ChooseAddress extends Component {
     navigator.pop();
   }
 
+  //编辑地址
+  _editAddress(data){
+    const {navigator} = this.props;
+    InteractionManager.runAfterInteractions(() => {
+        navigator.push({
+          component: EditAddress,
+          name: 'EditAddress',
+          params: {
+               editData: data
+           }
+        });
+      });
+  }
+
   _renderRow(data,sectionID,rowID){
     return(
     <TouchableOpacity onPress={()=>{this._choose(data)}}  style={{flex:1,flexDirection:'column',justifyContent:'flex-start',alignItems:'center',backgroundColor:'#fff',marginBottom:10}}>
@@ -115,7 +153,7 @@ class ChooseAddress extends Component {
           <Text style={{fontSize:14,color:'#FF240D',marginLeft:8}}>默认地址</Text>
         </TouchableOpacity>
         <View style={{flexDirection:'row'}}>
-          <TouchableOpacity style={{flexDirection:'row',alignItems:'center',marginRight:20}} >
+          <TouchableOpacity style={{flexDirection:'row',alignItems:'center',marginRight:20}} onPress={() => {this._editAddress(data)}}>
             <Image source={require('./img/edit.png')} style={{width:17,height:20,marginRight:6}}></Image>
             <Text style={{fontSize:14,color:'#797979'}}>编辑</Text>
           </TouchableOpacity>

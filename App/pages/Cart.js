@@ -85,7 +85,7 @@ class Cart extends Component {
         var orderProduct = [];
         var totalNum = 0;
         var totalPrice = 0;
-        {cart.data.data.map((data,index) => {
+        cart.data.data.map((data,index) => {
           {data.products.map((product,proIndex) => {
             if(product.select){
               orderProduct.push(product);
@@ -93,7 +93,7 @@ class Cart extends Component {
               totalPrice+=product.maket_price*product.num;
             }
         })
-      }})}
+      }})
         navigator.push({
           component: OrderConfirm,
           name: 'OrderConfirm',
@@ -153,7 +153,7 @@ class Cart extends Component {
                <View style={{flex:1,backgroundColor:'#f5f5f5',height:48}}>
                   <View style={{height:48,backgroundColor:'#fff',flexDirection:'row',justifyContent:'space-between',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#e6e6e6'}}>
                       <View style={{width:48,height:48,justifyContent:'center',alignItems:'center'}}>
-                        <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image>
+                        {/* <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image> */}
                       </View>
                       <View style={{flex:1,alignItems:'center',justifyContent:'center',height:48,width:50}}>
                          <Text style={{fontSize:18,color:'#000',alignSelf:'center'}}>购物车</Text>
@@ -163,6 +163,8 @@ class Cart extends Component {
                   </View>
                   <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
                   {cart.data.data.map((data,index) => {
+                      var price = 0;
+                      var num =0;
                       //默认店铺选中
                       return (
                         <View key={index} style={{backgroundColor:'#fff',marginBottom:18,}}>
@@ -178,7 +180,9 @@ class Cart extends Component {
                           {data.products.map((product,proIndex) => {
                             if(product.select){
                               cart.data.totalNum++;
-                              cart.data.totalPrice+=product.maket_price*product.num;
+                              num++;
+                              cart.data.totalPrice+=product.mall_price*product.num;
+                              price = product.mall_price*product.num;
                             }
                             return(
                             <TouchableOpacity onPress={()=>{dispatch(performProductSelectAction(cart,index,proIndex))}} key={proIndex} style={{height:126,width:width,flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:1,borderBottomColor:'#f6f6f6'}}>
@@ -191,8 +195,8 @@ class Cart extends Component {
                                   <Text style={{width:216,lineHeight:20,fontSize:14}} numberOfLines={2}>{product.prod_name}</Text>
                                   <View style={{width:216,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
                                     <View>
-                                      <Text style={{fontSize:16,color:'#FF240D'}}>¥ {product.maket_price}</Text>
-                                      <Text style={{fontSize:12,color:'#797979',textDecorationLine:'line-through'}}>¥ {product.mall_price}</Text>
+                                      <Text style={{fontSize:16,color:'#FF240D'}}>¥ {product.mall_price}</Text>
+                                      <Text style={{fontSize:12,color:'#797979',textDecorationLine:'line-through'}}>¥ {product.maket_price}</Text>
                                     </View>
                                     <View>
                                       <View style={{height:26,flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
@@ -219,7 +223,7 @@ class Cart extends Component {
                           )
                           })}
                           <View style={{height:45,flexDirection:'row',justifyContent:'flex-end',alignItems:'center',paddingHorizontal:12}}>
-                            <Text style={{fontSize:12}}>总共 <Text style={{color:'#000'}}>{cart.data.totalNum}</Text> 个商品，合计金额 <Text style={{color:'#000'}}>{cart.data.totalPrice}</Text> 元</Text>
+                            <Text style={{fontSize:12}}>总共 <Text style={{color:'#000'}}>{cart.data.totalNum}</Text> 个商品，合计金额 <Text style={{color:'#000'}}>{price}</Text> 元</Text>
                           </View>
                         </View>
                       )

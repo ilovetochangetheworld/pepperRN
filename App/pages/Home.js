@@ -22,6 +22,7 @@ import { performAppMainAction } from '../actions/AppMainAction';
 import { connect } from 'react-redux';
 import { performIndexGoodsAction } from '../actions/IndexAction';
 import { performAdsAction } from '../actions/AdsAction';
+import Login from './CenterContent/Login';
 import Loading from '../component/Loading';
 var {height, width} = Dimensions.get('window');
 var item_width = (width-1)/2;
@@ -88,6 +89,14 @@ class Home extends Component {
             });
           });
           break;
+          case 3:
+           InteractionManager.runAfterInteractions(() => {
+              navigator.push({
+                component: Login,
+                name: 'Login',
+                });
+            });
+            break;
       }
   }
 
@@ -111,7 +120,7 @@ class Home extends Component {
        <TouchableOpacity onPress={()=>{this.goodsDetailAction(data.prod_id)}}>
           <Image source={{uri:data.list_img}} style={{width:(width-30)/2,height:175}}/>
           <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
-                <Text style={{width:152, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>{data.prod_name}</Text>
+                <Text style={{width:(width-30)/2-20, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>{data.prod_name}</Text>
           </View>
           <View style={{flex:1, flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start', backgroundColor:'#fff', paddingHorizontal:10}}>
                 <View>
@@ -143,8 +152,13 @@ class Home extends Component {
   render() {
         const {index,ads} = this.props;
         if (!index.data||!ads) {
-           return this.renderLoadingView();
-         }
+          //  return this.renderLoadingView();
+          return(
+           <View style={{backgroundColor:'#f5f5f5',flex:1}}>
+             <Loading visible={true} />
+           </View>
+           )
+         }else{
         return (
            <View style={{backgroundColor:'#f5f5f5',flex:1}}>
               <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
@@ -167,7 +181,7 @@ class Home extends Component {
                 <View style={{flexDirection:'row',backgroundColor:'white',height:85,alignItems:'center'}}>
                  <View style={styles.menu_list}>
                        <TouchableOpacity onPress={()=>{this.topItemAction(0)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
-                       <Image source={MENU_IMGS[1]} style={styles.menu_img}></Image>
+                       <Image source={MENU_IMGS[0]} style={styles.menu_img}></Image>
                        <View>
                              <Text>畅销榜</Text>
                        </View>
@@ -193,7 +207,7 @@ class Home extends Component {
                        <TouchableOpacity onPress={()=>{this.topItemAction(3)}} style={{flex:1,flexDirection:'column', alignItems:'center',justifyContent:'center'}}>
                        <Image source={MENU_IMGS[3]} style={styles.menu_img}></Image>
                        <View>
-                             <Text>商城资讯</Text>
+                             <Text>登录注册</Text>
                        </View>
                        </TouchableOpacity>
                  </View>
@@ -261,6 +275,7 @@ class Home extends Component {
           </ScrollView>
        </View>
         );
+       }
     }
 }
 const styles=StyleSheet.create({

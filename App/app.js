@@ -25,12 +25,13 @@ class App extends React.Component {
        super(props);
        this.renderScene = this.renderScene.bind(this);
        this.goBack = this.goBack.bind(this);
+       Wechat.registerApp('wx5e485c08f245402e');
        BackAndroid.addEventListener('hardwareBackPress', this.goBack);
+
    }
 
    componentDidMount (){
      //想要使用微信分享, 你必须到微信分享平台 https://open.weixin.qq.com/ 申请appid
-     Wechat.registerApp('wx5e485c08f245402e');
    }
 
    componentWillUnmount() {

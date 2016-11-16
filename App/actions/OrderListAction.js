@@ -10,7 +10,7 @@ import { toastShort } from '../utils/ToastUtil';
 export function performOrderListAction(token){
      return dispatch => {
         dispatch(performOrderList());
-        fetch(HOST+'MemberOrder/getOrders?token='+token+'&pageIndex=1&pageSize=10')
+        fetch(HOST+'MemberOrder/getOrders?token='+token+'&pageIndex=1&pageSize=40')
         .then((response) => response.json())
         .then((responseData)=>{
            if(responseData.status){
