@@ -16,10 +16,13 @@ export default function login(state = initialState, action){
                       loading: true
                   });
         case types.RECEIVE_LOGIN_ACTION:
-                  console.log(action);
                   return Object.assign({}, state, {
                        loading: false,
                        data: action.data
+                  });
+        case types.RECEIVE_LOGIN_ERROR_ACTION:
+                  return Object.assign({}, state, {
+                      loading: false
                   });
         default:
             return state;

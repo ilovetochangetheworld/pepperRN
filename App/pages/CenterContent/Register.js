@@ -86,8 +86,8 @@ class Register extends Component {
                return;
            }
            register(username,password).then(registerStatus=>{
-             console.log(registerStatus);
              if(registerStatus.status){
+               toastShort('注册成功');
                AsyncStorage.setItem('token',registerStatus.token).then(
                  ()=>{
                   dispatch(performCenterAction(registerStatus.token));

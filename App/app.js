@@ -73,7 +73,7 @@ class App extends React.Component {
       <View style={{flex: 1}}>
         <StatusBar
             barStyle='light-content'
-            backgroundColor='#fff'
+            backgroundColor='#FF240D'
             style={{height: STATUS_BAR_HEIGHT}}
        />
         <Navigator

@@ -24,8 +24,7 @@ export function performLoginAction(username,password){
         })
         .then((response) => response.json())
         .then((responseData)=>{
-          // console.log(responseData);
-
+           console.log(responseData);
            if(responseData.status){
                //登录成功..
                dispatch(receiveLoginResult(responseData));
@@ -33,7 +32,9 @@ export function performLoginAction(username,password){
                dispatch(isLogin());
                toastShort('登录成功...');
            }else{
-               toastShort(responseData.msg);
+               dispatch(receiveLoginErrorResult());
+              //  dispatch(noLogin());
+              //  toastShort(responseData.msg);
            }
         })
         // .catch((error) => {
@@ -54,11 +55,24 @@ function isLogin() {
         }
 }
 
+function noLogin() {
+  return {
+    type: types.TOKEN_REFRESH,
+  }
+}
+
 function receiveLoginResult(result){
         return {
             type: types.RECEIVE_LOGIN_ACTION,
             data: result,
         }
+}
+
+function receiveLoginErrorResult(){
+  console.log('receiveLoginErrorResult');
+    return {
+        type: types.RECEIVE_LOGIN_ERROR_ACTION,
+    }
 }
 
 function changeCartAction(){

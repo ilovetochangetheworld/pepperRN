@@ -14,6 +14,7 @@ import{
     ListView,
 } from 'react-native';
 
+import ProgressBar from  'ActivityIndicator';
 import { NaviGoBack } from '../utils/CommonUtils';
 import goodsDetail from './GoodsDetails';
 import {HOST} from  '../common/request';
@@ -83,10 +84,10 @@ class GoodsList extends Component {
 
   _renderGoods(data){
     return (
-      <TouchableOpacity style={{flex:1,height:280,width:(width-30)/2,justifyContent:'center',alignItems:'center',marginBottom:8,backgroundColor:'#fff',}}
+      <TouchableOpacity style={{flex:1,height:280,width:(width-30)/2,justifyContent:'center',alignItems:'flex-start',marginBottom:8,backgroundColor:'#f5f5f5',}}
                         onPress={()=>{this.goodsDetailAction(data.prod_id)}} >
           <Image source={{uri:data.list_img}} style={{width:(width-30)/2,height:175,resizeMode:'stretch'}}/>
-          <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
+          <View style={{flex:1, width:(width-30)/2,paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
                 <Text style={{width:(width-30)/2-20, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>{data.prod_name}</Text>
           </View>
           <View style={{width:176, flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start', backgroundColor:'#fff', paddingHorizontal:10}}>
@@ -100,20 +101,10 @@ class GoodsList extends Component {
     )
   }
 
-  renderLoadingView() {
-    return (
-      <View>
-        <Text>
-          Loading more...
-        </Text>
-      </View>
-    );
-  }
-
   render() {
         const {goodsList} = this.props;
         if (!goodsList.data) {
-           return this.renderLoadingView();
+           return <ProgressBar />
          }
         return (
              <View style={{backgroundColor:'#fff',flex:1}}>
@@ -124,7 +115,7 @@ class GoodsList extends Component {
                           <Image source={require('./img/pp_return.png')} style={{width:11,height:18}}></Image>
                         </TouchableOpacity>
                         <TextInput style={{width:width-100,height:31,backgroundColor:'#F2F2F2',paddingVertical:0,paddingHorizontal:6}}
-                                    placeholder={'搜索商品 分类'}
+                                    placeholder={'搜索商品'}
                                     onChangeText={(search) => this.setState({search})}
                                     value={this.state.search}
                                     keyboardType='web-search'
@@ -191,8 +182,6 @@ const styles=StyleSheet.create({
     // padding:12,
     flexDirection:'row',
     flexWrap:'wrap',
-    // justifyContent:'flex-start',
-    // alignItems:'flex-start',
   },
   imgList: {
     flex: 1,

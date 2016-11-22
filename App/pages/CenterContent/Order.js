@@ -14,10 +14,10 @@ import{
     Alert
 } from 'react-native';
 
+import ProgressBar from  'ActivityIndicator';
 import { connect } from 'react-redux';
 import { performGetAddressAction } from '../../actions/GetAddressAction';
 import CommonHeader from '../../component/CommonHeader';
-import Loading from '../../component/Loading.js';
 var {height, width} = Dimensions.get('window');
 import { NaviGoBack } from '../../utils/CommonUtils';
 import { performOrderListAction } from '../../actions/OrderListAction';
@@ -34,18 +34,19 @@ class Order extends Component {
     var orderListData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state={
       order_active:-1,
-      renderPlaceholderOnly:true,
+      renderPlaceholderOnly:false,
       orderListData
     }
     this._renderList = this._renderList.bind(this);
     this._changeOrderStatus = this._changeOrderStatus.bind(this);
+    this.buttonBackAction = this.buttonBackAction.bind(this);
   }
 
   componentDidMount(){
     InteractionManager.runAfterInteractions(() => {
       const {navigator,dispatch} = this.props;
       this._checkLogin();
-      this.setState({renderPlaceholderOnly: false})
+      this.setState({renderPlaceholderOnly: true})
     });
   }
 
@@ -216,7 +217,10 @@ class Order extends Component {
     const {orderCancel,orderList} = this.props;
     if(!orderList.data.status||orderCancel.loading){
       return (
-        <Loading visible={true} />
+        <View style={{backgroundColor:'#f5f5f5',flex:1}}>
+            <CommonHeader title='我的订单' onPress={()=>{this.buttonBackAction()}} />
+            <ProgressBar />
+        </View>
       )
     }else{
       let orderListData=new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})

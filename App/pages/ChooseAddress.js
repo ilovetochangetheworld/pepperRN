@@ -14,6 +14,7 @@ import{
 } from 'react-native';
 
 import { connect } from 'react-redux';
+import { NaviGoBack } from '../utils/CommonUtils';
 import { performGetAddressAction } from '../actions/GetAddressAction';
 import CommonHeader from '../component/CommonHeader';
 import Loading from '../component/Loading.js';
@@ -63,6 +64,12 @@ class ChooseAddress extends Component {
         })
       }
     }
+  }
+
+    //返回
+  buttonBackAction(){
+      const {navigator} = this.props;
+      return NaviGoBack(navigator);
   }
 
   //登录检测
@@ -200,7 +207,7 @@ class ChooseAddress extends Component {
     if(address.data.status){
       return (
         <View style={{backgroundColor:'#f5f5f5',flex:1}}>
-            <CommonHeader title='选择收货地址' />
+            <CommonHeader title='选择收货地址' onPress={()=>{this.buttonBackAction()}} />
             <ListView
              dataSource={address.addressList}
              renderRow={this._renderRow}

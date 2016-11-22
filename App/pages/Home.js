@@ -14,6 +14,7 @@ import{
     InteractionManager,
     ListView,
 } from 'react-native';
+import ProgressBar from  'ActivityIndicator';
 import Swiper from 'react-native-swiper';
 import ShortLine from '../component/ShortLine';
 import goodsList from './GoodsList';
@@ -23,7 +24,6 @@ import { connect } from 'react-redux';
 import { performIndexGoodsAction } from '../actions/IndexAction';
 import { performAdsAction } from '../actions/AdsAction';
 import Login from './CenterContent/Login';
-import Loading from '../component/Loading';
 var {height, width} = Dimensions.get('window');
 var item_width = (width-1)/2;
 
@@ -116,7 +116,7 @@ class Home extends Component {
 
  //推荐商品列表
  renderGoods(data) {
-   return(<View style={{flex:1,height:280,justifyContent:'center',alignItems:'center',width:(width-30)/2,marginBottom:10,}}>
+   return(<View style={{flex:1,height:280,justifyContent:'center',alignItems:'flex-start',width:(width-30)/2,marginBottom:10,}}>
        <TouchableOpacity onPress={()=>{this.goodsDetailAction(data.prod_id)}}>
           <Image source={{uri:data.list_img}} style={{width:(width-30)/2,height:175}}/>
           <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
@@ -143,19 +143,13 @@ class Home extends Component {
         return <PagerDotIndicator pageCount={ads.imgDataSource.length} />;
   }
 
-  renderLoadingView() {
-    return (
-        <Loading visible={true} />
-    );
-  }
 
   render() {
         const {index,ads} = this.props;
         if (!index.data||!ads) {
-          //  return this.renderLoadingView();
           return(
            <View style={{backgroundColor:'#f5f5f5',flex:1}}>
-             <Loading visible={true} />
+             <ProgressBar />
            </View>
            )
          }else{
@@ -315,9 +309,7 @@ const styles=StyleSheet.create({
     list:{
       flexDirection:'row',
       flexWrap:'wrap',
-      // paddingHorizontal:10,
-      justifyContent:'space-around',
-      alignItems:'center',
+      paddingHorizontal:8,
     }
 });
 // export default Home;

@@ -12,9 +12,9 @@ import{
     TextInput,
     Navigator,
 } from 'react-native';
+import ProgressBar from  'ActivityIndicator';
 import { HOST } from '../common/request';
 import GoodsList from './GoodsList';
-import Loading from '../component/Loading';
 var {height,width} = Dimensions.get('window');
 import { connect } from 'react-redux';
 import { performClassifyAction } from '../actions/ClassifyAction'
@@ -68,7 +68,7 @@ class Classify extends Component {
     render() {
       const {classify} = this.props;
       if (!classify.data) {
-         return this.renderLoadingView();
+         return <ProgressBar />
        }
        let classifyData = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
        .cloneWithRows(classify.data.data);
@@ -79,7 +79,7 @@ class Classify extends Component {
               <View style={{width:width,height:45,flexDirection:'row',justifyContent:'space-between',alignItems:'center',paddingHorizontal:15,borderBottomWidth:1,borderColor:'#cbcbcb'}}>
                   <Image source={require('./img/pp_return.png')} style={{width:11,height:18,marginRight:10}}></Image>
                   <TextInput style={{width:width-100,height:31,backgroundColor:'#F2F2F2',paddingVertical:0,paddingHorizontal:6}}
-                              placeholder={'搜索商品 分类'}
+                              placeholder={'搜索商品'}
                               onChangeText={(search) => this.setState({search})}
                               value={this.state.search}
                               keyboardType='web-search'
@@ -111,13 +111,6 @@ class Classify extends Component {
                 </View>
               </View>
            </View>
-      );
-    }
-
-
-    renderLoadingView() {
-      return (
-        <Loading visible={true} />
       );
     }
 

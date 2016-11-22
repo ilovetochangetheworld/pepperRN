@@ -45,7 +45,7 @@ class AppMain extends Component {
 			    selectedTitleStyle={styles.selectedTextStyle}
 			    titleStyle={styles.textStyle}
 			    renderIcon={() => <Image source={require("./img/pp_tab_home.png")} style={{height:22,width:24}}/>}
-			    renderSelectedIcon={() => <Image source={require('./tab-home-press.png')} style={{height:22,width:24}}/>}
+			    renderSelectedIcon={() => <Image source={require('./img/pp_tab_home_press.png')} style={{height:22,width:24}}/>}
 			    onPress={() => dispatch(performAppMainAction('home'))}>
 			    <Home {...this.props}/>
 			  </TabNavigator.Item>

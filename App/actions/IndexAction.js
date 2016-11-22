@@ -16,13 +16,11 @@ export function performIndexGoodsAction(page){
        .then((responseData)=>{
           if(responseData.status){
               //获取数据成功
-              // result.productLis = responseData;
               dispatch(receiveIndexGoodsResult(responseData));
           }else{
               toastShort(responseData.msg);
           }
        })
-        // dispatch(receiveGoodsDetailResult(responseData));
      }
 }
 

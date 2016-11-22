@@ -9,7 +9,8 @@ import{
     Dimensions,
     StyleSheet,
     ScrollView,
-    AsyncStorage
+    AsyncStorage,
+    Alert
 } from 'react-native';
 
 import CenterItem from '../component/CenterItem';
@@ -21,7 +22,9 @@ import Loading from '../component/Loading';
 import AboutUs from './CenterContent/AboutUs';
 import User from './CenterContent/User';
 import { toastShort } from '../utils/ToastUtil';
-import Order from './CenterContent/Order'
+import Order from './CenterContent/Order';
+import Partner from './CenterContent/Partner';
+import PartnerCenter from './CenterContent/PartnerCenter';
 
 var {height,width} =  Dimensions.get('window');
 
@@ -80,8 +83,7 @@ class Center extends Component {
     }
 
     itemActionIndex(type){
-      InteractionManager.runAfterInteractions(() => {
-        const {navigator} = this.props;
+        const {center,navigator} = this.props;
         switch (type) {
           //全部订单
           case 0:
@@ -90,6 +92,32 @@ class Center extends Component {
                 component: Order,
                 name: 'Order'
               });
+            });
+            break;
+          //合伙人
+          case 1:
+          InteractionManager.runAfterInteractions(() => {
+            if(center.data.userInfo.data.role_id<2){
+              Alert.alert(
+                '温馨提示',
+                '您还不是合伙人不能分销商品',
+                [
+                  {text: '成为合伙人', onPress: () =>
+                  navigator.push({
+                    component: Partner,
+                    name: 'Partner'
+                  })},
+                  {text: '取消'},
+                ]
+              )}
+            else{
+              if(center.data.userInfo.data.role_id>=2){
+                navigator.push({
+                  component: PartnerCenter,
+                  name: 'PartnerCenter'
+                })
+              }
+            }
             });
             break;
           //个人信息
@@ -120,7 +148,6 @@ class Center extends Component {
             });
             break;
         }
-      })
     }
 
     //登录
@@ -137,7 +164,6 @@ class Center extends Component {
     //退出登录
     _loginOut(){
       const {navigator} = this.props;
-      console.log('退出登录');
       AsyncStorage.clear().then(
         ()=>{
           navigator.push({
@@ -231,11 +257,11 @@ class Center extends Component {
                          <Text stlye={{fontSize:12}}>退换货</Text>
                        </TouchableOpacity>
                      </View>
-                     {/* <CenterItem
+                     <CenterItem
                         title='合伙人'
                         icon={require('./img/center/pp_center_hhr.png')}
                         onPress={()=>this.itemActionIndex(1)}/>
-                     <View style={[{backgroundColor:'#f2f2f2',height:10},styles.center_line]}></View> */}
+                     <View style={[{backgroundColor:'#f2f2f2',height:10},styles.center_line]}></View>
                      <CenterItem
                         title='个人信息'
                         icon={require('./img/center/pp_center_grxx.png')}

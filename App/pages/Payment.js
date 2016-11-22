@@ -83,8 +83,8 @@ class Payment extends React.Component {
       .then((isInstalled) => {
         if (isInstalled) {
           Wechat.shareToSession({
-            title: 'React Native开发的嘎嘎商城哦~赶紧来体验吧...',
-            description: '分享自:嘎嘎商城-微信订阅号:codedev123',
+            title: 'React Native分享测试',
+            description: '分享自:Y.x',
             thumbImage: 'http://lookcode-wordpress.stor.sinaapp.com/uploads/2016/01/react_native1.jpg',
             type: 'news',
             webpageUrl: 'http://wwww.lcode.org'

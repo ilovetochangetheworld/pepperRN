@@ -17,6 +17,7 @@ import{
     Alert
 } from 'react-native';
 
+import ProgressBar from  'ActivityIndicator';
 import { connect } from 'react-redux';
 import Loading from '../component/Loading';
 import goodsDetail from './GoodsDetails';
@@ -206,7 +207,7 @@ class Fav extends Component {
                 <View style={{width:48}}>
                 </View>
             </View>
-            <Loading visible={this.state.loadingStatus} />
+            <ProgressBar />
           </View>
         )
       }

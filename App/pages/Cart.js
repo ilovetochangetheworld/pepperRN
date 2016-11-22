@@ -166,67 +166,72 @@ class Cart extends Component {
                       var price = 0;
                       var num =0;
                       //默认店铺选中
-                      return (
-                        <View key={index} style={{backgroundColor:'#fff',marginBottom:18,}}>
-                          <TouchableOpacity onPress={()=>{dispatch(performShopSelectAction(cart,index))}}>
-                            <View style={{width:width,height:45,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingHorizontal:12,borderBottomWidth:1,borderBottomColor:'#E6E6E6'}}>
-                              <View style={{height:16,width:16,marginRight:10}}>
-                                {data.select ? <Image source={require('./img/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('./img/checkbox.png')} style={{height:16,width:16}}/>}
+                      if(data.products.length>0){
+                        return (
+                          <View key={index} style={{backgroundColor:'#fff',marginBottom:18,}}>
+                            <TouchableOpacity onPress={()=>{dispatch(performShopSelectAction(cart,index))}}>
+                              <View style={{width:width,height:45,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingHorizontal:12,borderBottomWidth:1,borderBottomColor:'#E6E6E6'}}>
+                                <View style={{height:16,width:16,marginRight:10}}>
+                                  {data.select ? <Image source={require('./img/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('./img/checkbox.png')} style={{height:16,width:16}}/>}
+                                </View>
+                                <Image source={require('./img/shop.png')} style={{height:16,width:16,marginRight:10}}/>
+                                <Text>{data.shop_name}</Text>
                               </View>
-                              <Image source={require('./img/shop.png')} style={{height:16,width:16,marginRight:10}}/>
-                              <Text>{data.shop_name}</Text>
-                            </View>
-                          </TouchableOpacity>
-                          {data.products.map((product,proIndex) => {
-                            if(product.select){
-                              cart.data.totalNum++;
-                              num++;
-                              cart.data.totalPrice+=product.mall_price*product.num;
-                              price = product.mall_price*product.num;
-                            }
-                            return(
-                            <TouchableOpacity onPress={()=>{dispatch(performProductSelectAction(cart,index,proIndex))}} key={proIndex} style={{height:126,width:width,flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:1,borderBottomColor:'#f6f6f6'}}>
-                              <View style={{height:126,width:38,justifyContent:'center',alignItems:'center'}}>
-                                {product.select ? <Image source={require('./img/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('./img/checkbox.png')} style={{height:16,width:16}}/>}
-                              </View>
-                              <View style={{width:width-38,height:126,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-                                <Image style={{height:96,width:96,resizeMode:'cover'}} source={{uri:product.list_img}}/>
-                                <View style={{width:216,height:96,flexDirection:'column',justifyContent:'space-between',alignItems:'flex-start'}}>
-                                  <Text style={{width:216,lineHeight:20,fontSize:14}} numberOfLines={2}>{product.prod_name}</Text>
-                                  <View style={{width:216,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-                                    <View>
-                                      <Text style={{fontSize:16,color:'#FF240D'}}>¥ {product.mall_price}</Text>
-                                      <Text style={{fontSize:12,color:'#797979',textDecorationLine:'line-through'}}>¥ {product.maket_price}</Text>
-                                    </View>
-                                    <View>
-                                      <View style={{height:26,flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
-                                        <TouchableOpacity onPress={()=>{dispatch(performCartCountAction(cart,index,proIndex,-1))}} style={{width:26,height:26,justifyContent:'center',alignItems:'center',backgroundColor:'#F2F2F2',borderWidth:1,borderColor:'#E6E6E6',}}>
-                                          <Text style={{fontSize:14}}>-</Text>
-                                        </TouchableOpacity>
-                                        <View style={{width:36,height:26,justifyContent:'center',alignItems:'center',borderTopWidth:1,borderBottomWidth:1,borderColor:'#E6E6E6'}}>
-                                          <Text style={{fontSize:14,textAlign:'center',}}>
-                                            {product.num}
-                                          </Text>
+                            </TouchableOpacity>
+                            {data.products.map((product,proIndex) => {
+                              if(product.select){
+                                cart.data.totalNum++;
+                                num++;
+                                cart.data.totalPrice+=product.mall_price*product.num;
+                                price = product.mall_price*product.num;
+                              }
+                              return(
+                              <TouchableOpacity onPress={()=>{dispatch(performProductSelectAction(cart,index,proIndex))}} key={proIndex} style={{height:126,width:width,flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:1,borderBottomColor:'#f6f6f6'}}>
+                                <View style={{height:126,width:38,justifyContent:'center',alignItems:'center'}}>
+                                  {product.select ? <Image source={require('./img/checkbox_active.png')} style={{height:16,width:16}}/> : <Image source={require('./img/checkbox.png')} style={{height:16,width:16}}/>}
+                                </View>
+                                <View style={{width:width-38,height:126,flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
+                                  <Image style={{height:96,width:96,resizeMode:'cover'}} source={{uri:product.list_img}}/>
+                                  <View style={{width:216,height:96,flexDirection:'column',justifyContent:'space-between',alignItems:'flex-start'}}>
+                                    <Text style={{width:216,lineHeight:20,fontSize:14}} numberOfLines={2}>{product.prod_name}</Text>
+                                    <View style={{width:216,flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+                                      <View>
+                                        <Text style={{fontSize:16,color:'#FF240D'}}>¥ {product.mall_price}</Text>
+                                        <Text style={{fontSize:12,color:'#797979',textDecorationLine:'line-through'}}>¥ {product.maket_price}</Text>
+                                      </View>
+                                      <View>
+                                        <View style={{height:26,flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                                          <TouchableOpacity onPress={()=>{dispatch(performCartCountAction(cart,index,proIndex,-1))}} style={{width:26,height:26,justifyContent:'center',alignItems:'center',backgroundColor:'#F2F2F2',borderWidth:1,borderColor:'#E6E6E6',}}>
+                                            <Text style={{fontSize:14}}>-</Text>
+                                          </TouchableOpacity>
+                                          <View style={{width:36,height:26,justifyContent:'center',alignItems:'center',borderTopWidth:1,borderBottomWidth:1,borderColor:'#E6E6E6'}}>
+                                            <Text style={{fontSize:14,textAlign:'center',}}>
+                                              {product.num}
+                                            </Text>
+                                          </View>
+                                          <TouchableOpacity onPress={()=>{dispatch(performCartCountAction(cart,index,proIndex,1))}} style={{width:26,height:26,justifyContent:'center',alignItems:'center',borderWidth:1,borderColor:'#E6E6E6',}}>
+                                            <Text style={{fontSize:14}}>+</Text>
+                                          </TouchableOpacity>
+                                          <TouchableOpacity onPress={()=>{dispatch(performDelCartAction(cart,index,proIndex))}}>
+                                            <Image style={{height:20,width:20,marginLeft:14}} source={require('./img/del.png')}></Image>
+                                          </TouchableOpacity>
                                         </View>
-                                        <TouchableOpacity onPress={()=>{dispatch(performCartCountAction(cart,index,proIndex,1))}} style={{width:26,height:26,justifyContent:'center',alignItems:'center',borderWidth:1,borderColor:'#E6E6E6',}}>
-                                          <Text style={{fontSize:14}}>+</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={()=>{dispatch(performDelCartAction(cart,index,proIndex))}}>
-                                          <Image style={{height:20,width:20,marginLeft:14}} source={require('./img/del.png')}></Image>
-                                        </TouchableOpacity>
                                       </View>
                                     </View>
                                   </View>
                                 </View>
-                              </View>
-                            </TouchableOpacity>
-                          )
-                          })}
-                          <View style={{height:45,flexDirection:'row',justifyContent:'flex-end',alignItems:'center',paddingHorizontal:12}}>
-                            <Text style={{fontSize:12}}>总共 <Text style={{color:'#000'}}>{cart.data.totalNum}</Text> 个商品，合计金额 <Text style={{color:'#000'}}>{price}</Text> 元</Text>
+                              </TouchableOpacity>
+                            )
+                            })}
+                            <View style={{height:45,flexDirection:'row',justifyContent:'flex-end',alignItems:'center',paddingHorizontal:12}}>
+                              <Text style={{fontSize:12}}>总共 <Text style={{color:'#000'}}>{cart.data.totalNum}</Text> 个商品，合计金额 <Text style={{color:'#000'}}>{price}</Text> 元</Text>
+                            </View>
                           </View>
-                        </View>
-                      )
+                        )
+                      }else{
+                        return null
+                      }
+
                     })}
                   </ScrollView>
                   <View style={{justifyContent:'flex-end',}}>

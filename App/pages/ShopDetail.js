@@ -15,8 +15,9 @@ import{
     WebView
 } from 'react-native';
 
+import ProgressBar from  'ActivityIndicator';
 import { NaviGoBack } from '../utils/CommonUtils';
-import goodsDetail from './GoodsDetails';
+import ShopGoodsDetail from './ShopGoodsDetail';
 import CommonHeader from '../component/CommonHeader';
 import {HOST} from  '../common/request';
 import { getShopDetail,getShopGoods } from '../api/shop';
@@ -106,8 +107,8 @@ class ShopDetail extends Component {
    const {navigator} = this.props;
      InteractionManager.runAfterInteractions(() => {
        navigator.push({
-         component: goodsDetail,
-         name: 'goodsDetail',
+         component: ShopGoodsDetail,
+         name: 'ShopGoodsDetail',
          params: {
               id: prod_id
           }
@@ -128,10 +129,10 @@ class ShopDetail extends Component {
 
   _renderGoods(data){
     return (
-      <TouchableOpacity style={{flex:1,height:280,width:(width-30)/2,justifyContent:'center',alignItems:'center',marginBottom:8,backgroundColor:'#fff',}}
+      <TouchableOpacity style={{flex:1,height:280,width:(width-30)/2,justifyContent:'center',alignItems:'flex-start',marginBottom:8}}
                         onPress={()=>{this.goodsDetailAction(data.prod_id)}} >
           <Image source={{uri:data.list_img}} style={{width:(width-30)/2,height:175,resizeMode:'stretch'}}/>
-          <View style={{flex:1, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
+          <View style={{flex:1,width:(width-30)/2, paddingTop:10,justifyContent:'center',alignItems:'center', backgroundColor:'white',}}>
                 <Text style={{width:(width-30)/2-20, height:34, lineHeight:17, fontSize:14, overflow:'hidden'}}>{data.prod_name}</Text>
           </View>
           <View style={{width:176, flexDirection:'row', justifyContent:'space-between', alignItems:'flex-start', backgroundColor:'#fff', paddingHorizontal:10}}>
@@ -145,23 +146,10 @@ class ShopDetail extends Component {
     )
   }
 
-  renderLoadingView() {
-    return (
-      <View>
-        <Text>
-          Loading more...
-        </Text>
-      </View>
-    );
-  }
+
 
   render() {
-        // if (this.state.loadingStatus) {
-        //    return this.renderLoadingView();
-        //  }
-
         if(this.state.detailStatus&&this.state.goodsStatus){
-          console.log(this.state.shopListData);
           return (
                <View style={{backgroundColor:'#f5f5f5',flex:1}}>
                  <CommonHeader title='店铺详情' onPress={()=>{this.buttonBackAction()}} />
@@ -216,9 +204,7 @@ class ShopDetail extends Component {
           return(
             <View style={{backgroundColor:'#fff',flex:1}}>
               <CommonHeader title='店铺详情' onPress={()=>{this.buttonBackAction()}} />
-              <Text>
-                {/* 正在加载。。。 */}
-              </Text>
+              <ProgressBar />
             </View>
 
           )
@@ -233,10 +219,10 @@ class ShopDetail extends Component {
 const styles=StyleSheet.create({
   goods_list: {
     // flex:1,
-    // padding:12,
+    paddingHorizontal:8,
     flexDirection:'row',
     flexWrap:'wrap',
-    // justifyContent:'flex-start',
+    // justifyContent:'center',
     // alignItems:'flex-start',
   },
   section_title:{

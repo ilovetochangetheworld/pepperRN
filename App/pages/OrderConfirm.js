@@ -2,7 +2,7 @@
  * 订单确认
  */
 'use strict';
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Dimensions,
   Image,
@@ -17,12 +17,13 @@ import {
   TextInput,
   ScrollView
 } from 'react-native';
+
+import ProgressBar from  'ActivityIndicator';
 import { NaviGoBack } from '../utils/CommonUtils';
 import { connect } from 'react-redux';
 import {performOrderDispatchAction} from '../actions/OrderDispatchAction';
 import { performGetAddressAction } from '../actions/GetAddressAction';
 var {height, width} = Dimensions.get('window');
-import OrderResult from './OrderResult';
 import Login from './CenterContent/Login';
 import { toastShort,toastLong } from '../utils/ToastUtil';
 import Payment from './Payment';
@@ -31,7 +32,7 @@ import ChooseAddress from './ChooseAddress';
 import { performOrderConfirmAction } from '../actions/OrderConfirmAction';
 import Loading from '../component/Loading.js';
 
-class OrderConfirm extends React.Component {
+class OrderConfirm extends Component {
 
   constructor(props) {
     super(props);
@@ -180,7 +181,14 @@ class OrderConfirm extends React.Component {
     console.log(route);
     var defaultAddress;
     if(!route.orderProduct||orderconfirm.loading){
-      return (<Loading visible={true} />)
+      return (
+        <View style={{backgroundColor:'#f5f5f5',flex:1}}>
+          <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>
+            <CommonHeader title='订单详情' onPress={()=>{this.buttonBackAction()}} />
+            <ProgressBar />
+          </ScrollView>
+        </View>
+      )
     }
     if(chooseAddress.data){
       defaultAddress = chooseAddress.data;
@@ -262,7 +270,6 @@ class OrderConfirm extends React.Component {
           </View>
         </ScrollView>
         <View style={{height:50,justifyContent:'flex-end'}}>
-              {/* <TouchableOpacity onPress={()=>{this.payItemAction()}}> */}
               {defaultAddress?
                 <TouchableOpacity onPress={()=>{this.payItemAction(orderdispatch.data,0,defaultAddress.consignee,defaultAddress.phone,defaultAddress.provice_name+defaultAddress.city_name+defaultAddress.county_name+defaultAddress.address,defaultAddress.provice,defaultAddress.city,defaultAddress.county,null,this.state.message,0,route.orderProduct)}}>
                       <View style={{width:width,height:50,flexDirection:'row',justifyContent:'center',alignItems:'center',borderTopWidth:1,borderTopColor:'#e3e5e9',backgroundColor:'#fff'}}>

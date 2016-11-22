@@ -8,10 +8,6 @@ import {
   Image,
   View,
   Text,
-  StyleSheet,
-  TouchableOpacity,
-  ListView,
-  InteractionManager,
 } from 'react-native';
 import { NaviGoBack } from '../../utils/CommonUtils';
 import CommonHeader from '../../component/CommonHeader';
@@ -47,11 +43,3 @@ class AboutUs extends React.Component {
 }
 
 export default AboutUs
-// function mapStateToProps(state){
-//   const {orderdispatch} = state;
-//   return {
-//     orderdispatch
-//   }
-// }
-//
-// export default connect(mapStateToProps)(OrderConfirm)

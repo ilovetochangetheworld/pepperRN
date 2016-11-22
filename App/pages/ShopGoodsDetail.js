@@ -44,12 +44,12 @@ const html5Style = {
  }
 }
 
-class GoodsDetails extends Component {
+class ShopGoodsDetail extends Component {
   constructor(props) {
     super(props);
     this.state={
       visible:false,
-      height:500,
+      height:200,
       activeIndex:null,
       num:1,
       tab:2,
@@ -78,16 +78,6 @@ class GoodsDetails extends Component {
   buttonBackAction(){
       const {navigator} = this.props;
       return NaviGoBack(navigator);
-  }
-
-  _renderPage(
-    data: Object,
-    pageID: number | string,) {
-    return (
-      <Image
-        source={{uri: data.pic_path}}
-        style={{height:184,width:width,resizeMode:'cover'}} />
-    );
   }
 
   renderLoadingView() {
@@ -400,9 +390,10 @@ class GoodsDetails extends Component {
                 bounces={false}
                 scrollEnabled={false}
                 automaticallyAdjustContentInsets={true}
-                contentInset={{top:0,left:0}}
+                // contentInset={{top:0,left:0}}
                 onNavigationStateChange={(title)=>{
-                  if(title.title > 0) {
+                  // console.log(title);
+                  if(parseInt(title.title) > 0) {
                     this.setState({
                       height:(parseInt(title.title)+20)
                     })
@@ -612,4 +603,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(GoodsDetails);
+export default connect(mapStateToProps)(ShopGoodsDetail);

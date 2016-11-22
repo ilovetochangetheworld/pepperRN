@@ -1,6 +1,7 @@
 package com.pepperrn;
 
 import com.facebook.react.ReactActivity;
+import com.github.yamill.orientation.OrientationPackage;
 
 public class MainActivity extends ReactActivity {
 
