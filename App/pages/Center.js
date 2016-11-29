@@ -206,7 +206,7 @@ class Center extends Component {
                             <View style={{flexDirection:'column',justifyContent:'center',marginLeft:10,}}>
                                <Text style={{fontSize:16,marginBottom:10}}>{center.data.userInfo.data.real_name}</Text>
                                <View style={{flexDirection:'row'}}>
-                                  <View style={{width:60,height:18,backgroundColor:'#000',opacity:0.6,borderRadius:9}}>
+                                  <View style={{height:18,backgroundColor:'#000',opacity:0.6,borderRadius:9,paddingHorizontal:10}}>
                                     <Text style={{color:'#fff',fontSize:12,textAlign:'center',}}>
                                      {/* 普通会员 */}
                                        {(center.data.userInfo.data.role_id==1)&&'普通会员'||(center.data.userInfo.data.role_id==2)&&'一级分销商'||(center.data.userInfo.data.role_id==3)&&'二级分销商'}

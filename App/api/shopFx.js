@@ -12,3 +12,21 @@ export function shopFxInfo(token){
     return shopFxData
   })
 }
+
+//用户小店详情接口
+export function shopFxShopInfo(user_id){
+  return fetch(`${HOST}Shop/shopFxInfo?user_id=${user_id}`)
+  .then((response) => response.json())
+  .then((shopFxData) => {
+    return shopFxData
+  })
+}
+
+//用户小店详情接口
+export function shopFxDetailInfo(user_id){
+  return fetch(`${HOST}Shop/shopFxProducts?user_id=${user_id}`)
+  .then((response) => response.json())
+  .then((shopFxData) => {
+    return shopFxData
+  })
+}

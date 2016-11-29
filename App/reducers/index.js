@@ -18,6 +18,7 @@ import userinform from './UserInformReducers';
 import orderconfirm from './OrderConfirmReducers';
 import orderList from './OrderListReducers';
 import orderCancel from './OrderCancelReducers';
+import shopFxInfo from './ShopFxInfoReducers';
 const rootReducer = combineReducers({
       login,
       classify,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
       userinform,
       orderconfirm,
       orderList,
-      orderCancel
+      orderCancel,
+      shopFxInfo
 })
 export default rootReducer;

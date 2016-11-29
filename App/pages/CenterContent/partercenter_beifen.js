@@ -11,9 +11,9 @@ import {
   StyleSheet,
   TextInput,
   AsyncStorage,
-  TouchableOpacity,
-  InteractionManager
+  TouchableOpacity
 } from 'react-native';
+import { connect } from 'react-redux';
 import { NaviGoBack } from '../../utils/CommonUtils';
 import { toastShort } from '../../utils/ToastUtil';
 import ProgressBar from  'ActivityIndicator';
@@ -25,9 +25,6 @@ import ShopShare from './ShopShare';
 import Shop from './Shop';
 import UserCommission from './UserCommission';
 import MyTeam from './MyTeam';
-import Commission from './Commission';
-import { connect } from 'react-redux';
-import { performShopFxInfoAction } from '../../actions/ShopFxInfoAction';
 import { shopFxInfo } from '../../api/shopFx';
 var {height, width} = Dimensions.get('window');
 
@@ -35,33 +32,42 @@ class PartnerCenter extends Component {
 
   constructor(props) {
     super(props);
+    this.state={
+      loading:false,
+      shopFxData:null
+    }
     this.itemActionIndex = this.itemActionIndex.bind(this);
   }
 
   componentDidMount() {
-    const { dispatch,shopFxInfo } = this.props;
-    InteractionManager.runAfterInteractions(() => {
-      if(!shopFxInfo.data.status){
-        AsyncStorage.getItem('token').then(
-          (token)=>{
-            if (token===null){
-              InteractionManager.runAfterInteractions(() => {
-                  navigator.push({
-                    component: Login,
-                    name: 'Login'
-                  });
+      AsyncStorage.getItem('token').then(
+        (token)=>{
+          if (token===null){
+            InteractionManager.runAfterInteractions(() => {
+                navigator.push({
+                  component: Login,
+                  name: 'Login'
                 });
-            }else {
-              dispatch(performShopFxInfoAction(token));
-            }
+              });
+          }else {
+            this.setState({
+              loading:true
+            })
+            shopFxInfo(token).then((shopFxData)=>{
+              if(!shopFxData.status){
+                toastShort(shopFxData.msg);
+              }
+              this.setState({
+                loading:false,
+                shopFxData:shopFxData
+              })
+            })
           }
-        )
-        .catch((error)=>{
-          toastShort(' error:' + error.message);
-        })
-      }
-
-    })
+        }
+      )
+      .catch((error)=>{
+        toastShort(' error:' + error.message);
+      })
   }
 
   //返回
@@ -71,7 +77,7 @@ class PartnerCenter extends Component {
   }
 
   itemActionIndex(index){
-    const {navigator,shopFxInfo} = this.props;
+    const {navigator} = this.props;
       switch (index) {
         case 1:
           navigator.push({
@@ -84,7 +90,7 @@ class PartnerCenter extends Component {
             component: ShopShare,
             name: 'ShopShare',
             params: {
-              shopFxData:shopFxInfo.data.data
+              shopFxData:this.state.shopFxData.data
             }
           })
           break;
@@ -93,7 +99,7 @@ class PartnerCenter extends Component {
             component: Shop,
             name: 'Shop',
             params: {
-              user_id:shopFxInfo.data.data.user_id
+              user_id:this.state.shopFxData.data.user_id
             }
           })
           break;
@@ -103,30 +109,23 @@ class PartnerCenter extends Component {
               name: 'MyTeam',
             })
             break;
-          case 5:
-            navigator.push({
-              component: Commission,
-              name: 'Commission',
-            })
-            break;
         default:
 
       }
   }
 
   render() {
-    const {shopFxInfo} = this.props;
-    if(shopFxInfo.data.status){
+    if(this.state.shopFxData){
       return (
         <View style={{backgroundColor:'#f5f5f5',flex:1}}>
+            {this.state.loading&&<ProgressBar />}
             <CommonHeader title='合伙人中心' onPress={()=>{this.buttonBackAction()}} />
-            {shopFxInfo.loading&&<ProgressBar />}
             <View style={{backgroundColor:'#fff',marginBottom:10}}>
               <View style={styles.shopInfo}>
                 <Image style={styles.shopLogo} source={require('../img/shopLogo.png')}></Image>
                 <View stye={styles.shopTop}>
-                  <Text style={styles.shopName}>{shopFxInfo.data.data.shop_name}</Text>
-                  <Text style={styles.shopTime}>{shopFxInfo.data.data.add_time}</Text>
+                  <Text style={styles.shopName}>{this.state.shopFxData.data.shop_name}</Text>
+                  <Text style={styles.shopTime}>{this.state.shopFxData.data.add_time}</Text>
                 </View>
               </View>
               <View style={styles.myCommission}>
@@ -134,20 +133,18 @@ class PartnerCenter extends Component {
                   <Text style={styles.myCommission_title_text}>
                     我的佣金
                   </Text>
-                  <TouchableOpacity onPress={()=>this.itemActionIndex(5)}>
-                    <Text style={styles.myCommission_title_text}>
-                      佣金明细 >
-                    </Text>
-                  </TouchableOpacity>
+                  <Text style={styles.myCommission_title_text}>
+                    佣金明细 >
+                  </Text>
                 </View>
                 <View style={styles.myCommission_money}>
                   <Text style={styles.myCommission_money_text}>
-                    {shopFxInfo.data.data.commission} 元
+                    {this.state.shopFxData.data.commission} 元
                   </Text>
                 </View>
                 <View style={styles.myCommission_cash}>
                   <Text style={styles.myCommission_cash_text}>
-                    可提现佣金：{shopFxInfo.data.data.commission} 元
+                    可提现佣金：{this.state.shopFxData.data.commission} 元
                   </Text>
                   <TouchableOpacity style={styles.myCommission_cash_button}>
                     <Text style={styles.myCommission_cash_button_text}>提现</Text>
@@ -182,8 +179,8 @@ class PartnerCenter extends Component {
     }else{
       return (
         <View style={{backgroundColor:'#f5f5f5',flex:1}}>
+            {this.state.loading&&<ProgressBar />}
             <CommonHeader title='合伙人中心' onPress={()=>{this.buttonBackAction()}} />
-            {shopFxInfo.loading&&<ProgressBar />}
         </View>
       )
     }

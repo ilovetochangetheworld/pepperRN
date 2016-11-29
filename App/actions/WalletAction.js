@@ -6,8 +6,6 @@
 import * as types from '../common/ActionTypes';
 import {HOST} from  '../common/request';
 import { toastShort } from '../utils/ToastUtil';
-import ViewPager from 'react-native-viewpager';
-import {ListView} from 'react-native';
 
 export function performCenterAction(token){
 
